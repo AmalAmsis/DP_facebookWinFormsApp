@@ -54,7 +54,7 @@ namespace BasicFacebookFeatures
 
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            listBox.ClearSelected();
+            //listBox.ClearSelected();
             int foundIdx = listBox.FindString(textBoxSearch.Text);
             if(foundIdx > -1)
             {

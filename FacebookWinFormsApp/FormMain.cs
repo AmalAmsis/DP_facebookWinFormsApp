@@ -17,10 +17,12 @@ namespace BasicFacebookFeatures
         {
             InitializeComponent();
             FacebookWrapper.FacebookService.s_CollectionLimit = 25;
+            r_AppSettings = AppSettings.LoadAppSettingsFromFile();
         }
 
         FacebookWrapper.LoginResult m_LoginResult;//??????????
         User m_LoggedInUser;//???????????????
+        private readonly AppSettings r_AppSettings;
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -63,7 +65,7 @@ namespace BasicFacebookFeatures
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
                 m_LoggedInUser = m_LoginResult.LoggedInUser;
-                fetchUserFriends();// לסדר
+                fetchUserData();
             }
             else
             {
@@ -80,6 +82,69 @@ namespace BasicFacebookFeatures
             m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (checkBoxRememberUser.Checked && m_LoginResult != null)
+            {
+                r_AppSettings.RememberUser = true;
+                r_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
+            }
+            else
+            {
+                r_AppSettings.RememberUser = false;
+                r_AppSettings.LastAccessToken = null;
+            }
+
+            r_AppSettings.SaveAppSettingsToFile();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            checkBoxRememberUser.Checked = r_AppSettings.RememberUser;
+            if (r_AppSettings.RememberUser && !string.IsNullOrEmpty(r_AppSettings.LastAccessToken))
+            {
+                try
+                {
+                    m_LoginResult = FacebookService.Connect(r_AppSettings.LastAccessToken);
+                    updateUserData();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                    m_LoginResult = null;
+                }
+            }
+        }
+
+        private void updateUserData()
+        {
+            const bool v_IsLogin = true;
+
+            m_LoggedInUser = m_LoginResult.LoggedInUser;
+           // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
+            buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
+            buttonLogin.BackColor = Color.LightGreen;
+            tabPage1.Text = $"{m_LoggedInUser.Name}";
+            updateUILoginLogout(v_IsLogin);
+            fetchUserData();
+        }
+
+        private void updateUILoginLogout(bool i_IsLogin)
+        {
+            buttonLogin.Enabled = !i_IsLogin;
+            buttonLogout.Enabled = i_IsLogin;
+            checkBoxRememberUser.Visible = i_IsLogin;
+            //textBoxPost.Enabled = i_IsLogin;
+        }
+
+        private void fetchUserData()
+        {
+            fetchUserFriends();
         }
 
         private void fetchUserFriends()
@@ -109,7 +174,7 @@ namespace BasicFacebookFeatures
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
-            pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureNormalURL);
+            pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureSmallURL);
         }
 
         
