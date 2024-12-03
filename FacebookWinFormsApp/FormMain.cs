@@ -38,17 +38,34 @@ namespace BasicFacebookFeatures
                 textBoxAppID.Text,
                 /// requested permissions:
                 "email",
-                "public_profile"
+                "public_profile",
                 /// add any relevant permissions
+                "user_age_range",
+                "user_birthday",
+                "user_events",
+                "user_friends",
+                "user_gender",
+                "user_hometown",
+                "user_likes",
+                "user_link",
+                "user_location",
+                "user_photos",
+                "user_posts",
+                "user_videos"
                 );
 
-            if (string.IsNullOrEmpty(m_LoginResult.ErrorMessage))
+            if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
             {
                 buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
                 buttonLogin.BackColor = Color.LightGreen;
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                m_LoginResult = null;
             }
         }
 
@@ -61,5 +78,7 @@ namespace BasicFacebookFeatures
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
         }
+
+      
     }
 }

@@ -89,10 +89,10 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.pictureBoxProfile);
-            this.tabPage1.Controls.Add(this.textBoxAppID);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.buttonLogout);
             this.tabPage1.Controls.Add(this.buttonLogin);
+            this.tabPage1.Controls.Add(this.textBoxAppID);
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -116,7 +116,7 @@
             this.textBoxAppID.Name = "textBoxAppID";
             this.textBoxAppID.Size = new System.Drawing.Size(237, 24);
             this.textBoxAppID.TabIndex = 54;
-            this.textBoxAppID.Text = "1450160541956417";
+            this.textBoxAppID.Text = "1255437599029620";
             // 
             // tabPage2
             // 
