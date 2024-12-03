@@ -36,6 +36,11 @@ namespace BasicFacebookFeatures
             set { listBox.DisplayMember = value; }
         }
 
+        public Object SelectedItem 
+        {
+            get { return listBox.SelectedItem; }
+        }
+
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(listBox.SelectedIndex > -1)

@@ -32,12 +32,14 @@
             this.buttonLogout = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pictureBoxchoosenFriend = new System.Windows.Forms.PictureBox();
+            this.searchableListWithTitleFriends = new BasicFacebookFeatures.SearchableListWithTitle();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.listViewWithPreview1 = new BasicFacebookFeatures.SearchableListWithTitle();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxchoosenFriend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +48,7 @@
             this.buttonLogin.Location = new System.Drawing.Point(19, 7);
             this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(59, 28);
+            this.buttonLogin.Size = new System.Drawing.Size(154, 28);
             this.buttonLogin.TabIndex = 36;
             this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
@@ -55,7 +57,7 @@
             // buttonLogout
             // 
             this.buttonLogout.Enabled = false;
-            this.buttonLogout.Location = new System.Drawing.Point(143, 7);
+            this.buttonLogout.Location = new System.Drawing.Point(181, 7);
             this.buttonLogout.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogout.Name = "buttonLogout";
             this.buttonLogout.Size = new System.Drawing.Size(67, 28);
@@ -77,11 +79,13 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.listViewWithPreview1);
+            this.tabPage1.Controls.Add(this.pictureBoxchoosenFriend);
+            this.tabPage1.Controls.Add(this.searchableListWithTitleFriends);
             this.tabPage1.Controls.Add(this.textBoxAppID);
             this.tabPage1.Controls.Add(this.buttonLogout);
             this.tabPage1.Controls.Add(this.buttonLogin);
             this.tabPage1.Controls.Add(this.pictureBoxProfile);
+            this.tabPage1.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -90,11 +94,30 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pictureBoxchoosenFriend
+            // 
+            this.pictureBoxchoosenFriend.Location = new System.Drawing.Point(628, 211);
+            this.pictureBoxchoosenFriend.Name = "pictureBoxchoosenFriend";
+            this.pictureBoxchoosenFriend.Size = new System.Drawing.Size(39, 33);
+            this.pictureBoxchoosenFriend.TabIndex = 57;
+            this.pictureBoxchoosenFriend.TabStop = false;
+            // 
+            // searchableListWithTitleFriends
+            // 
+            this.searchableListWithTitleFriends.DisplayMember = "";
+            this.searchableListWithTitleFriends.Location = new System.Drawing.Point(536, 225);
+            this.searchableListWithTitleFriends.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleFriends.Name = "searchableListWithTitleFriends";
+            this.searchableListWithTitleFriends.Size = new System.Drawing.Size(164, 158);
+            this.searchableListWithTitleFriends.TabIndex = 56;
+            this.searchableListWithTitleFriends.Title = "Friends";
+            this.searchableListWithTitleFriends.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleFriends_SelectedIndexChanged);
+            // 
             // textBoxAppID
             // 
             this.textBoxAppID.Location = new System.Drawing.Point(19, 47);
             this.textBoxAppID.Name = "textBoxAppID";
-            this.textBoxAppID.Size = new System.Drawing.Size(237, 24);
+            this.textBoxAppID.Size = new System.Drawing.Size(237, 26);
             this.textBoxAppID.TabIndex = 54;
             this.textBoxAppID.Text = "1255437599029620";
             // 
@@ -117,16 +140,6 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // listViewWithPreview1
-            // 
-            this.listViewWithPreview1.DisplayMember = "";
-            this.listViewWithPreview1.Location = new System.Drawing.Point(67, 179);
-            this.listViewWithPreview1.Margin = new System.Windows.Forms.Padding(4);
-            this.listViewWithPreview1.Name = "listViewWithPreview1";
-            this.listViewWithPreview1.Size = new System.Drawing.Size(143, 199);
-            this.listViewWithPreview1.TabIndex = 57;
-            this.listViewWithPreview1.Title = "F";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -141,6 +154,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxchoosenFriend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
             this.ResumeLayout(false);
 
@@ -155,7 +169,8 @@
 		private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox textBoxAppID;
         private System.Windows.Forms.PictureBox pictureBoxProfile;
-        private SearchableListWithTitle listViewWithPreview1;
+        private SearchableListWithTitle searchableListWithTitleFriends;
+        private System.Windows.Forms.PictureBox pictureBoxchoosenFriend;
     }
 }
 

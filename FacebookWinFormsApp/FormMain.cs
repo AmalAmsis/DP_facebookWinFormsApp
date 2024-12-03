@@ -19,7 +19,8 @@ namespace BasicFacebookFeatures
             FacebookWrapper.FacebookService.s_CollectionLimit = 25;
         }
 
-        FacebookWrapper.LoginResult m_LoginResult;
+        FacebookWrapper.LoginResult m_LoginResult;//??????????
+        User m_LoggedInUser;//???????????????
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -61,6 +62,7 @@ namespace BasicFacebookFeatures
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
+                m_LoggedInUser = m_LoginResult.LoggedInUser;
             }
             else
             {
@@ -78,5 +80,37 @@ namespace BasicFacebookFeatures
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
         }
+
+        private void fetchUserFriends()
+        {
+            searchableListWithTitleFriends.Items.Clear();
+            searchableListWithTitleFriends.DisplayMember = "Name";
+            try
+            {
+                foreach (User friend in m_LoggedInUser.Friends)
+                {
+                    searchableListWithTitleFriends.Items.Add(friend);
+                }
+
+                if (searchableListWithTitleFriends.Items.Count == 0)
+                {
+                    //comboBoxFriendsSort.Enabled = false;
+                    searchableListWithTitleFriends.Items.Add("Found no friends :(");
+                }
+            }
+            catch (Exception exception)
+            {
+                //comboBoxFriendsSort.Enabled = false;
+                MessageBox.Show("failed to fetch friends");
+            }
+        }
+
+        private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
+            pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureNormalURL);
+        }
+
+        
     }
 }
