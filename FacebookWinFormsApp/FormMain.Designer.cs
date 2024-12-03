@@ -34,13 +34,11 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.listViewWithPreview1 = new BasicFacebookFeatures.ListViewWithPreview();
+            this.listViewWithPreview1 = new BasicFacebookFeatures.SearchableListWithTitle();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -84,7 +82,6 @@
             this.tabPage1.Controls.Add(this.buttonLogout);
             this.tabPage1.Controls.Add(this.buttonLogin);
             this.tabPage1.Controls.Add(this.pictureBoxProfile);
-            this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -103,20 +100,12 @@
             // 
             // pictureBoxProfile
             // 
-            this.pictureBoxProfile.Location = new System.Drawing.Point(711, 47);
+            this.pictureBoxProfile.Location = new System.Drawing.Point(323, 6);
             this.pictureBoxProfile.Name = "pictureBoxProfile";
             this.pictureBoxProfile.Size = new System.Drawing.Size(79, 78);
             this.pictureBoxProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxProfile.TabIndex = 55;
             this.pictureBoxProfile.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(820, 86);
-            this.pictureBox1.TabIndex = 56;
-            this.pictureBox1.TabStop = false;
             // 
             // tabPage2
             // 
@@ -130,11 +119,13 @@
             // 
             // listViewWithPreview1
             // 
-            this.listViewWithPreview1.Location = new System.Drawing.Point(19, 93);
+            this.listViewWithPreview1.DisplayMember = "";
+            this.listViewWithPreview1.Location = new System.Drawing.Point(67, 179);
             this.listViewWithPreview1.Margin = new System.Windows.Forms.Padding(4);
             this.listViewWithPreview1.Name = "listViewWithPreview1";
-            this.listViewWithPreview1.Size = new System.Drawing.Size(379, 272);
-            this.listViewWithPreview1.TabIndex = 55;
+            this.listViewWithPreview1.Size = new System.Drawing.Size(143, 199);
+            this.listViewWithPreview1.TabIndex = 57;
+            this.listViewWithPreview1.Title = "F";
             // 
             // FormMain
             // 
@@ -151,7 +142,6 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -165,8 +155,7 @@
 		private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox textBoxAppID;
         private System.Windows.Forms.PictureBox pictureBoxProfile;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private ListViewWithPreview listViewWithPreview1;
+        private SearchableListWithTitle listViewWithPreview1;
     }
 }
 

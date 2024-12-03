@@ -78,6 +78,5 @@ namespace BasicFacebookFeatures
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
         }
-
     }
 }
