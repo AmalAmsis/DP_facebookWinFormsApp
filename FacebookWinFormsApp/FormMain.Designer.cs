@@ -37,6 +37,7 @@
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.checkBoxRememberUser = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxchoosenFriend)).BeginInit();
@@ -74,11 +75,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1243, 697);
+            this.tabControl1.Size = new System.Drawing.Size(741, 429);
             this.tabControl1.TabIndex = 54;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.checkBoxRememberUser);
             this.tabPage1.Controls.Add(this.pictureBoxchoosenFriend);
             this.tabPage1.Controls.Add(this.searchableListWithTitleFriends);
             this.tabPage1.Controls.Add(this.textBoxAppID);
@@ -89,7 +91,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1235, 666);
+            this.tabPage1.Size = new System.Drawing.Size(733, 398);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -140,11 +142,21 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // checkBoxRememberUser
+            // 
+            this.checkBoxRememberUser.AutoSize = true;
+            this.checkBoxRememberUser.Location = new System.Drawing.Point(38, 120);
+            this.checkBoxRememberUser.Name = "checkBoxRememberUser";
+            this.checkBoxRememberUser.Size = new System.Drawing.Size(126, 23);
+            this.checkBoxRememberUser.TabIndex = 58;
+            this.checkBoxRememberUser.Text = "Remember Me";
+            this.checkBoxRememberUser.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1243, 697);
+            this.ClientSize = new System.Drawing.Size(741, 429);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -171,6 +183,7 @@
         private System.Windows.Forms.PictureBox pictureBoxProfile;
         private SearchableListWithTitle searchableListWithTitleFriends;
         private System.Windows.Forms.PictureBox pictureBoxchoosenFriend;
+        private System.Windows.Forms.CheckBox checkBoxRememberUser;
     }
 }
 

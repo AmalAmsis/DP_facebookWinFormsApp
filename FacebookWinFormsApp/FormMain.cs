@@ -63,6 +63,7 @@ namespace BasicFacebookFeatures
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
                 m_LoggedInUser = m_LoginResult.LoggedInUser;
+                fetchUserFriends();// לסדר
             }
             else
             {
