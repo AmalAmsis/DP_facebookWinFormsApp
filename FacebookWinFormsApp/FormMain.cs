@@ -79,6 +79,5 @@ namespace BasicFacebookFeatures
             buttonLogout.Enabled = false;
         }
 
-      
     }
 }
