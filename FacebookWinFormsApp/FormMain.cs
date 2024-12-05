@@ -20,8 +20,8 @@ namespace BasicFacebookFeatures
             r_AppSettings = AppSettings.LoadAppSettingsFromFile();
         }
 
-        FacebookWrapper.LoginResult m_LoginResult;//??????????
-        User m_LoggedInUser;//???????????????
+        private FacebookWrapper.LoginResult m_LoginResult;//??????????
+        private User m_LoggedInUser;//???????????????
         private readonly AppSettings r_AppSettings;
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -111,7 +111,7 @@ namespace BasicFacebookFeatures
                 try
                 {
                     m_LoginResult = FacebookService.Connect(r_AppSettings.LastAccessToken);
-                    updateUserData();
+                    loadUserData();
                 }
                 catch (Exception)
                 {
@@ -121,20 +121,21 @@ namespace BasicFacebookFeatures
             }
         }
 
-        private void updateUserData()
+
+        private void loadUserData()
         {
             const bool v_IsLogin = true;
 
             m_LoggedInUser = m_LoginResult.LoggedInUser;
-           // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
+            // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
             buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
             tabPage1.Text = $"{m_LoggedInUser.Name}";
-            updateUILoginLogout(v_IsLogin);
+            toggleLoginUI(v_IsLogin);
             fetchUserData();
         }
 
-        private void updateUILoginLogout(bool i_IsLogin)
+        private void toggleLoginUI(bool i_IsLogin)
         {
             buttonLogin.Enabled = !i_IsLogin;
             buttonLogout.Enabled = i_IsLogin;
@@ -145,6 +146,7 @@ namespace BasicFacebookFeatures
         private void fetchUserData()
         {
             fetchUserFriends();
+            fetchUserAlbums();
         }
 
         private void fetchUserFriends()
@@ -171,12 +173,31 @@ namespace BasicFacebookFeatures
             }
         }
 
+        private void fetchUserAlbums()
+        {
+            searchableListWithTitleAlbums.Items.Clear();
+            searchableListWithTitleAlbums.DisplayMember = "Name";
+            foreach (Album album in m_LoggedInUser.Albums)
+            {
+                searchableListWithTitleAlbums.Items.Add(album);
+            }
+
+            if (searchableListWithTitleAlbums.Items.Count == 0)
+            {
+                MessageBox.Show("No Albums to retrieve :(");
+            }
+        }
+
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
             pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureSmallURL);
         }
 
-        
+        private void searchableListWithTitleAlbums_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Album selectedAlbum = searchableListWithTitleAlbums.SelectedItem as Album;
+            pictureBoxAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+        }
     }
 }

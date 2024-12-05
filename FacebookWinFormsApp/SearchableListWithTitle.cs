@@ -46,15 +46,14 @@ namespace BasicFacebookFeatures
             if(listBox.SelectedIndex > -1)
             {
                 object selectedItem = listBox.SelectedItem;
-                textBoxSearch.Text = selectedItem.ToString();
+                SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+                textBoxSearch.Text = listBox.SelectedItem.ToString();
             }
-
-            SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            //listBox.ClearSelected();
+            listBox.ClearSelected();
             int foundIdx = listBox.FindString(textBoxSearch.Text);
             if(foundIdx > -1)
             {

@@ -38,15 +38,18 @@
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.checkBoxRememberUser = new System.Windows.Forms.CheckBox();
+            this.searchableListWithTitleAlbums = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.pictureBoxAlbum = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxchoosenFriend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(19, 7);
+            this.buttonLogin.Location = new System.Drawing.Point(7, 12);
             this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(154, 28);
@@ -58,7 +61,7 @@
             // buttonLogout
             // 
             this.buttonLogout.Enabled = false;
-            this.buttonLogout.Location = new System.Drawing.Point(181, 7);
+            this.buttonLogout.Location = new System.Drawing.Point(169, 12);
             this.buttonLogout.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogout.Name = "buttonLogout";
             this.buttonLogout.Size = new System.Drawing.Size(67, 28);
@@ -80,6 +83,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pictureBoxAlbum);
+            this.tabPage1.Controls.Add(this.searchableListWithTitleAlbums);
             this.tabPage1.Controls.Add(this.checkBoxRememberUser);
             this.tabPage1.Controls.Add(this.pictureBoxchoosenFriend);
             this.tabPage1.Controls.Add(this.searchableListWithTitleFriends);
@@ -98,9 +103,9 @@
             // 
             // pictureBoxchoosenFriend
             // 
-            this.pictureBoxchoosenFriend.Location = new System.Drawing.Point(628, 211);
+            this.pictureBoxchoosenFriend.Location = new System.Drawing.Point(628, 202);
             this.pictureBoxchoosenFriend.Name = "pictureBoxchoosenFriend";
-            this.pictureBoxchoosenFriend.Size = new System.Drawing.Size(39, 33);
+            this.pictureBoxchoosenFriend.Size = new System.Drawing.Size(39, 42);
             this.pictureBoxchoosenFriend.TabIndex = 57;
             this.pictureBoxchoosenFriend.TabStop = false;
             // 
@@ -117,7 +122,7 @@
             // 
             // textBoxAppID
             // 
-            this.textBoxAppID.Location = new System.Drawing.Point(19, 47);
+            this.textBoxAppID.Location = new System.Drawing.Point(6, 47);
             this.textBoxAppID.Name = "textBoxAppID";
             this.textBoxAppID.Size = new System.Drawing.Size(237, 26);
             this.textBoxAppID.TabIndex = 54;
@@ -125,7 +130,7 @@
             // 
             // pictureBoxProfile
             // 
-            this.pictureBoxProfile.Location = new System.Drawing.Point(323, 6);
+            this.pictureBoxProfile.Location = new System.Drawing.Point(628, 6);
             this.pictureBoxProfile.Name = "pictureBoxProfile";
             this.pictureBoxProfile.Size = new System.Drawing.Size(79, 78);
             this.pictureBoxProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -145,12 +150,31 @@
             // checkBoxRememberUser
             // 
             this.checkBoxRememberUser.AutoSize = true;
-            this.checkBoxRememberUser.Location = new System.Drawing.Point(38, 120);
+            this.checkBoxRememberUser.Location = new System.Drawing.Point(8, 79);
             this.checkBoxRememberUser.Name = "checkBoxRememberUser";
             this.checkBoxRememberUser.Size = new System.Drawing.Size(126, 23);
             this.checkBoxRememberUser.TabIndex = 58;
             this.checkBoxRememberUser.Text = "Remember Me";
             this.checkBoxRememberUser.UseVisualStyleBackColor = true;
+            // 
+            // searchableListWithTitleAlbums
+            // 
+            this.searchableListWithTitleAlbums.DisplayMember = "";
+            this.searchableListWithTitleAlbums.Location = new System.Drawing.Point(337, 225);
+            this.searchableListWithTitleAlbums.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.searchableListWithTitleAlbums.Name = "searchableListWithTitleAlbums";
+            this.searchableListWithTitleAlbums.Size = new System.Drawing.Size(171, 147);
+            this.searchableListWithTitleAlbums.TabIndex = 59;
+            this.searchableListWithTitleAlbums.Title = "Albums";
+            this.searchableListWithTitleAlbums.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleAlbums_SelectedIndexChanged);
+            // 
+            // pictureBoxAlbum
+            // 
+            this.pictureBoxAlbum.Location = new System.Drawing.Point(422, 202);
+            this.pictureBoxAlbum.Name = "pictureBoxAlbum";
+            this.pictureBoxAlbum.Size = new System.Drawing.Size(39, 42);
+            this.pictureBoxAlbum.TabIndex = 60;
+            this.pictureBoxAlbum.TabStop = false;
             // 
             // FormMain
             // 
@@ -168,6 +192,7 @@
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxchoosenFriend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbum)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -184,6 +209,8 @@
         private SearchableListWithTitle searchableListWithTitleFriends;
         private System.Windows.Forms.PictureBox pictureBoxchoosenFriend;
         private System.Windows.Forms.CheckBox checkBoxRememberUser;
+        private System.Windows.Forms.PictureBox pictureBoxAlbum;
+        private SearchableListWithTitle searchableListWithTitleAlbums;
     }
 }
 
