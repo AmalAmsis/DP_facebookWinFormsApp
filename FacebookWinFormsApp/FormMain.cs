@@ -17,9 +17,12 @@ namespace BasicFacebookFeatures
         {
             InitializeComponent();
             FacebookWrapper.FacebookService.s_CollectionLimit = 25;
+            r_AppSettings = AppSettings.LoadAppSettingsFromFile();
         }
 
-        FacebookWrapper.LoginResult m_LoginResult;
+        private FacebookWrapper.LoginResult m_LoginResult;//??????????
+        private User m_LoggedInUser;//???????????????
+        private readonly AppSettings r_AppSettings;
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -61,6 +64,8 @@ namespace BasicFacebookFeatures
                 pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
                 buttonLogin.Enabled = false;
                 buttonLogout.Enabled = true;
+                m_LoggedInUser = m_LoginResult.LoggedInUser;
+                fetchUserData();
             }
             else
             {
@@ -79,5 +84,120 @@ namespace BasicFacebookFeatures
             buttonLogout.Enabled = false;
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (checkBoxRememberUser.Checked && m_LoginResult != null)
+            {
+                r_AppSettings.RememberUser = true;
+                r_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
+            }
+            else
+            {
+                r_AppSettings.RememberUser = false;
+                r_AppSettings.LastAccessToken = null;
+            }
+
+            r_AppSettings.SaveAppSettingsToFile();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            checkBoxRememberUser.Checked = r_AppSettings.RememberUser;
+            if (r_AppSettings.RememberUser && !string.IsNullOrEmpty(r_AppSettings.LastAccessToken))
+            {
+                try
+                {
+                    m_LoginResult = FacebookService.Connect(r_AppSettings.LastAccessToken);
+                    loadUserData();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                    m_LoginResult = null;
+                }
+            }
+        }
+
+
+        private void loadUserData()
+        {
+            const bool v_IsLogin = true;
+
+            m_LoggedInUser = m_LoginResult.LoggedInUser;
+            // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
+            buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
+            buttonLogin.BackColor = Color.LightGreen;
+            tabPage1.Text = $"{m_LoggedInUser.Name}";
+            toggleLoginUI(v_IsLogin);
+            fetchUserData();
+        }
+
+        private void toggleLoginUI(bool i_IsLogin)
+        {
+            buttonLogin.Enabled = !i_IsLogin;
+            buttonLogout.Enabled = i_IsLogin;
+            checkBoxRememberUser.Visible = i_IsLogin;
+            //textBoxPost.Enabled = i_IsLogin;
+        }
+
+        private void fetchUserData()
+        {
+            fetchUserFriends();
+            fetchUserAlbums();
+        }
+
+        private void fetchUserFriends()
+        {
+            searchableListWithTitleFriends.Items.Clear();
+            searchableListWithTitleFriends.DisplayMember = "Name";
+            try
+            {
+                foreach (User friend in m_LoggedInUser.Friends)
+                {
+                    searchableListWithTitleFriends.Items.Add(friend);
+                }
+
+                if (searchableListWithTitleFriends.Items.Count == 0)
+                {
+                    //comboBoxFriendsSort.Enabled = false;
+                    searchableListWithTitleFriends.Items.Add("Found no friends :(");
+                }
+            }
+            catch (Exception exception)
+            {
+                //comboBoxFriendsSort.Enabled = false;
+                MessageBox.Show("failed to fetch friends");
+            }
+        }
+
+        private void fetchUserAlbums()
+        {
+            searchableListWithTitleAlbums.Items.Clear();
+            searchableListWithTitleAlbums.DisplayMember = "Name";
+            foreach (Album album in m_LoggedInUser.Albums)
+            {
+                searchableListWithTitleAlbums.Items.Add(album);
+            }
+
+            if (searchableListWithTitleAlbums.Items.Count == 0)
+            {
+                MessageBox.Show("No Albums to retrieve :(");
+            }
+        }
+
+        private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
+            pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureSmallURL);
+        }
+
+        private void searchableListWithTitleAlbums_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Album selectedAlbum = searchableListWithTitleAlbums.SelectedItem as Album;
+            pictureBoxAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+        }
     }
 }
