@@ -127,6 +127,7 @@ namespace BasicFacebookFeatures
             const bool v_IsLogin = true;
 
             m_LoggedInUser = m_LoginResult.LoggedInUser;
+            pictureBoxProfile.ImageLocation = m_LoggedInUser.PictureNormalURL;
             // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
             buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
