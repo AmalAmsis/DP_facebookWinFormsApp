@@ -9,8 +9,8 @@ namespace BasicFacebookFeatures.Constants
 {
     public class Constants
     {
-        public static readonly int c_Empty = -1;
-        public static readonly string c_SadEmojiUrl = @"Resources\Sad_Emoji.jpg";
+        public static readonly int k_Empty = -1;
+        public static readonly string k_SadEmojiUrl = @"Resources\Sad_Emoji.jpg";
 
     }
 }

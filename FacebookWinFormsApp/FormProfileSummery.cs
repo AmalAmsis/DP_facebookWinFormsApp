@@ -8,7 +8,6 @@ namespace BasicFacebookFeatures
 {
     public partial class FormProfileSummery : Form
     {
-        private LoginResult m_LoginResult;
         private User m_LoggedInUser;
 
         public FormProfileSummery()
@@ -18,8 +17,7 @@ namespace BasicFacebookFeatures
 
         public void SetLoginResult(LoginResult i_LoginResult)
         {
-            m_LoginResult = i_LoginResult;
-            m_LoggedInUser = i_LoginResult.LoggedInUser;
+            m_LoggedInUser = i_LoginResult?.LoggedInUser;
             calculateAndUpdateProfileSummaryData();
         }
 
@@ -28,17 +26,21 @@ namespace BasicFacebookFeatures
             if (m_LoggedInUser != null)
             {
                 int totalLikes = m_LoggedInUser.LikedPages?.Count ?? 0;
-                int totalFriends = m_LoggedInUser.FriendLists?.Count ?? 0;
+                int totalFriends = m_LoggedInUser.Friends?.Count ?? 0;
                 int totalEvents = m_LoggedInUser.Events?.Count ?? 0;
                 int totalPosts = m_LoggedInUser.Posts?.Count ?? 0;
                 int totalVideos = m_LoggedInUser.Videos?.Count ?? 0;
-                int totalPhotos = m_LoggedInUser.PhotosTaggedIn?.Count ?? 0;
+                int totalPhotos = countPhotos();
 
-                Photo bestPhoto = getBestPicture();
-                Photo worstPhoto = getWorstPicture();
+                Photo bestPhoto = getBestPhoto();
+                Photo worstPhoto = getWorstPhoto();
+
+                FacebookObjectCollection<User> friendsThatSpeakTheSameLanguage = getUsersFriendsThatSpeakTheSameLanguage();
                 FacebookObjectCollection<User> homeTownFriends = getUsersHomeTownFriends();
                 FacebookObjectCollection<User> friendsWithTheSameBirthday = getUsersFriendsWithTheSameBirthday();
+                FacebookObjectCollection<User> friendsThatLikedMyPhotos = getUsersFriendsThatLikedMyPhotos();
 
+                labelUserName.Text = m_LoggedInUser.Name;
                 labelTotalLikes.Text = totalLikes.ToString();
                 labelTotalFriends.Text = totalFriends.ToString();
                 labelTotalEvents.Text = totalEvents.ToString();
@@ -46,12 +48,18 @@ namespace BasicFacebookFeatures
                 labelTotalVideos.Text = totalVideos.ToString();
                 labelTotalPictures.Text = totalPhotos.ToString();
 
-                pictureBoxProfilePicture.ImageLocation = m_LoggedInUser.PictureNormalURL ?? string.Empty;
-                pictureBoxBestPicture.ImageLocation = bestPhoto?.PictureNormalURL ?? string.Empty;
-                pictureBoxWorstPicture.ImageLocation = worstPhoto?.PictureNormalURL ?? string.Empty;
+                pictureBoxProfilePicture.ImageLocation = m_LoggedInUser.PictureNormalURL ?? Constants.Constants.k_SadEmojiUrl;
+                pictureBoxBestPicture.ImageLocation = bestPhoto?.PictureNormalURL ?? Constants.Constants.k_SadEmojiUrl;
+                pictureBoxWorstPicture.ImageLocation = worstPhoto?.PictureNormalURL ?? Constants.Constants.k_SadEmojiUrl;
 
+                pictureBoxProfilePicture.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxBestPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxWorstPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                listBoxFriendsThatSpeakTheSameLanguage.Items.AddRange(friendsThatSpeakTheSameLanguage?.ToArray());
                 listBoxHomeTownFriends.Items.AddRange(homeTownFriends?.ToArray());
                 listBoxFriendsWithTheSameBirthday.Items.AddRange(friendsWithTheSameBirthday?.ToArray());
+                listBoxFriendsThatLikedUsersPictures.Items.AddRange(friendsThatLikedMyPhotos?.ToArray());
             }
             else
             {
@@ -61,24 +69,59 @@ namespace BasicFacebookFeatures
 
         }
 
+        private int countPhotos()
+        {
+            FacebookObjectCollection<Album> albums = m_LoggedInUser?.Albums;
+            int totalPhotos = 0;
+
+            foreach (Album album in albums)
+            {
+                totalPhotos += album.Photos.Count;
+            }
+
+            return totalPhotos;
+        }
+
+        private FacebookObjectCollection<User> getUsersFriendsThatSpeakTheSameLanguage()
+        {
+            FacebookObjectCollection<User> friendsThatSpeakTheSameLanguage = new FacebookObjectCollection<User>();
+            Page[] usersLanguages = m_LoggedInUser.Languages;
+
+            if (usersLanguages == null)
+            {
+                return friendsThatSpeakTheSameLanguage;    
+            }
+
+            foreach (User friend in m_LoggedInUser?.Friends)
+            {
+                foreach (Page friendsLanguage in friend.Languages)
+                {
+                    if (usersLanguages.Contains(friendsLanguage))
+                    {
+                        friendsThatSpeakTheSameLanguage.Add(friend);
+                        break;
+                    }
+                }
+            }
+
+            return friendsThatSpeakTheSameLanguage;
+        }
+
         private FacebookObjectCollection<User> getUsersFriendsWithTheSameBirthday()
         {
             FacebookObjectCollection<User> friendsWithTheSameBirthday = new FacebookObjectCollection<User>();
-            
-            if (m_LoggedInUser != null)
-            {
-                FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
-                string birthday = m_LoggedInUser.Birthday;
+            string usersBirthday = m_LoggedInUser?.Birthday;
 
-                if (friends != null)
+            if (usersBirthday == null)
+            {
+                return friendsWithTheSameBirthday;
+            }
+
+            foreach (User friend in m_LoggedInUser?.Friends)
+            {
+                if (friend.Birthday == usersBirthday)
                 {
-                    foreach (User friend in friends)
-                    {
-                        if (friend.Birthday == birthday)
-                        {
-                            friendsWithTheSameBirthday.Add(friend);
-                        }
-                    }
+                    friendsWithTheSameBirthday.Add(friend);
                 }
             }
 
@@ -88,46 +131,56 @@ namespace BasicFacebookFeatures
         private FacebookObjectCollection<User> getUsersHomeTownFriends()
         {
             FacebookObjectCollection<User> homeTownFriends = new FacebookObjectCollection<User>();
+            City usersHomeTown = m_LoggedInUser?.Hometown;
 
-            if (m_LoggedInUser != null)
+            if (usersHomeTown == null)
             {
-                FacebookObjectCollection<User> friends = m_LoggedInUser.Friends;
-                string usersHomeTown = m_LoggedInUser.Hometown?.ToString();
+                return homeTownFriends;
+            }
 
-                if (friends != null)
+            foreach (User friend in m_LoggedInUser?.Friends)
+            {
+                if (friend.Hometown == usersHomeTown)
                 {
-                    foreach (User friend in friends)
-                    {
-                        string friendsHomeTown = friend.Hometown?.ToString();
-                        if (friendsHomeTown == usersHomeTown)
-                        {
-                            homeTownFriends.Add(friend);
-                        }
-                    }
+                    homeTownFriends.Add(friend);
                 }
             }
 
             return homeTownFriends;
         }
 
-        private Photo getWorstPicture()
+        private FacebookObjectCollection<User> getUsersFriendsThatLikedMyPhotos()
+        {
+            FacebookObjectCollection<User> friendsThatLikedMyPhotos = new FacebookObjectCollection<User>();
+            
+            foreach (Album album in m_LoggedInUser?.Albums)
+            {
+                foreach (Photo photo in album.Photos)
+                {
+                    foreach (User user in photo.LikedBy)
+                    {
+                        friendsThatLikedMyPhotos.Add(user);
+                    }
+                }
+            }
+
+            return friendsThatLikedMyPhotos;
+        }
+
+        private Photo getWorstPhoto()
         {
             Photo worstPicture = null;
-            int worstPictureNumberOfLikes = Constants.Constants.c_Empty;
+            int worstPictureNumberOfLikes = Constants.Constants.k_Empty;
 
-            if (m_LoggedInUser != null)
+            foreach (Album album in m_LoggedInUser?.Albums)
             {
-                FacebookObjectCollection<Photo> photos = m_LoggedInUser.PhotosTaggedIn;
-                if (photos != null)
+                foreach (Photo photo in album.Photos)
                 {
-                    foreach (Photo photo in photos)
-                    {
-                        int currentPictureNumberOfLikes = photo.LikedBy?.Count ?? 0;
+                    int currentPictureNumberOfLikes = photo.LikedBy?.Count ?? 0;
 
-                        if (isWorstPicture(currentPictureNumberOfLikes, worstPictureNumberOfLikes))
-                        {
-                            worstPicture = photo;
-                        }
+                    if (isWorstPicture(currentPictureNumberOfLikes, worstPictureNumberOfLikes))
+                    {
+                        worstPicture = photo;
                     }
                 }
             }
@@ -135,24 +188,20 @@ namespace BasicFacebookFeatures
             return worstPicture;
         }
 
-        private Photo getBestPicture()
+        private Photo getBestPhoto()
         {
             Photo bestPicture = null;
-            int bestPictureNumberOfLikes = Constants.Constants.c_Empty;
+            int bestPictureNumberOfLikes = Constants.Constants.k_Empty;
 
-            if (m_LoggedInUser != null)
+            foreach (Album album in m_LoggedInUser?.Albums)
             {
-                FacebookObjectCollection<Photo> photos = m_LoggedInUser.PhotosTaggedIn;
-                if (photos != null)
+                foreach (Photo photo in album.Photos)
                 {
-                    foreach (Photo photo in photos)
-                    {
-                        int currentPictureNumberOfLikes = photo.LikedBy?.Count ?? 0;
+                    int currentPictureNumberOfLikes = photo.LikedBy?.Count ?? 0;
 
-                        if (isBestPicture(currentPictureNumberOfLikes, bestPictureNumberOfLikes))
-                        {
-                            bestPicture = photo;
-                        }
+                    if (isBestPicture(currentPictureNumberOfLikes, bestPictureNumberOfLikes))
+                    {
+                        bestPicture = photo;
                     }
                 }
             }
@@ -162,13 +211,12 @@ namespace BasicFacebookFeatures
 
         private bool isBestPicture(int currentPictureNumberOfLikes, int currentBestPictureNumberOfLikes)
         {
-            return currentBestPictureNumberOfLikes == Constants.Constants.c_Empty || currentPictureNumberOfLikes > currentBestPictureNumberOfLikes;
+            return currentBestPictureNumberOfLikes == Constants.Constants.k_Empty || currentPictureNumberOfLikes > currentBestPictureNumberOfLikes;
         }
         
         private bool isWorstPicture(int currentPictureNumberOfLikes, int currentWorstPictureNumberOfLikes)
         {
-            return currentWorstPictureNumberOfLikes == Constants.Constants.c_Empty || currentPictureNumberOfLikes < currentWorstPictureNumberOfLikes;
+            return currentWorstPictureNumberOfLikes == Constants.Constants.k_Empty || currentPictureNumberOfLikes < currentWorstPictureNumberOfLikes;
         }
-        
     }
 }

@@ -81,16 +81,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormProfileSummery.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormProfileSummery.Designer.cs">
       <DependentUpon>FormProfileSummery.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListViewWithPreviewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListViewWithPreviewControl.Designer.cs">
+      <DependentUpon>ListViewWithPreviewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormProfileSummery.resx">
       <DependentUpon>FormProfileSummery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListViewWithPreviewControl.resx">
+      <DependentUpon>ListViewWithPreviewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
