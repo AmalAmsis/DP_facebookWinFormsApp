@@ -192,13 +192,13 @@ namespace BasicFacebookFeatures
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
-            pictureBoxchoosenFriend.LoadAsync(selectedFriend.PictureSmallURL);
+            pictureBoxSelectedFriend.LoadAsync(selectedFriend.PictureSmallURL);
         }
 
         private void searchableListWithTitleAlbums_SelectedIndexChanged(object sender, EventArgs e)
         {
             Album selectedAlbum = searchableListWithTitleAlbums.SelectedItem as Album;
-            pictureBoxAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+            pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
         }
     }
 }
