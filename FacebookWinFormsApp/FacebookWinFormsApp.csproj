@@ -80,7 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Constants\FacebookAppConstants.cs" />
     <Compile Include="FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>
