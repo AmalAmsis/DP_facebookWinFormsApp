@@ -32,11 +32,12 @@
             this.buttonLogout = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonProfileSummary = new System.Windows.Forms.Button();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.buttonProfileSummary = new System.Windows.Forms.Button();
+            this.buttonGuessTheYear = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
@@ -79,6 +80,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonGuessTheYear);
             this.tabPage1.Controls.Add(this.buttonProfileSummary);
             this.tabPage1.Controls.Add(this.textBoxAppID);
             this.tabPage1.Controls.Add(this.buttonLogout);
@@ -92,6 +94,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonProfileSummary
+            // 
+            this.buttonProfileSummary.Location = new System.Drawing.Point(334, 30);
+            this.buttonProfileSummary.Name = "buttonProfileSummary";
+            this.buttonProfileSummary.Size = new System.Drawing.Size(159, 45);
+            this.buttonProfileSummary.TabIndex = 57;
+            this.buttonProfileSummary.Text = "Profile Summary";
+            this.buttonProfileSummary.UseVisualStyleBackColor = true;
+            this.buttonProfileSummary.Click += new System.EventHandler(this.buttonProfileSummary_Click);
             // 
             // textBoxAppID
             // 
@@ -128,15 +140,15 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // buttonProfileSummary
+            // buttonGuessTheYear
             // 
-            this.buttonProfileSummary.Location = new System.Drawing.Point(455, 30);
-            this.buttonProfileSummary.Name = "buttonProfileSummary";
-            this.buttonProfileSummary.Size = new System.Drawing.Size(159, 45);
-            this.buttonProfileSummary.TabIndex = 57;
-            this.buttonProfileSummary.Text = "Profile Summary";
-            this.buttonProfileSummary.UseVisualStyleBackColor = true;
-            this.buttonProfileSummary.Click += new System.EventHandler(this.buttonProfileSummary_Click);
+            this.buttonGuessTheYear.Location = new System.Drawing.Point(515, 30);
+            this.buttonGuessTheYear.Name = "buttonGuessTheYear";
+            this.buttonGuessTheYear.Size = new System.Drawing.Size(159, 45);
+            this.buttonGuessTheYear.TabIndex = 58;
+            this.buttonGuessTheYear.Text = "Guess The Year";
+            this.buttonGuessTheYear.UseVisualStyleBackColor = true;
+            this.buttonGuessTheYear.Click += new System.EventHandler(this.buttonGuessTheYear_Click);
             // 
             // FormMain
             // 
@@ -169,6 +181,7 @@
         private System.Windows.Forms.PictureBox pictureBoxProfile;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button buttonProfileSummary;
+        private System.Windows.Forms.Button buttonGuessTheYear;
     }
 }
 

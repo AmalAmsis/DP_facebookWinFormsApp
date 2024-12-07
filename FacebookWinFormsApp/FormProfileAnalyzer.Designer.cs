@@ -1,6 +1,6 @@
 ﻿namespace BasicFacebookFeatures
 {
-    partial class FormProfileSummery
+    partial class FormProfileAnalyzer
     {
         /// <summary>
         /// Required designer variable.
@@ -348,7 +348,7 @@
             this.label6.Text = "Liked Your Pictures";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // FormProfileSummery
+            // FormProfileAnalyzer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -383,8 +383,10 @@
             this.Controls.Add(this.labelTotalFriends);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBoxProfilePicture);
-            this.Name = "FormProfileSummery";
-            this.Text = "FormProfileSummery";
+            this.Name = "FormProfileAnalyzer";
+            this.Text = "FormProfileAnalyzer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formProfileAnalyzer_FormClosed);
+            this.Load += new System.EventHandler(this.formProfileAnalyzer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfilePicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBestPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxWorstPicture)).EndInit();

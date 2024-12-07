@@ -81,17 +81,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="FormGuessTheYear.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGuessTheYear.Designer.cs">
+      <DependentUpon>FormGuessTheYear.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormProfileSummery.cs">
+    <Compile Include="FormProfileAnalyzer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormProfileSummery.Designer.cs">
-      <DependentUpon>FormProfileSummery.cs</DependentUpon>
+    <Compile Include="FormProfileAnalyzer.Designer.cs">
+      <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
     <Compile Include="ListViewWithPreviewControl.cs">
       <SubType>UserControl</SubType>
@@ -101,11 +107,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormGuessTheYear.resx">
+      <DependentUpon>FormGuessTheYear.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormProfileSummery.resx">
-      <DependentUpon>FormProfileSummery.cs</DependentUpon>
+    <EmbeddedResource Include="FormProfileAnalyzer.resx">
+      <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListViewWithPreviewControl.resx">
       <DependentUpon>ListViewWithPreviewControl.cs</DependentUpon>
