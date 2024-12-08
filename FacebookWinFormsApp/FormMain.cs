@@ -20,8 +20,9 @@ namespace BasicFacebookFeatures
             r_AppSettings = AppSettings.LoadAppSettingsFromFile();
         }
 
-        private FacebookWrapper.LoginResult m_LoginResult;//??????????
-        private User m_LoggedInUser;//???????????????
+        private FacebookWrapper.LoginResult m_LoginResult;
+        private User m_LoggedInUser;
+        private FacebookPostManager m_FacebookPostManager;
         private readonly AppSettings r_AppSettings;
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -59,13 +60,14 @@ namespace BasicFacebookFeatures
 
             if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
             {
-                buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
-                buttonLogin.BackColor = Color.LightGreen;
-                pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
-                buttonLogin.Enabled = false;
-                buttonLogout.Enabled = true;
-                m_LoggedInUser = m_LoginResult.LoggedInUser;
-                fetchUserData();
+                loadUserData();
+                //buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
+                //buttonLogin.BackColor = Color.LightGreen;
+                //pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
+                //buttonLogin.Enabled = false;
+                //buttonLogout.Enabled = true;
+                //m_LoggedInUser = m_LoginResult.LoggedInUser;
+                //fetchUserData();
             }
             else
             {
@@ -127,12 +129,17 @@ namespace BasicFacebookFeatures
             const bool v_IsLogin = true;
 
             m_LoggedInUser = m_LoginResult.LoggedInUser;
-            pictureBoxProfile.ImageLocation = m_LoggedInUser.PictureNormalURL;
-            // m_BasicFacebookUtils = new BasicFacebookUtils(m_LoggedInUser);
             buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
+            pictureBoxProfile.ImageLocation = m_LoggedInUser.PictureNormalURL;
+            labelUserData.Text = $@"{m_LoggedInUser.Name}
+ {m_LoggedInUser.Birthday}
+ {m_LoggedInUser.Gender}";
+
+            m_FacebookPostManager = new FacebookPostManager(m_LoggedInUser);
             tabPage1.Text = $"{m_LoggedInUser.Name}";
             toggleLoginUI(v_IsLogin);
+
             fetchUserData();
         }
 
@@ -141,13 +148,17 @@ namespace BasicFacebookFeatures
             buttonLogin.Enabled = !i_IsLogin;
             buttonLogout.Enabled = i_IsLogin;
             checkBoxRememberUser.Visible = i_IsLogin;
-            //textBoxPost.Enabled = i_IsLogin;
+            richTextBoxPost.Enabled = i_IsLogin;
         }
 
         private void fetchUserData()
         {
             fetchUserFriends();
             fetchUserAlbums();
+            fetchUserGroups();
+            fetchLikedPages();
+            fetchUserFeed();
+            fetchUserEvents();
         }
 
         private void fetchUserFriends()
@@ -189,6 +200,100 @@ namespace BasicFacebookFeatures
             }
         }
 
+        private void fetchUserGroups()
+        {
+            searchableListWithTitleGroups.Items.Clear();
+            searchableListWithTitleGroups.DisplayMember = "Name";
+            foreach (Group group in m_LoggedInUser.Groups)
+            {
+                searchableListWithTitleAlbums.Items.Add(group);
+            }
+
+            if (searchableListWithTitleAlbums.Items.Count == 0)
+            {
+                MessageBox.Show("No groups to retrieve :(");
+            }
+        }
+
+        private void fetchLikedPages()
+        {
+            searchableListWithTitleLikedPages.Items.Clear();
+            searchableListWithTitleLikedPages.DisplayMember = "Name";
+
+            try
+            {
+                foreach (Page page in m_LoggedInUser.LikedPages)
+                {
+                    searchableListWithTitleLikedPages.Items.Add(page);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (searchableListWithTitleLikedPages.Items.Count == 0)
+            {
+                MessageBox.Show("No liked pages to retrieve :(");
+            }
+        }
+
+        private void fetchUserFeed()
+        {
+            searchableListWithTitleFeed.Items.Clear();
+            try
+            {
+                foreach (Post post in m_LoggedInUser.NewsFeed)
+                {
+                    if (post.Message != null)
+                    {
+                        searchableListWithTitleFeed.Items.Add(post.Message);
+                    }
+                    else if (post.Caption != null)
+                    {
+                        searchableListWithTitleFeed.Items.Add(post.Caption);
+                    }
+                    else
+                    {
+                        searchableListWithTitleFeed.Items.Add($"[{post.CreatedTime}]");
+                    }
+                }
+
+                if (searchableListWithTitleFeed.Items.Count == 0)
+                {
+                    searchableListWithTitleFeed.Items.Add("Feed is empty :(");
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Failed to fetch feed");
+            }
+        }
+
+        private void fetchUserEvents()
+        {
+            searchableListWithTitleEvents.Items.Clear();
+            try
+            {
+                foreach (Event userEvent in m_LoggedInUser.Events)
+                {
+                    if (userEvent.Name != null)
+                    {
+                        searchableListWithTitleEvents.Items.Add($"{userEvent.Name} [{userEvent.TimeString}]");
+                    }
+                }
+
+                if (searchableListWithTitleEvents.Items.Count == 0)
+                {
+                    searchableListWithTitleEvents.Items.Add("No Events to show :(");
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Failed to fetch events");
+            }
+        }
+
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
@@ -199,6 +304,96 @@ namespace BasicFacebookFeatures
         {
             Album selectedAlbum = searchableListWithTitleAlbums.SelectedItem as Album;
             pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+        }
+
+        private void searchableListWithTitleGroups_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Group selectedGroup = searchableListWithTitleGroups.SelectedItem as Group;
+            pictureBoxSelectedGroup.LoadAsync(selectedGroup.PictureSmallURL);
+        }
+
+        private void searchableListWithTitleLikedPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Page selectedPage = searchableListWithTitleLikedPages.SelectedItem as Page;
+            pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL);
+        }
+
+
+
+        private void buttonAddPicture_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (getPictureAndPost() == DialogResult.OK)
+                {
+                    MessageBox.Show("Posted!");
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            finally
+            {
+                richTextBoxPost.Text = string.Empty;
+            }
+
+        }
+
+        private void buttonPost_Click(object sender, EventArgs e)
+        {
+            const bool v_PostButtonsEnabled = true;
+
+            try
+            {
+                m_FacebookPostManager.PostStatus(richTextBoxPost.Text);
+                changePostButtonsState(!v_PostButtonsEnabled);
+                MessageBox.Show("Posted!");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            finally
+            {
+                richTextBoxPost.Text = string.Empty;
+            }
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            const bool v_PostButtonsEnabled = true;
+
+            richTextBoxPost.Text = string.Empty;
+            changePostButtonsState(!v_PostButtonsEnabled);
+        }
+
+        private DialogResult getPictureAndPost()
+        {
+            DialogResult dialogResult = openFileDialog.ShowDialog();
+
+            if (dialogResult == DialogResult.OK)
+            {
+                string picturePath = openFileDialog.FileName;
+
+                if (string.IsNullOrWhiteSpace(picturePath))
+                {
+                    throw new Exception("Please choose a picture first!");
+                }
+                else
+                {
+                    m_FacebookPostManager.PostPicture(richTextBoxPost.Text, picturePath);
+                }
+            }
+
+            return dialogResult;
+        }
+
+        private void changePostButtonsState(bool i_ButtonsState)
+        {
+            buttonPost.Enabled = i_ButtonsState;
+            buttonAddPicture.Enabled = i_ButtonsState;
+            buttonCancel.Enabled = i_ButtonsState;
         }
     }
 }

@@ -38,28 +38,30 @@
             this.labelTitle.AutoSize = true;
             this.labelTitle.BackColor = System.Drawing.SystemColors.Control;
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelTitle.Font = new System.Drawing.Font("Ravie", 11.25F, System.Drawing.FontStyle.Italic);
+            this.labelTitle.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.labelTitle.ForeColor = System.Drawing.Color.RosyBrown;
             this.labelTitle.Location = new System.Drawing.Point(0, 0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(66, 21);
+            this.labelTitle.Size = new System.Drawing.Size(49, 29);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "label1";
+            this.labelTitle.Text = "label";
             // 
             // listBox
             // 
             this.listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox.ForeColor = System.Drawing.Color.Brown;
             this.listBox.FormattingEnabled = true;
-            this.listBox.Location = new System.Drawing.Point(0, 21);
+            this.listBox.Location = new System.Drawing.Point(0, 49);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(421, 332);
+            this.listBox.Size = new System.Drawing.Size(421, 304);
             this.listBox.TabIndex = 2;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
             // textBoxSearch
             // 
             this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 21);
+            this.textBoxSearch.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 29);
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(421, 20);
             this.textBoxSearch.TabIndex = 1;
@@ -69,8 +71,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBoxSearch);
             this.Controls.Add(this.listBox);
+            this.Controls.Add(this.textBoxSearch);
             this.Controls.Add(this.labelTitle);
             this.Name = "SearchableListWithTitle";
             this.Size = new System.Drawing.Size(421, 353);
