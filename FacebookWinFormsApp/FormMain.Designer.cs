@@ -32,28 +32,28 @@
             this.buttonLogout = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.searchableListWithTitleEvents = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.buttonGuessTheYear = new System.Windows.Forms.Button();
+            this.buttonProfileAnalyzer = new System.Windows.Forms.Button();
             this.labelUserData = new System.Windows.Forms.Label();
-            this.searchableListWithTitleFeed = new BasicFacebookFeatures.SearchableListWithTitle();
             this.pictureBoxSelectedPage = new System.Windows.Forms.PictureBox();
-            this.searchableListWithTitleLikedPages = new BasicFacebookFeatures.SearchableListWithTitle();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonPost = new System.Windows.Forms.Button();
             this.buttonAddPictureAndPost = new System.Windows.Forms.Button();
             this.richTextBoxPost = new System.Windows.Forms.RichTextBox();
             this.pictureBoxSelectedGroup = new System.Windows.Forms.PictureBox();
-            this.searchableListWithTitleGroups = new BasicFacebookFeatures.SearchableListWithTitle();
             this.pictureBoxSelectedAlbum = new System.Windows.Forms.PictureBox();
-            this.searchableListWithTitleAlbums = new BasicFacebookFeatures.SearchableListWithTitle();
             this.checkBoxRememberUser = new System.Windows.Forms.CheckBox();
             this.pictureBoxSelectedFriend = new System.Windows.Forms.PictureBox();
-            this.searchableListWithTitleFriends = new BasicFacebookFeatures.SearchableListWithTitle();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.buttonProfileAnalyzer = new System.Windows.Forms.Button();
-            this.buttonGuessTheYear = new System.Windows.Forms.Button();
+            this.searchableListWithTitleEvents = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.searchableListWithTitleFeed = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.searchableListWithTitleLikedPages = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.searchableListWithTitleGroups = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.searchableListWithTitleAlbums = new BasicFacebookFeatures.SearchableListWithTitle();
+            this.searchableListWithTitleFriends = new BasicFacebookFeatures.SearchableListWithTitle();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelectedPage)).BeginInit();
@@ -68,7 +68,7 @@
             this.buttonLogin.Location = new System.Drawing.Point(7, 12);
             this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(154, 28);
+            this.buttonLogin.Size = new System.Drawing.Size(188, 28);
             this.buttonLogin.TabIndex = 36;
             this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
@@ -77,10 +77,10 @@
             // buttonLogout
             // 
             this.buttonLogout.Enabled = false;
-            this.buttonLogout.Location = new System.Drawing.Point(169, 12);
+            this.buttonLogout.Location = new System.Drawing.Point(203, 13);
             this.buttonLogout.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogout.Name = "buttonLogout";
-            this.buttonLogout.Size = new System.Drawing.Size(67, 28);
+            this.buttonLogout.Size = new System.Drawing.Size(102, 28);
             this.buttonLogout.TabIndex = 52;
             this.buttonLogout.Text = "Logout";
             this.buttonLogout.UseVisualStyleBackColor = true;
@@ -130,15 +130,29 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // searchableListWithTitleEvents
+            // buttonGuessTheYear
             // 
-            this.searchableListWithTitleEvents.DisplayMember = "";
-            this.searchableListWithTitleEvents.Location = new System.Drawing.Point(9, 382);
-            this.searchableListWithTitleEvents.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleEvents.Name = "searchableListWithTitleEvents";
-            this.searchableListWithTitleEvents.Size = new System.Drawing.Size(160, 250);
-            this.searchableListWithTitleEvents.TabIndex = 71;
-            this.searchableListWithTitleEvents.Title = "Events";
+            this.buttonGuessTheYear.Enabled = false;
+            this.buttonGuessTheYear.ForeColor = System.Drawing.Color.RosyBrown;
+            this.buttonGuessTheYear.Location = new System.Drawing.Point(385, 103);
+            this.buttonGuessTheYear.Name = "buttonGuessTheYear";
+            this.buttonGuessTheYear.Size = new System.Drawing.Size(109, 66);
+            this.buttonGuessTheYear.TabIndex = 73;
+            this.buttonGuessTheYear.Text = "Guess The Year";
+            this.buttonGuessTheYear.UseVisualStyleBackColor = true;
+            this.buttonGuessTheYear.Click += new System.EventHandler(this.buttonGuessTheYear_Click);
+            // 
+            // buttonProfileAnalyzer
+            // 
+            this.buttonProfileAnalyzer.Enabled = false;
+            this.buttonProfileAnalyzer.ForeColor = System.Drawing.Color.RosyBrown;
+            this.buttonProfileAnalyzer.Location = new System.Drawing.Point(218, 103);
+            this.buttonProfileAnalyzer.Name = "buttonProfileAnalyzer";
+            this.buttonProfileAnalyzer.Size = new System.Drawing.Size(139, 66);
+            this.buttonProfileAnalyzer.TabIndex = 72;
+            this.buttonProfileAnalyzer.Text = "Profile Analyzer";
+            this.buttonProfileAnalyzer.UseVisualStyleBackColor = true;
+            this.buttonProfileAnalyzer.Click += new System.EventHandler(this.buttonProfileAnalyzer_Click);
             // 
             // labelUserData
             // 
@@ -150,16 +164,6 @@
             this.labelUserData.Size = new System.Drawing.Size(0, 34);
             this.labelUserData.TabIndex = 70;
             // 
-            // searchableListWithTitleFeed
-            // 
-            this.searchableListWithTitleFeed.DisplayMember = "";
-            this.searchableListWithTitleFeed.Location = new System.Drawing.Point(9, 124);
-            this.searchableListWithTitleFeed.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleFeed.Name = "searchableListWithTitleFeed";
-            this.searchableListWithTitleFeed.Size = new System.Drawing.Size(160, 250);
-            this.searchableListWithTitleFeed.TabIndex = 69;
-            this.searchableListWithTitleFeed.Title = "Feed";
-            // 
             // pictureBoxSelectedPage
             // 
             this.pictureBoxSelectedPage.Image = global::BasicFacebookFeatures.Properties.Resources.like_icon;
@@ -170,25 +174,14 @@
             this.pictureBoxSelectedPage.TabIndex = 68;
             this.pictureBoxSelectedPage.TabStop = false;
             // 
-            // searchableListWithTitleLikedPages
-            // 
-            this.searchableListWithTitleLikedPages.DisplayMember = "";
-            this.searchableListWithTitleLikedPages.Location = new System.Drawing.Point(234, 473);
-            this.searchableListWithTitleLikedPages.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleLikedPages.Name = "searchableListWithTitleLikedPages";
-            this.searchableListWithTitleLikedPages.Size = new System.Drawing.Size(150, 150);
-            this.searchableListWithTitleLikedPages.TabIndex = 67;
-            this.searchableListWithTitleLikedPages.Title = "Liked Pages";
-            this.searchableListWithTitleLikedPages.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleLikedPages_SelectedIndexChanged);
-            // 
             // buttonCancel
             // 
             this.buttonCancel.Enabled = false;
             this.buttonCancel.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonCancel.ForeColor = System.Drawing.Color.RosyBrown;
-            this.buttonCancel.Location = new System.Drawing.Point(761, 408);
+            this.buttonCancel.Location = new System.Drawing.Point(754, 419);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(83, 31);
+            this.buttonCancel.Size = new System.Drawing.Size(91, 34);
             this.buttonCancel.TabIndex = 66;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -199,9 +192,9 @@
             this.buttonPost.Enabled = false;
             this.buttonPost.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonPost.ForeColor = System.Drawing.Color.RosyBrown;
-            this.buttonPost.Location = new System.Drawing.Point(669, 408);
+            this.buttonPost.Location = new System.Drawing.Point(668, 419);
             this.buttonPost.Name = "buttonPost";
-            this.buttonPost.Size = new System.Drawing.Size(80, 31);
+            this.buttonPost.Size = new System.Drawing.Size(80, 34);
             this.buttonPost.TabIndex = 65;
             this.buttonPost.Text = "Post";
             this.buttonPost.UseVisualStyleBackColor = true;
@@ -214,7 +207,7 @@
             this.buttonAddPictureAndPost.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonAddPictureAndPost.Location = new System.Drawing.Point(618, 371);
             this.buttonAddPictureAndPost.Name = "buttonAddPictureAndPost";
-            this.buttonAddPictureAndPost.Size = new System.Drawing.Size(281, 31);
+            this.buttonAddPictureAndPost.Size = new System.Drawing.Size(281, 42);
             this.buttonAddPictureAndPost.TabIndex = 64;
             this.buttonAddPictureAndPost.Text = "Add a Picture and Post";
             this.buttonAddPictureAndPost.UseVisualStyleBackColor = true;
@@ -240,17 +233,6 @@
             this.pictureBoxSelectedGroup.TabIndex = 62;
             this.pictureBoxSelectedGroup.TabStop = false;
             // 
-            // searchableListWithTitleGroups
-            // 
-            this.searchableListWithTitleGroups.DisplayMember = "";
-            this.searchableListWithTitleGroups.Location = new System.Drawing.Point(411, 473);
-            this.searchableListWithTitleGroups.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleGroups.Name = "searchableListWithTitleGroups";
-            this.searchableListWithTitleGroups.Size = new System.Drawing.Size(150, 150);
-            this.searchableListWithTitleGroups.TabIndex = 61;
-            this.searchableListWithTitleGroups.Title = "Groups";
-            this.searchableListWithTitleGroups.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleGroups_SelectedIndexChanged);
-            // 
             // pictureBoxSelectedAlbum
             // 
             this.pictureBoxSelectedAlbum.Image = global::BasicFacebookFeatures.Properties.Resources.albums_icon;
@@ -260,17 +242,6 @@
             this.pictureBoxSelectedAlbum.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxSelectedAlbum.TabIndex = 60;
             this.pictureBoxSelectedAlbum.TabStop = false;
-            // 
-            // searchableListWithTitleAlbums
-            // 
-            this.searchableListWithTitleAlbums.DisplayMember = "";
-            this.searchableListWithTitleAlbums.Location = new System.Drawing.Point(585, 473);
-            this.searchableListWithTitleAlbums.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleAlbums.Name = "searchableListWithTitleAlbums";
-            this.searchableListWithTitleAlbums.Size = new System.Drawing.Size(150, 150);
-            this.searchableListWithTitleAlbums.TabIndex = 59;
-            this.searchableListWithTitleAlbums.Title = "Albums";
-            this.searchableListWithTitleAlbums.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleAlbums_SelectedIndexChanged);
             // 
             // checkBoxRememberUser
             // 
@@ -293,17 +264,6 @@
             this.pictureBoxSelectedFriend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxSelectedFriend.TabIndex = 57;
             this.pictureBoxSelectedFriend.TabStop = false;
-            // 
-            // searchableListWithTitleFriends
-            // 
-            this.searchableListWithTitleFriends.DisplayMember = "";
-            this.searchableListWithTitleFriends.Location = new System.Drawing.Point(761, 473);
-            this.searchableListWithTitleFriends.Margin = new System.Windows.Forms.Padding(4);
-            this.searchableListWithTitleFriends.Name = "searchableListWithTitleFriends";
-            this.searchableListWithTitleFriends.Size = new System.Drawing.Size(150, 150);
-            this.searchableListWithTitleFriends.TabIndex = 56;
-            this.searchableListWithTitleFriends.Title = "Friends";
-            this.searchableListWithTitleFriends.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleFriends_SelectedIndexChanged);
             // 
             // textBoxAppID
             // 
@@ -338,25 +298,69 @@
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
-            // buttonProfileAnalyzer
+            // searchableListWithTitleEvents
             // 
-            this.buttonProfileAnalyzer.Location = new System.Drawing.Point(275, 12);
-            this.buttonProfileAnalyzer.Name = "buttonProfileAnalyzer";
-            this.buttonProfileAnalyzer.Size = new System.Drawing.Size(109, 66);
-            this.buttonProfileAnalyzer.TabIndex = 72;
-            this.buttonProfileAnalyzer.Text = "Profile Analyzer";
-            this.buttonProfileAnalyzer.UseVisualStyleBackColor = true;
-            this.buttonProfileAnalyzer.Click += new System.EventHandler(this.buttonProfileAnalyzer_Click);
+            this.searchableListWithTitleEvents.DisplayMember = "";
+            this.searchableListWithTitleEvents.Location = new System.Drawing.Point(9, 382);
+            this.searchableListWithTitleEvents.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleEvents.Name = "searchableListWithTitleEvents";
+            this.searchableListWithTitleEvents.Size = new System.Drawing.Size(160, 250);
+            this.searchableListWithTitleEvents.TabIndex = 71;
+            this.searchableListWithTitleEvents.Title = "Events";
             // 
-            // buttonGuessTheYear
+            // searchableListWithTitleFeed
             // 
-            this.buttonGuessTheYear.Location = new System.Drawing.Point(411, 12);
-            this.buttonGuessTheYear.Name = "buttonGuessTheYear";
-            this.buttonGuessTheYear.Size = new System.Drawing.Size(109, 66);
-            this.buttonGuessTheYear.TabIndex = 73;
-            this.buttonGuessTheYear.Text = "Guess The Year";
-            this.buttonGuessTheYear.UseVisualStyleBackColor = true;
-            this.buttonGuessTheYear.Click += new System.EventHandler(this.buttonGuessTheYear_Click);
+            this.searchableListWithTitleFeed.DisplayMember = "";
+            this.searchableListWithTitleFeed.Location = new System.Drawing.Point(9, 124);
+            this.searchableListWithTitleFeed.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleFeed.Name = "searchableListWithTitleFeed";
+            this.searchableListWithTitleFeed.Size = new System.Drawing.Size(160, 250);
+            this.searchableListWithTitleFeed.TabIndex = 69;
+            this.searchableListWithTitleFeed.Title = "Feed";
+            // 
+            // searchableListWithTitleLikedPages
+            // 
+            this.searchableListWithTitleLikedPages.DisplayMember = "";
+            this.searchableListWithTitleLikedPages.Location = new System.Drawing.Point(234, 473);
+            this.searchableListWithTitleLikedPages.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleLikedPages.Name = "searchableListWithTitleLikedPages";
+            this.searchableListWithTitleLikedPages.Size = new System.Drawing.Size(150, 150);
+            this.searchableListWithTitleLikedPages.TabIndex = 67;
+            this.searchableListWithTitleLikedPages.Title = "Liked Pages";
+            this.searchableListWithTitleLikedPages.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleLikedPages_SelectedIndexChanged);
+            // 
+            // searchableListWithTitleGroups
+            // 
+            this.searchableListWithTitleGroups.DisplayMember = "";
+            this.searchableListWithTitleGroups.Location = new System.Drawing.Point(411, 473);
+            this.searchableListWithTitleGroups.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleGroups.Name = "searchableListWithTitleGroups";
+            this.searchableListWithTitleGroups.Size = new System.Drawing.Size(150, 150);
+            this.searchableListWithTitleGroups.TabIndex = 61;
+            this.searchableListWithTitleGroups.Title = "Groups";
+            this.searchableListWithTitleGroups.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleGroups_SelectedIndexChanged);
+            // 
+            // searchableListWithTitleAlbums
+            // 
+            this.searchableListWithTitleAlbums.DisplayMember = "";
+            this.searchableListWithTitleAlbums.Location = new System.Drawing.Point(585, 473);
+            this.searchableListWithTitleAlbums.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleAlbums.Name = "searchableListWithTitleAlbums";
+            this.searchableListWithTitleAlbums.Size = new System.Drawing.Size(150, 150);
+            this.searchableListWithTitleAlbums.TabIndex = 59;
+            this.searchableListWithTitleAlbums.Title = "Albums";
+            this.searchableListWithTitleAlbums.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleAlbums_SelectedIndexChanged);
+            // 
+            // searchableListWithTitleFriends
+            // 
+            this.searchableListWithTitleFriends.DisplayMember = "";
+            this.searchableListWithTitleFriends.Location = new System.Drawing.Point(761, 473);
+            this.searchableListWithTitleFriends.Margin = new System.Windows.Forms.Padding(4);
+            this.searchableListWithTitleFriends.Name = "searchableListWithTitleFriends";
+            this.searchableListWithTitleFriends.Size = new System.Drawing.Size(150, 150);
+            this.searchableListWithTitleFriends.TabIndex = 56;
+            this.searchableListWithTitleFriends.Title = "Friends";
+            this.searchableListWithTitleFriends.SelectedIndexChanged += new System.EventHandler(this.searchableListWithTitleFriends_SelectedIndexChanged);
             // 
             // FormMain
             // 

@@ -3,7 +3,7 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AppConstants = BasicFacebookFeatures.Constants;
+using AppConstants = BasicFacebookFeatures;
 
 namespace BasicFacebookFeatures
 {
@@ -102,7 +102,7 @@ namespace BasicFacebookFeatures
 
         private void setPictureBoxImage(PictureBox i_PictureBox, string i_ImageUrl)
         {
-            i_PictureBox.ImageLocation = i_ImageUrl ?? AppConstants.FacebookAppConstants.sr_SadEmojiUrl;
+            i_PictureBox.ImageLocation = i_ImageUrl;
             i_PictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 

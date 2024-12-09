@@ -84,6 +84,7 @@ namespace BasicFacebookFeatures
             checkBoxRememberUser.Checked = false;
             toggleLoginUI(!v_IsLogin);
             togglePostButtons(!v_IsLogin);
+            toggleFeaturesButtons(!v_IsLogin);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -136,6 +137,7 @@ namespace BasicFacebookFeatures
             m_FacebookPostManager = new FacebookPostManager(m_LoggedInUser);
             tabPage1.Text = $"{m_LoggedInUser.Name}";
             toggleLoginUI(v_IsLogin);
+            toggleFeaturesButtons(v_IsLogin);
             fetchUserData();
         }
 
@@ -209,10 +211,10 @@ namespace BasicFacebookFeatures
             searchableListWithTitleGroups.DisplayMember = "Name";
             foreach (Group group in m_LoggedInUser.Groups)
             {
-                searchableListWithTitleAlbums.Items.Add(group);
+                searchableListWithTitleGroups.Items.Add(group);
             }
 
-            if (searchableListWithTitleAlbums.Items.Count == 0)
+            if (searchableListWithTitleGroups.Items.Count == 0)
             {
                 MessageBox.Show("No groups to retrieve :(");
             }
@@ -341,6 +343,12 @@ namespace BasicFacebookFeatures
             buttonCancel.Enabled = i_ButtonsState;
         }
 
+        private void toggleFeaturesButtons(bool i_ButtonsState)
+        {
+            buttonGuessTheYear.Enabled = i_ButtonsState;
+            buttonProfileAnalyzer.Enabled = i_ButtonsState;
+        }
+
         private void buttonAddPictureAndPost_Click(object sender, EventArgs e)
         {
             try
@@ -395,6 +403,7 @@ namespace BasicFacebookFeatures
                 MainForm = this,
                 LoginResult = m_LoginResult
             };
+
             formProfileAnalyzer.ShowDialog();
         }
 
@@ -406,6 +415,7 @@ namespace BasicFacebookFeatures
                 MainForm = this,
                 LoginResult = m_LoginResult
             };
+
             formGuessTheYear.ShowDialog();
         }
 

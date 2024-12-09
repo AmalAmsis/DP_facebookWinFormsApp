@@ -79,7 +79,6 @@
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
     <Compile Include="FacebookPostManager.cs" />
-    <Compile Include="Constants\FacebookAppConstants.cs" />
     <Compile Include="FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>
