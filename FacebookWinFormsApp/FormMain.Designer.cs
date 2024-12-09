@@ -32,6 +32,7 @@
             this.buttonLogout = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+
             this.labelUserData = new System.Windows.Forms.Label();
             this.searchableListWithTitleFeed = new BasicFacebookFeatures.SearchableListWithTitle();
             this.searchableListWithTitleLikedPages = new BasicFacebookFeatures.SearchableListWithTitle();
@@ -43,8 +44,10 @@
             this.searchableListWithTitleAlbums = new BasicFacebookFeatures.SearchableListWithTitle();
             this.checkBoxRememberUser = new System.Windows.Forms.CheckBox();
             this.searchableListWithTitleFriends = new BasicFacebookFeatures.SearchableListWithTitle();
+
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBoxSelectedPage = new System.Windows.Forms.PictureBox();
             this.pictureBoxSelectedGroup = new System.Windows.Forms.PictureBox();
@@ -52,6 +55,7 @@
             this.pictureBoxSelectedFriend = new System.Windows.Forms.PictureBox();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.searchableListWithTitleEvents = new BasicFacebookFeatures.SearchableListWithTitle();
+
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelectedPage)).BeginInit();
@@ -97,6 +101,7 @@
             // 
             // tabPage1
             // 
+
             this.tabPage1.Controls.Add(this.searchableListWithTitleEvents);
             this.tabPage1.Controls.Add(this.labelUserData);
             this.tabPage1.Controls.Add(this.searchableListWithTitleFeed);
@@ -113,15 +118,18 @@
             this.tabPage1.Controls.Add(this.checkBoxRememberUser);
             this.tabPage1.Controls.Add(this.pictureBoxSelectedFriend);
             this.tabPage1.Controls.Add(this.searchableListWithTitleFriends);
+
             this.tabPage1.Controls.Add(this.textBoxAppID);
             this.tabPage1.Controls.Add(this.buttonLogout);
             this.tabPage1.Controls.Add(this.buttonLogin);
             this.tabPage1.Controls.Add(this.pictureBoxProfile);
+
             this.tabPage1.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage1.Location = new System.Drawing.Point(4, 27);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(920, 632);
+
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -261,14 +269,16 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 27);
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+
             this.tabPage2.Size = new System.Drawing.Size(857, 490);
+
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
+            //
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
@@ -333,10 +343,11 @@
             this.searchableListWithTitleEvents.Size = new System.Drawing.Size(160, 250);
             this.searchableListWithTitleEvents.TabIndex = 71;
             this.searchableListWithTitleEvents.Title = "Events";
+
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(928, 663);
             this.Controls.Add(this.tabControl1);

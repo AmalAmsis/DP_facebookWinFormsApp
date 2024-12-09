@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,8 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +54,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BasicFacebookFeatures">
+      <HintPath>obj\x64\Debug\BasicFacebookFeatures.exe</HintPath>
+    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\FBApi\Facebook.dll</HintPath>
     </Reference>
@@ -80,11 +82,33 @@
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
     <Compile Include="FacebookPostManager.cs" />
+    <Compile Include="Constants\FacebookAppConstants.cs" />
+    <Compile Include="FormGuessTheYear.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGuessTheYear.Designer.cs">
+      <DependentUpon>FormGuessTheYear.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProfileAnalyzer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProfileAnalyzer.Designer.cs">
+      <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListViewWithPreviewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchableListWithTitle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchableListWithTitle.Designer.cs">
+      <DependentUpon>SearchableListWithTitle.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,27 +117,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SearchableListWithTitle.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SearchableListWithTitle.Designer.cs">
-      <DependentUpon>SearchableListWithTitle.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="FormMain.resx">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SearchableListWithTitle.resx">
-      <DependentUpon>SearchableListWithTitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -121,27 +124,41 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormGuessTheYear.resx">
+      <DependentUpon>FormGuessTheYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProfileAnalyzer.resx">
+      <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListViewWithPreviewControl.resx">
+      <DependentUpon>ListViewWithPreviewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\friends-icon.png" />
+    <None Include="Resources\user-icon.png" />
+    <None Include="Resources\group-icon.png" />
+    <None Include="Resources\like-icon.png" />
+    <None Include="Resources\albums-icon.png" />
+    <Content Include="Resources\Sad_Emoji.jpg" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms">
       <Version>87.1.132</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\friends-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\user-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\group-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\like-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\albums-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
