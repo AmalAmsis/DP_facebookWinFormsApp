@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
+using BasicFacebookFeatures.Properties;
 
 namespace BasicFacebookFeatures
 {
@@ -28,7 +29,6 @@ namespace BasicFacebookFeatures
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns");
-
             if (m_LoginResult == null)
             {
                 login();
@@ -61,13 +61,6 @@ namespace BasicFacebookFeatures
             if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
             {
                 loadUserData();
-                //buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
-                //buttonLogin.BackColor = Color.LightGreen;
-                //pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
-                //buttonLogin.Enabled = false;
-                //buttonLogout.Enabled = true;
-                //m_LoggedInUser = m_LoginResult.LoggedInUser;
-                //fetchUserData();
             }
             else
             {
@@ -78,18 +71,28 @@ namespace BasicFacebookFeatures
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
+            const bool v_IsLogin = true;
+
             FacebookService.LogoutWithUI();
             buttonLogin.Text = "Login";
             buttonLogin.BackColor = buttonLogout.BackColor;
             m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
+            pictureBoxProfile.Image = Resources.user_icon;
+            pictureBoxSelectedAlbum.Image = Resources.albums_icon;
+            pictureBoxSelectedFriend.Image = Resources.friends_icon;
+            pictureBoxSelectedGroup.Image = Resources.group_icon;
+            pictureBoxSelectedPage.Image = Resources.like_icon;
+            labelUserData.Text = "";
+            tabPage1.Text = "Main App";
+            checkBoxRememberUser.Checked = false;
+            toggleLoginUI(!v_IsLogin);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-
             if (checkBoxRememberUser.Checked && m_LoginResult != null)
             {
                 r_AppSettings.RememberUser = true;
@@ -123,7 +126,6 @@ namespace BasicFacebookFeatures
             }
         }
 
-
         private void loadUserData()
         {
             const bool v_IsLogin = true;
@@ -135,11 +137,9 @@ namespace BasicFacebookFeatures
             labelUserData.Text = $@"{m_LoggedInUser.Name}
  {m_LoggedInUser.Birthday}
  {m_LoggedInUser.Gender}";
-
             m_FacebookPostManager = new FacebookPostManager(m_LoggedInUser);
             tabPage1.Text = $"{m_LoggedInUser.Name}";
             toggleLoginUI(v_IsLogin);
-
             fetchUserData();
         }
 
@@ -165,23 +165,14 @@ namespace BasicFacebookFeatures
         {
             searchableListWithTitleFriends.Items.Clear();
             searchableListWithTitleFriends.DisplayMember = "Name";
-            try
+            foreach (User friend in m_LoggedInUser.Friends)
             {
-                foreach (User friend in m_LoggedInUser.Friends)
-                {
-                    searchableListWithTitleFriends.Items.Add(friend);
-                }
-
-                if (searchableListWithTitleFriends.Items.Count == 0)
-                {
-                    //comboBoxFriendsSort.Enabled = false;
-                    searchableListWithTitleFriends.Items.Add("Found no friends :(");
-                }
+                searchableListWithTitleFriends.Items.Add(friend);
             }
-            catch (Exception exception)
+
+            if (searchableListWithTitleFriends.Items.Count == 0)
             {
-                //comboBoxFriendsSort.Enabled = false;
-                MessageBox.Show("failed to fetch friends");
+                MessageBox.Show("No friends to retrieve :(");
             }
         }
 
@@ -219,7 +210,6 @@ namespace BasicFacebookFeatures
         {
             searchableListWithTitleLikedPages.Items.Clear();
             searchableListWithTitleLikedPages.DisplayMember = "Name";
-
             try
             {
                 foreach (Page page in m_LoggedInUser.LikedPages)
@@ -241,56 +231,42 @@ namespace BasicFacebookFeatures
         private void fetchUserFeed()
         {
             searchableListWithTitleFeed.Items.Clear();
-            try
+            foreach (Post post in m_LoggedInUser.NewsFeed)
             {
-                foreach (Post post in m_LoggedInUser.NewsFeed)
+                if (post.Message != null)
                 {
-                    if (post.Message != null)
-                    {
-                        searchableListWithTitleFeed.Items.Add(post.Message);
-                    }
-                    else if (post.Caption != null)
-                    {
-                        searchableListWithTitleFeed.Items.Add(post.Caption);
-                    }
-                    else
-                    {
-                        searchableListWithTitleFeed.Items.Add($"[{post.CreatedTime}]");
-                    }
+                    searchableListWithTitleFeed.Items.Add(post.Message);
                 }
-
-                if (searchableListWithTitleFeed.Items.Count == 0)
+                else if (post.Caption != null)
                 {
-                    searchableListWithTitleFeed.Items.Add("Feed is empty :(");
+                    searchableListWithTitleFeed.Items.Add(post.Caption);
+                }
+                else
+                {
+                    searchableListWithTitleFeed.Items.Add($"[{post.CreatedTime}]");
                 }
             }
-            catch (Exception exception)
+
+            if (searchableListWithTitleFeed.Items.Count == 0)
             {
-                MessageBox.Show("Failed to fetch feed");
+                searchableListWithTitleFeed.Items.Add("Feed is empty :(");
             }
         }
 
         private void fetchUserEvents()
         {
             searchableListWithTitleEvents.Items.Clear();
-            try
+            foreach (Event userEvent in m_LoggedInUser.Events)
             {
-                foreach (Event userEvent in m_LoggedInUser.Events)
+                if (userEvent.Name != null)
                 {
-                    if (userEvent.Name != null)
-                    {
-                        searchableListWithTitleEvents.Items.Add($"{userEvent.Name} [{userEvent.TimeString}]");
-                    }
-                }
-
-                if (searchableListWithTitleEvents.Items.Count == 0)
-                {
-                    searchableListWithTitleEvents.Items.Add("No Events to show :(");
+                    searchableListWithTitleEvents.Items.Add($"{userEvent.Name} [{userEvent.TimeString}]");
                 }
             }
-            catch (Exception exception)
+
+            if (searchableListWithTitleEvents.Items.Count == 0)
             {
-                MessageBox.Show("Failed to fetch events");
+                searchableListWithTitleEvents.Items.Add("No Events to show :(");
             }
         }
 
@@ -318,28 +294,6 @@ namespace BasicFacebookFeatures
             pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL);
         }
 
-
-
-        private void buttonAddPicture_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (getPictureAndPost() == DialogResult.OK)
-                {
-                    MessageBox.Show("Posted!");
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
-            finally
-            {
-                richTextBoxPost.Text = string.Empty;
-            }
-
-        }
-
         private void buttonPost_Click(object sender, EventArgs e)
         {
             const bool v_PostButtonsEnabled = true;
@@ -347,12 +301,12 @@ namespace BasicFacebookFeatures
             try
             {
                 m_FacebookPostManager.PostStatus(richTextBoxPost.Text);
-                changePostButtonsState(!v_PostButtonsEnabled);
-                MessageBox.Show("Posted!");
+                togglePostButtons(!v_PostButtonsEnabled);
+                MessageBox.Show("Post published successfully!");
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show($"An error occurred: {exception.Message}");
             }
             finally
             {
@@ -365,14 +319,39 @@ namespace BasicFacebookFeatures
             const bool v_PostButtonsEnabled = true;
 
             richTextBoxPost.Text = string.Empty;
-            changePostButtonsState(!v_PostButtonsEnabled);
+            togglePostButtons(!v_PostButtonsEnabled);
+        }
+
+        private void togglePostButtons(bool i_ButtonsState)
+        {
+            buttonPost.Enabled = i_ButtonsState;
+            buttonAddPictureAndPost.Enabled = i_ButtonsState;
+            buttonCancel.Enabled = i_ButtonsState;
+        }
+
+        private void buttonAddPictureAndPost_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (getPictureAndPost() == DialogResult.OK)
+                {
+                    MessageBox.Show("Picture Posted <3");
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            finally
+            {
+                richTextBoxPost.Text = string.Empty;
+            }
         }
 
         private DialogResult getPictureAndPost()
         {
-            DialogResult dialogResult = openFileDialog.ShowDialog();
-
-            if (dialogResult == DialogResult.OK)
+            DialogResult userSelection = openFileDialog.ShowDialog();
+            if (userSelection == DialogResult.OK)
             {
                 string picturePath = openFileDialog.FileName;
 
@@ -386,14 +365,14 @@ namespace BasicFacebookFeatures
                 }
             }
 
-            return dialogResult;
+            return userSelection;
         }
 
-        private void changePostButtonsState(bool i_ButtonsState)
+        private void richTextBoxPost_TextChanged(object sender, EventArgs e)
         {
-            buttonPost.Enabled = i_ButtonsState;
-            buttonAddPicture.Enabled = i_ButtonsState;
-            buttonCancel.Enabled = i_ButtonsState;
+            const bool v_PostButtonsEnabled = true;
+
+            togglePostButtons(v_PostButtonsEnabled);
         }
     }
 }

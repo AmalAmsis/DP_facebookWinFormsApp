@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BasicFacebookFeatures
 {
-    internal class FacebookPostManager
+    public class FacebookPostManager
     {
         private const string k_ServerError = "Facebook server-side error.";
         private const string k_PostEmptyError = "Please enter your post first!";

@@ -37,7 +37,7 @@
             this.searchableListWithTitleLikedPages = new BasicFacebookFeatures.SearchableListWithTitle();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonPost = new System.Windows.Forms.Button();
-            this.buttonAddPicture = new System.Windows.Forms.Button();
+            this.buttonAddPictureAndPost = new System.Windows.Forms.Button();
             this.richTextBoxPost = new System.Windows.Forms.RichTextBox();
             this.searchableListWithTitleGroups = new BasicFacebookFeatures.SearchableListWithTitle();
             this.searchableListWithTitleAlbums = new BasicFacebookFeatures.SearchableListWithTitle();
@@ -104,7 +104,7 @@
             this.tabPage1.Controls.Add(this.searchableListWithTitleLikedPages);
             this.tabPage1.Controls.Add(this.buttonCancel);
             this.tabPage1.Controls.Add(this.buttonPost);
-            this.tabPage1.Controls.Add(this.buttonAddPicture);
+            this.tabPage1.Controls.Add(this.buttonAddPictureAndPost);
             this.tabPage1.Controls.Add(this.richTextBoxPost);
             this.tabPage1.Controls.Add(this.pictureBoxSelectedGroup);
             this.tabPage1.Controls.Add(this.searchableListWithTitleGroups);
@@ -162,7 +162,7 @@
             // 
             this.buttonCancel.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonCancel.ForeColor = System.Drawing.Color.RosyBrown;
-            this.buttonCancel.Location = new System.Drawing.Point(816, 408);
+            this.buttonCancel.Location = new System.Drawing.Point(761, 408);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(83, 31);
             this.buttonCancel.TabIndex = 66;
@@ -174,7 +174,7 @@
             // 
             this.buttonPost.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonPost.ForeColor = System.Drawing.Color.RosyBrown;
-            this.buttonPost.Location = new System.Drawing.Point(730, 408);
+            this.buttonPost.Location = new System.Drawing.Point(669, 408);
             this.buttonPost.Name = "buttonPost";
             this.buttonPost.Size = new System.Drawing.Size(80, 31);
             this.buttonPost.TabIndex = 65;
@@ -182,17 +182,17 @@
             this.buttonPost.UseVisualStyleBackColor = true;
             this.buttonPost.Click += new System.EventHandler(this.buttonPost_Click);
             // 
-            // buttonAddPicture
+            // buttonAddPictureAndPost
             // 
-            this.buttonAddPicture.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAddPicture.ForeColor = System.Drawing.Color.RosyBrown;
-            this.buttonAddPicture.Location = new System.Drawing.Point(738, 371);
-            this.buttonAddPicture.Name = "buttonAddPicture";
-            this.buttonAddPicture.Size = new System.Drawing.Size(161, 31);
-            this.buttonAddPicture.TabIndex = 64;
-            this.buttonAddPicture.Text = "Add a Picture";
-            this.buttonAddPicture.UseVisualStyleBackColor = true;
-            this.buttonAddPicture.Click += new System.EventHandler(this.buttonAddPicture_Click);
+            this.buttonAddPictureAndPost.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAddPictureAndPost.ForeColor = System.Drawing.Color.RosyBrown;
+            this.buttonAddPictureAndPost.Location = new System.Drawing.Point(618, 371);
+            this.buttonAddPictureAndPost.Name = "buttonAddPictureAndPost";
+            this.buttonAddPictureAndPost.Size = new System.Drawing.Size(281, 31);
+            this.buttonAddPictureAndPost.TabIndex = 64;
+            this.buttonAddPictureAndPost.Text = "Add a Picture and Post";
+            this.buttonAddPictureAndPost.UseVisualStyleBackColor = true;
+            this.buttonAddPictureAndPost.Click += new System.EventHandler(this.buttonAddPictureAndPost_Click);
             // 
             // richTextBoxPost
             // 
@@ -201,6 +201,7 @@
             this.richTextBoxPost.Size = new System.Drawing.Size(586, 179);
             this.richTextBoxPost.TabIndex = 63;
             this.richTextBoxPost.Text = "";
+            this.richTextBoxPost.TextChanged += new System.EventHandler(this.richTextBoxPost_TextChanged);
             // 
             // searchableListWithTitleGroups
             // 
@@ -371,7 +372,7 @@
         private System.Windows.Forms.RichTextBox richTextBoxPost;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonPost;
-        private System.Windows.Forms.Button buttonAddPicture;
+        private System.Windows.Forms.Button buttonAddPictureAndPost;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.PictureBox pictureBoxSelectedPage;
         private SearchableListWithTitle searchableListWithTitleLikedPages;
