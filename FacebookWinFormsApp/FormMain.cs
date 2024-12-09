@@ -79,15 +79,11 @@ namespace BasicFacebookFeatures
             m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
-            pictureBoxProfile.Image = Resources.user_icon;
-            pictureBoxSelectedAlbum.Image = Resources.albums_icon;
-            pictureBoxSelectedFriend.Image = Resources.friends_icon;
-            pictureBoxSelectedGroup.Image = Resources.group_icon;
-            pictureBoxSelectedPage.Image = Resources.like_icon;
-            labelUserData.Text = "";
+            clearUserData();
             tabPage1.Text = "Main App";
             checkBoxRememberUser.Checked = false;
             toggleLoginUI(!v_IsLogin);
+            togglePostButtons(!v_IsLogin);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -143,11 +139,27 @@ namespace BasicFacebookFeatures
             fetchUserData();
         }
 
+        private void clearUserData()
+        {
+            pictureBoxProfile.Image = Resources.user_icon;
+            pictureBoxSelectedAlbum.Image = Resources.albums_icon;
+            pictureBoxSelectedFriend.Image = Resources.friends_icon;
+            pictureBoxSelectedGroup.Image = Resources.group_icon;
+            pictureBoxSelectedPage.Image = Resources.like_icon;
+            searchableListWithTitleFriends.Items.Clear();
+            searchableListWithTitleAlbums.Items.Clear();
+            searchableListWithTitleEvents.Items.Clear();
+            searchableListWithTitleFeed.Items.Clear();
+            searchableListWithTitleGroups.Items.Clear();
+            searchableListWithTitleLikedPages.Items.Clear();
+            labelUserData.Text = "";
+        }
+
         private void toggleLoginUI(bool i_IsLogin)
         {
             buttonLogin.Enabled = !i_IsLogin;
             buttonLogout.Enabled = i_IsLogin;
-            checkBoxRememberUser.Visible = i_IsLogin;
+            checkBoxRememberUser.Enabled = i_IsLogin;
             richTextBoxPost.Enabled = i_IsLogin;
         }
 

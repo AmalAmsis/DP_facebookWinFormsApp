@@ -133,9 +133,8 @@
             this.labelUserData.ForeColor = System.Drawing.Color.Brown;
             this.labelUserData.Location = new System.Drawing.Point(743, 13);
             this.labelUserData.Name = "labelUserData";
-            this.labelUserData.Size = new System.Drawing.Size(32, 27);
+            this.labelUserData.Size = new System.Drawing.Size(0, 27);
             this.labelUserData.TabIndex = 70;
-            this.labelUserData.Text = "llll";
             // 
             // searchableListWithTitleFeed
             // 
@@ -160,6 +159,7 @@
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Enabled = false;
             this.buttonCancel.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonCancel.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonCancel.Location = new System.Drawing.Point(761, 408);
@@ -172,6 +172,7 @@
             // 
             // buttonPost
             // 
+            this.buttonPost.Enabled = false;
             this.buttonPost.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.buttonPost.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonPost.Location = new System.Drawing.Point(669, 408);
@@ -184,6 +185,7 @@
             // 
             // buttonAddPictureAndPost
             // 
+            this.buttonAddPictureAndPost.Enabled = false;
             this.buttonAddPictureAndPost.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonAddPictureAndPost.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonAddPictureAndPost.Location = new System.Drawing.Point(618, 371);
@@ -196,6 +198,7 @@
             // 
             // richTextBoxPost
             // 
+            this.richTextBoxPost.Enabled = false;
             this.richTextBoxPost.Location = new System.Drawing.Point(325, 186);
             this.richTextBoxPost.Name = "richTextBoxPost";
             this.richTextBoxPost.Size = new System.Drawing.Size(586, 179);
@@ -228,6 +231,7 @@
             // checkBoxRememberUser
             // 
             this.checkBoxRememberUser.AutoSize = true;
+            this.checkBoxRememberUser.Enabled = false;
             this.checkBoxRememberUser.ForeColor = System.Drawing.Color.Brown;
             this.checkBoxRememberUser.Location = new System.Drawing.Point(623, 124);
             this.checkBoxRememberUser.Name = "checkBoxRememberUser";
