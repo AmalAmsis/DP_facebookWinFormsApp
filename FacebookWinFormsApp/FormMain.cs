@@ -386,5 +386,27 @@ namespace BasicFacebookFeatures
 
             togglePostButtons(v_PostButtonsEnabled);
         }
+
+        private void buttonProfileSummary_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            FormProfileAnalyzer formProfileAnalyzer = new FormProfileAnalyzer
+            {
+                MainForm = this,
+                LoginResult = m_LoginResult
+            };
+            formProfileAnalyzer.ShowDialog();
+        }
+
+        private void buttonGuessTheYear_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            FormGuessTheYear formGuessTheYear = new FormGuessTheYear
+            {
+                MainForm = this,
+                LoginResult = m_LoginResult
+            };
+            formGuessTheYear.ShowDialog();
+        }
     }
 }
