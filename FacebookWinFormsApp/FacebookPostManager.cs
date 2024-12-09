@@ -71,31 +71,5 @@ namespace BasicFacebookFeatures
                 throw new Exception(k_ServerError);
             }
         }
-
-        public void PostPicture(Image i_PostPicture)
-        {
-            try
-            {
-                byte[] imageData = new ImageConverter().ConvertTo(i_PostPicture, typeof(byte[])) as byte[];
-
-                if (imageData != null)
-                {
-                    Post postedPicture = FacebookUser.PostPhoto(imageData);
-
-                    if (postedPicture == null)
-                    {
-                        throw new Exception(k_PicturePostFailedError);
-                    }
-                }
-                else
-                {
-                    throw new Exception(k_PictureRenderingError);
-                }
-            }
-            catch (Exception)
-            {
-                throw new Exception(k_ServerError);
-            }
-        }
     }
 }
