@@ -133,6 +133,7 @@
             // buttonGuessTheYear
             // 
             this.buttonGuessTheYear.Enabled = false;
+            this.buttonGuessTheYear.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonGuessTheYear.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonGuessTheYear.Location = new System.Drawing.Point(385, 103);
             this.buttonGuessTheYear.Name = "buttonGuessTheYear";
@@ -145,6 +146,7 @@
             // buttonProfileAnalyzer
             // 
             this.buttonProfileAnalyzer.Enabled = false;
+            this.buttonProfileAnalyzer.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonProfileAnalyzer.ForeColor = System.Drawing.Color.RosyBrown;
             this.buttonProfileAnalyzer.Location = new System.Drawing.Point(218, 103);
             this.buttonProfileAnalyzer.Name = "buttonProfileAnalyzer";
