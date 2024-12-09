@@ -47,7 +47,7 @@ namespace BasicFacebookFeatures
             {
                 object selectedItem = listBox.SelectedItem;
                 SelectedIndexChanged?.Invoke(this, EventArgs.Empty);
-                textBoxSearch.Text = listBox.SelectedItem.ToString();
+                textBoxSearch.Text = listBox.GetItemText(listBox.SelectedItem);
             }
         }
 

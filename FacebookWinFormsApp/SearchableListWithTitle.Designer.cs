@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.labelTitle = new System.Windows.Forms.Label();
-            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.listBox = new System.Windows.Forms.ListBox();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // labelTitle
@@ -38,32 +38,34 @@
             this.labelTitle.AutoSize = true;
             this.labelTitle.BackColor = System.Drawing.SystemColors.Control;
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelTitle.Font = new System.Drawing.Font("Ravie", 11.25F, System.Drawing.FontStyle.Italic);
+            this.labelTitle.Font = new System.Drawing.Font("Mistral", 18F, System.Drawing.FontStyle.Italic);
             this.labelTitle.ForeColor = System.Drawing.Color.RosyBrown;
             this.labelTitle.Location = new System.Drawing.Point(0, 0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(66, 21);
+            this.labelTitle.Size = new System.Drawing.Size(49, 29);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "label1";
-            // 
-            // textBoxSearch
-            // 
-            this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxSearch.Location = new System.Drawing.Point(0, 21);
-            this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(421, 20);
-            this.textBoxSearch.TabIndex = 1;
-            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
+            this.labelTitle.Text = "label";
             // 
             // listBox
             // 
             this.listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox.ForeColor = System.Drawing.Color.Brown;
             this.listBox.FormattingEnabled = true;
-            this.listBox.Location = new System.Drawing.Point(0, 41);
+            this.listBox.Location = new System.Drawing.Point(0, 49);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(421, 312);
+            this.listBox.Size = new System.Drawing.Size(421, 304);
             this.listBox.TabIndex = 2;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxSearch.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.textBoxSearch.Location = new System.Drawing.Point(0, 29);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(421, 20);
+            this.textBoxSearch.TabIndex = 1;
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
             // 
             // SearchableListWithTitle
             // 
@@ -82,7 +84,7 @@
         #endregion
 
         private System.Windows.Forms.Label labelTitle;
-        private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.ListBox listBox;
+        private System.Windows.Forms.TextBox textBoxSearch;
     }
 }
