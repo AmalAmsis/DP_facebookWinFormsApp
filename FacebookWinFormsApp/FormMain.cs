@@ -387,7 +387,7 @@ namespace BasicFacebookFeatures
             togglePostButtons(v_PostButtonsEnabled);
         }
 
-        private void buttonProfileSummary_Click(object sender, EventArgs e)
+        private void buttonProfileAnalyzer_Click(object sender, EventArgs e)
         {
             this.Hide();
             FormProfileAnalyzer formProfileAnalyzer = new FormProfileAnalyzer
@@ -408,5 +408,6 @@ namespace BasicFacebookFeatures
             };
             formGuessTheYear.ShowDialog();
         }
+
     }
 }

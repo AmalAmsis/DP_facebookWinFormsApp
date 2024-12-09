@@ -54,9 +54,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BasicFacebookFeatures">
-      <HintPath>obj\x64\Debug\BasicFacebookFeatures.exe</HintPath>
-    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\FBApi\Facebook.dll</HintPath>
     </Reference>
