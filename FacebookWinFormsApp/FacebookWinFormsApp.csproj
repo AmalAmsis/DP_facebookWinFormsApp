@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="FacebookManager.cs" />
     <Compile Include="FacebookPostManager.cs" />
     <Compile Include="FormGuessTheYear.cs">
       <SubType>Form</SubType>
@@ -97,6 +98,8 @@
     <Compile Include="FormProfileAnalyzer.Designer.cs">
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
+    <Compile Include="GuessTheYearGame.cs" />
+    <Compile Include="ProfileAnalyzer.cs" />
     <Compile Include="SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using FacebookWrapper.ObjectModel;
 using FacebookWrapper;
 using BasicFacebookFeatures.Properties;
 
@@ -14,22 +8,18 @@ namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
+        private readonly FacebookManager r_FacebookManager = new FacebookManager();
+
         public FormMain()
         {
             InitializeComponent();
             FacebookWrapper.FacebookService.s_CollectionLimit = 25;
-            r_AppSettings = AppSettings.LoadAppSettingsFromFile();
         }
-
-        private FacebookWrapper.LoginResult m_LoginResult;
-        private User m_LoggedInUser;
-        private FacebookPostManager m_FacebookPostManager;
-        private readonly AppSettings r_AppSettings;
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns");
-            if (m_LoginResult == null)
+            if (!r_FacebookManager.IsLoggedIn)
             {
                 login();
             }
@@ -37,13 +27,9 @@ namespace BasicFacebookFeatures
 
         private void login()
         {
-            m_LoginResult = FacebookService.Login(
-                /// (This is Desig Patter's App ID. replace it with your own)
-                textBoxAppID.Text,
-                /// requested permissions:
+            string[] permissions = {
                 "email",
                 "public_profile",
-                /// add any relevant permissions
                 "user_age_range",
                 "user_birthday",
                 "user_events",
@@ -56,16 +42,17 @@ namespace BasicFacebookFeatures
                 "user_photos",
                 "user_posts",
                 "user_videos"
-                );
+            };
 
-            if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
+            LoginResult loginResult = r_FacebookManager.Login(textBoxAppID.Text, permissions);
+
+            if (!string.IsNullOrEmpty(loginResult.AccessToken))
             {
                 loadUserData();
             }
             else
             {
-                MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
-                m_LoginResult = null;
+                MessageBox.Show(loginResult.ErrorMessage, "Login Failed");
             }
         }
 
@@ -73,10 +60,9 @@ namespace BasicFacebookFeatures
         {
             const bool v_IsLogin = true;
 
-            FacebookService.LogoutWithUI();
+            r_FacebookManager.Logout();
             buttonLogin.Text = "Login";
             buttonLogin.BackColor = buttonLogout.BackColor;
-            m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
             clearUserData();
@@ -90,36 +76,17 @@ namespace BasicFacebookFeatures
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-            if (checkBoxRememberUser.Checked && m_LoginResult != null)
-            {
-                r_AppSettings.RememberUser = true;
-                r_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
-            }
-            else
-            {
-                r_AppSettings.RememberUser = false;
-                r_AppSettings.LastAccessToken = null;
-            }
-
-            r_AppSettings.SaveAppSettingsToFile();
+            r_FacebookManager.RememberUser = checkBoxRememberUser.Checked;
+            r_FacebookManager.SaveSettings();
         }
 
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            checkBoxRememberUser.Checked = r_AppSettings.RememberUser;
-            if (r_AppSettings.RememberUser && !string.IsNullOrEmpty(r_AppSettings.LastAccessToken))
+            checkBoxRememberUser.Checked = r_FacebookManager.RememberUser;
+            if (r_FacebookManager.TryConnectFromSavedToken())
             {
-                try
-                {
-                    m_LoginResult = FacebookService.Connect(r_AppSettings.LastAccessToken);
-                    loadUserData();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
-                    m_LoginResult = null;
-                }
+                loadUserData();
             }
         }
 
@@ -127,15 +94,13 @@ namespace BasicFacebookFeatures
         {
             const bool v_IsLogin = true;
 
-            m_LoggedInUser = m_LoginResult.LoggedInUser;
-            buttonLogin.Text = $"Logged in as {m_LoggedInUser.Name}";
+            buttonLogin.Text = $"Logged in as {r_FacebookManager.UserName}";
             buttonLogin.BackColor = Color.LightGreen;
-            pictureBoxProfile.ImageLocation = m_LoggedInUser.PictureNormalURL;
-            labelUserData.Text = $@"{m_LoggedInUser.Name}
- {m_LoggedInUser.Birthday}
- {m_LoggedInUser.Gender}";
-            m_FacebookPostManager = new FacebookPostManager(m_LoggedInUser);
-            tabPage1.Text = $"{m_LoggedInUser.Name}";
+            pictureBoxProfile.ImageLocation = r_FacebookManager.ProfilePictureURL;
+            labelUserData.Text = $@"{r_FacebookManager.UserName}
+{r_FacebookManager.Birthday}
+{r_FacebookManager.Gender?.ToString() ?? "Unknown"}";
+            tabPage1.Text = r_FacebookManager.UserName;
             toggleLoginUI(v_IsLogin);
             toggleFeaturesButtons(v_IsLogin);
             fetchUserData();
@@ -179,7 +144,7 @@ namespace BasicFacebookFeatures
         {
             searchableListWithTitleFriends.Items.Clear();
             searchableListWithTitleFriends.DisplayMember = "Name";
-            foreach (User friend in m_LoggedInUser.Friends)
+            foreach (var friend in r_FacebookManager.GetFriends())
             {
                 searchableListWithTitleFriends.Items.Add(friend);
             }
@@ -194,7 +159,7 @@ namespace BasicFacebookFeatures
         {
             searchableListWithTitleAlbums.Items.Clear();
             searchableListWithTitleAlbums.DisplayMember = "Name";
-            foreach (Album album in m_LoggedInUser.Albums)
+            foreach (var album in r_FacebookManager.GetAlbums())
             {
                 searchableListWithTitleAlbums.Items.Add(album);
             }
@@ -209,7 +174,7 @@ namespace BasicFacebookFeatures
         {
             searchableListWithTitleGroups.Items.Clear();
             searchableListWithTitleGroups.DisplayMember = "Name";
-            foreach (Group group in m_LoggedInUser.Groups)
+            foreach (var group in r_FacebookManager.GetGroups())
             {
                 searchableListWithTitleGroups.Items.Add(group);
             }
@@ -226,7 +191,7 @@ namespace BasicFacebookFeatures
             searchableListWithTitleLikedPages.DisplayMember = "Name";
             try
             {
-                foreach (Page page in m_LoggedInUser.LikedPages)
+                foreach (var page in r_FacebookManager.GetLikedPages())
                 {
                     searchableListWithTitleLikedPages.Items.Add(page);
                 }
@@ -245,7 +210,7 @@ namespace BasicFacebookFeatures
         private void fetchUserFeed()
         {
             searchableListWithTitleFeed.Items.Clear();
-            foreach (Post post in m_LoggedInUser.NewsFeed)
+            foreach (var post in r_FacebookManager.GetNewsFeed())
             {
                 if (post.Message != null)
                 {
@@ -270,7 +235,7 @@ namespace BasicFacebookFeatures
         private void fetchUserEvents()
         {
             searchableListWithTitleEvents.Items.Clear();
-            foreach (Event userEvent in m_LoggedInUser.Events)
+            foreach (var userEvent in r_FacebookManager.GetEvents())
             {
                 if (userEvent.Name != null)
                 {
@@ -286,26 +251,34 @@ namespace BasicFacebookFeatures
 
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
-            User selectedFriend = searchableListWithTitleFriends.SelectedItem as User;
-            pictureBoxSelectedFriend.LoadAsync(selectedFriend.PictureSmallURL);
+            if (searchableListWithTitleFriends.SelectedItem is FacebookWrapper.ObjectModel.User selectedFriend)
+            {
+                pictureBoxSelectedFriend.LoadAsync(selectedFriend.PictureSmallURL);
+            }
         }
 
         private void searchableListWithTitleAlbums_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Album selectedAlbum = searchableListWithTitleAlbums.SelectedItem as Album;
-            pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+            if (searchableListWithTitleAlbums.SelectedItem is FacebookWrapper.ObjectModel.Album selectedAlbum)
+            {
+                pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+            }
         }
 
         private void searchableListWithTitleGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Group selectedGroup = searchableListWithTitleGroups.SelectedItem as Group;
-            pictureBoxSelectedGroup.LoadAsync(selectedGroup.PictureSmallURL);
+            if (searchableListWithTitleGroups.SelectedItem is FacebookWrapper.ObjectModel.Group selectedGroup)
+            {
+                pictureBoxSelectedGroup.LoadAsync(selectedGroup.PictureSmallURL);
+            }
         }
 
         private void searchableListWithTitleLikedPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Page selectedPage = searchableListWithTitleLikedPages.SelectedItem as Page;
-            pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL);
+            if (searchableListWithTitleLikedPages.SelectedItem is FacebookWrapper.ObjectModel.Page selectedPage)
+            {
+                pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL);
+            }
         }
 
         private void buttonPost_Click(object sender, EventArgs e)
@@ -314,7 +287,7 @@ namespace BasicFacebookFeatures
 
             try
             {
-                m_FacebookPostManager.PostStatus(richTextBoxPost.Text);
+                r_FacebookManager.PostStatus(richTextBoxPost.Text);
                 togglePostButtons(!v_PostButtonsEnabled);
                 MessageBox.Show("Post published successfully!");
             }
@@ -381,7 +354,7 @@ namespace BasicFacebookFeatures
                 }
                 else
                 {
-                    m_FacebookPostManager.PostPicture(richTextBoxPost.Text, picturePath);
+                    r_FacebookManager.PostPicture(richTextBoxPost.Text, picturePath);
                 }
             }
 
@@ -397,11 +370,11 @@ namespace BasicFacebookFeatures
 
         private void buttonProfileAnalyzer_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
             FormProfileAnalyzer formProfileAnalyzer = new FormProfileAnalyzer
             {
                 MainForm = this,
-                LoginResult = m_LoginResult
+                LoginResult = r_FacebookManager.LoginResult
             };
 
             formProfileAnalyzer.ShowDialog();
@@ -409,15 +382,17 @@ namespace BasicFacebookFeatures
 
         private void buttonGuessTheYear_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
             FormGuessTheYear formGuessTheYear = new FormGuessTheYear
             {
                 MainForm = this,
-                LoginResult = m_LoginResult
+                LoginResult = r_FacebookManager.LoginResult
             };
 
             formGuessTheYear.ShowDialog();
         }
-
     }
 }
+
+
+
