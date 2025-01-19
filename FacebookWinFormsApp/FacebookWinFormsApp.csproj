@@ -78,11 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\AppSettings.cs" />
-    <Compile Include="Singleton\FacebookManager.cs" />
+    <Compile Include="Singletons\FacebookManager.cs" />
     <Compile Include="Logic\FacebookPostManager.cs" />
-    <Compile Include="Factory\FacebookFeatureFactory.cs" />
-    <Compile Include="Factory\GuessTheYearFeature.cs" />
-    <Compile Include="Factory\ProfileAnalyzerFeature.cs" />
+    <Compile Include="Factories\FacebookFeatureFactory.cs" />
+    <Compile Include="Factories\GuessTheYearFeature.cs" />
+    <Compile Include="Factories\ProfileAnalyzerFeature.cs" />
     <Compile Include="UI\FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,7 +102,7 @@
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\GuessTheYearGame.cs" />
-    <Compile Include="Factory\IFacebookFeature.cs" />
+    <Compile Include="Factories\IFacebookFeature.cs" />
     <Compile Include="Facades\ProfileAnalyzerFacade.cs" />
     <Compile Include="SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>
