@@ -80,6 +80,9 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="FacebookManager.cs" />
     <Compile Include="FacebookPostManager.cs" />
+    <Compile Include="Features\FacebookFeatureFactory.cs" />
+    <Compile Include="Features\GuessTheYearFeature.cs" />
+    <Compile Include="Features\ProfileAnalyzerFeature.cs" />
     <Compile Include="FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,7 +102,9 @@
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
     <Compile Include="GuessTheYearGame.cs" />
-    <Compile Include="ProfileAnalyzer.cs" />
+    <Compile Include="IFacebookFeature.cs" />
+    <Compile Include="ProfileAnalyzerFacade.cs" />
+    <Compile Include="ProfileAnalyzerService.cs" />
     <Compile Include="SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +123,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\FriendAnalyzer.cs" />
+    <Compile Include="Services\PhotoAnalyzer.cs" />
+    <Compile Include="Services\StatisticsAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormGuessTheYear.resx">
