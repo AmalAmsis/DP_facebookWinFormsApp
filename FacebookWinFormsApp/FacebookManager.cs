@@ -1,23 +1,46 @@
+using System;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
-using System;
 using System.Collections.Generic;
 
 namespace BasicFacebookFeatures
 {
-    public class FacebookManager
+    public sealed class FacebookManager
     {
-        private LoginResult m_LoginResult;
+        private static readonly object sr_Lock = new object();
+        private static FacebookManager s_Instance = null;
         private User m_LoggedInUser;
+        private LoginResult m_LoginResult;
+        private AppSettings m_AppSettings;
+        private bool m_RememberUser = false;
         private FacebookPostManager m_PostManager;
-        private readonly AppSettings r_AppSettings;
 
-        public FacebookManager()
+        private FacebookManager()
         {
-            r_AppSettings = AppSettings.LoadAppSettingsFromFile();
+            m_AppSettings = AppSettings.LoadAppSettingsFromFile();
+            m_RememberUser = m_AppSettings.RememberUser;
         }
 
-        public bool IsLoggedIn => !string.IsNullOrEmpty(m_LoginResult?.AccessToken);
+        public static FacebookManager Instance
+        {
+            get
+            {
+                if (s_Instance == null)
+                {
+                    lock (sr_Lock)
+                    {
+                        if (s_Instance == null)
+                        {
+                            s_Instance = new FacebookManager();
+                        }
+                    }
+                }
+
+                return s_Instance;
+            }
+        }
+
+        public bool IsLoggedIn => m_LoginResult != null && !string.IsNullOrEmpty(m_LoginResult.AccessToken);
         public string AccessToken => m_LoginResult?.AccessToken;
         public User LoggedInUser => m_LoggedInUser;
         public string UserName => m_LoggedInUser?.Name;
@@ -27,17 +50,22 @@ namespace BasicFacebookFeatures
         public LoginResult LoginResult => m_LoginResult;
         public bool RememberUser
         {
-            get => r_AppSettings.RememberUser;
-            set => r_AppSettings.RememberUser = value;
+            get => m_RememberUser;
+            set
+            {
+                m_RememberUser = value;
+                m_AppSettings.RememberUser = value;
+            }
         }
 
         public LoginResult Login(string i_AppID, string[] i_Permissions)
         {
             m_LoginResult = FacebookService.Login(i_AppID, i_Permissions);
-
-            if (!string.IsNullOrEmpty(m_LoginResult.AccessToken))
+            m_LoggedInUser = m_LoginResult.LoggedInUser;
+            
+            if (m_RememberUser && !string.IsNullOrEmpty(m_LoginResult?.AccessToken))
             {
-                initializeUserData();
+                m_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
             }
 
             return m_LoginResult;
@@ -49,38 +77,33 @@ namespace BasicFacebookFeatures
             m_LoginResult = null;
             m_LoggedInUser = null;
             m_PostManager = null;
+
+            if (!m_RememberUser)
+            {
+                m_AppSettings.LastAccessToken = null;
+            }
         }
 
         public void SaveSettings()
         {
-            if (RememberUser && m_LoginResult != null)
-            {
-                r_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
-            }
-            else
-            {
-                r_AppSettings.RememberUser = false;
-                r_AppSettings.LastAccessToken = null;
-            }
-
-            r_AppSettings.SaveAppSettingsToFile();
+            m_AppSettings.SaveAppSettingsToFile();
         }
 
         public bool TryConnectFromSavedToken()
         {
             bool isConnected = false;
 
-            if (RememberUser && !string.IsNullOrEmpty(r_AppSettings.LastAccessToken))
+            if (m_RememberUser && !string.IsNullOrEmpty(m_AppSettings.LastAccessToken))
             {
                 try
                 {
-                    m_LoginResult = FacebookService.Connect(r_AppSettings.LastAccessToken);
-                    initializeUserData();
+                    m_LoginResult = FacebookService.Connect(m_AppSettings.LastAccessToken);
+                    m_LoggedInUser = m_LoginResult.LoggedInUser;
                     isConnected = true;
                 }
                 catch (Exception)
                 {
-                    m_LoginResult = null;
+                    m_AppSettings.LastAccessToken = null;
                 }
             }
 
@@ -89,12 +112,22 @@ namespace BasicFacebookFeatures
 
         public void PostStatus(string i_Status)
         {
-            m_PostManager.PostStatus(i_Status);
+            if (string.IsNullOrWhiteSpace(i_Status))
+            {
+                throw new Exception("Status text is empty!");
+            }
+
+            m_LoggedInUser?.PostStatus(i_Status);
         }
 
-        public void PostPicture(string i_Text, string i_PicturePath)
+        public void PostPicture(string i_PictureText, string i_PicturePath)
         {
-            m_PostManager.PostPicture(i_Text, i_PicturePath);
+            if (string.IsNullOrWhiteSpace(i_PicturePath))
+            {
+                throw new Exception("No picture was selected!");
+            }
+
+            m_LoggedInUser?.PostPhoto(i_PicturePath, i_PictureText);
         }
 
         public IEnumerable<User> GetFriends()
@@ -129,7 +162,6 @@ namespace BasicFacebookFeatures
 
         private void initializeUserData()
         {
-            m_LoggedInUser = m_LoginResult.LoggedInUser;
             m_PostManager = new FacebookPostManager(m_LoggedInUser);
         }
     }
