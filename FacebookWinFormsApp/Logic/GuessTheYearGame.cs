@@ -15,6 +15,7 @@ namespace BasicFacebookFeatures
         private int m_CorrectAnswerIndex;
         private int m_CorrectAnswers = 0;
         private int m_WrongAnswers = 0;
+        private Photo m_CurrentPhoto;
 
         public GuessTheYearGame(User i_LoggedInUser)
         {
@@ -26,6 +27,7 @@ namespace BasicFacebookFeatures
         public int CorrectAnswers => m_CorrectAnswers;
         public int WrongAnswers => m_WrongAnswers;
         public int CorrectAnswerIndex => m_CorrectAnswerIndex;
+        public Photo CurrentPhoto => m_CurrentPhoto;
 
         public bool LoadUserPhotos()
         {
@@ -103,6 +105,46 @@ namespace BasicFacebookFeatures
             }
 
             return isCorrect;
+        }
+
+        public bool DisplayNextQuestion(Action<string> onPhotoWithoutDate)
+        {
+            m_CurrentPhoto = GetNextPhoto();
+            if (m_CurrentPhoto == null)
+            {
+                return false;
+            }
+
+            if (!m_CurrentPhoto.CreatedTime.HasValue)
+            {
+                onPhotoWithoutDate?.Invoke("Photo has no creation date. Skipping...");
+                return DisplayNextQuestion(onPhotoWithoutDate);
+            }
+
+            return true;
+        }
+
+        public List<int> GetCurrentAnswerOptions()
+        {
+            if (m_CurrentPhoto?.CreatedTime == null)
+            {
+                return null;
+            }
+
+            return GenerateAnswerOptions(m_CurrentPhoto.CreatedTime.Value.Year);
+        }
+
+        public void HandleAnswer(int i_SelectedAnswerIndex, Action onAnswerProcessed)
+        {
+            bool isCorrect = CheckAnswer(i_SelectedAnswerIndex);
+            onAnswerProcessed?.Invoke();
+        }
+
+        public string GetGameSummary()
+        {
+            return $"Congratulations! You've completed the challenge.\n" +
+                   $"Correct Answers: {CorrectAnswers}\n" +
+                   $"Wrong Answers: {WrongAnswers}";
         }
     }
 } 

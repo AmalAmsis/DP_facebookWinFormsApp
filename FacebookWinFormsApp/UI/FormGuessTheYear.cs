@@ -12,7 +12,6 @@ namespace BasicFacebookFeatures
     {
         private Form m_MainForm;
         private readonly GuessTheYearGame r_GuessTheYearGame;
-        private Photo m_CurrentPhoto;
 
         public FormGuessTheYear(GuessTheYearGame i_GuessTheYearGame)
         {
@@ -40,23 +39,14 @@ namespace BasicFacebookFeatures
 
         private void displayNextQuestion()
         {
-            m_CurrentPhoto = r_GuessTheYearGame.GetNextPhoto();
-            if (m_CurrentPhoto == null)
+            if (!r_GuessTheYearGame.DisplayNextQuestion(message => MessageBox.Show(message)))
             {
                 finishGame();
                 return;
             }
 
-            if (!m_CurrentPhoto.CreatedTime.HasValue)
-            {
-                MessageBox.Show("Photo has no creation date. Skipping...");
-                displayNextQuestion();
-                return;
-            }
-
-            displayPhotoInQuestion(m_CurrentPhoto);
-            List<int> answerOptions = r_GuessTheYearGame.GenerateAnswerOptions(m_CurrentPhoto.CreatedTime.Value.Year);
-            displayAnswerOptions(answerOptions);
+            displayPhotoInQuestion(r_GuessTheYearGame.CurrentPhoto);
+            displayAnswerOptions(r_GuessTheYearGame.GetCurrentAnswerOptions());
         }
 
         private void displayPhotoInQuestion(Photo i_Photo)
@@ -78,15 +68,12 @@ namespace BasicFacebookFeatures
             if (sender is Button clickedButton)
             {
                 int selectedAnswerIndex = int.Parse(clickedButton.Name.Replace("buttonAnswer", "")) - 1;
-                handleAnswer(selectedAnswerIndex);
+                r_GuessTheYearGame.HandleAnswer(selectedAnswerIndex, () =>
+                {
+                    updateAnswerCounters();
+                    highlightCorrectAnswer();
+                });
             }
-        }
-
-        private void handleAnswer(int i_SelectedAnswerIndex)
-        {
-            bool isCorrect = r_GuessTheYearGame.CheckAnswer(i_SelectedAnswerIndex);
-            updateAnswerCounters();
-            highlightCorrectAnswer();
         }
 
         private void updateAnswerCounters()
@@ -117,10 +104,7 @@ namespace BasicFacebookFeatures
 
         private void finishGame()
         {
-            MessageBox.Show($"Congratulations! You've completed the challenge.\n" +
-                          $"Correct Answers: {r_GuessTheYearGame.CorrectAnswers}\n" +
-                          $"Wrong Answers: {r_GuessTheYearGame.WrongAnswers}");
-
+            MessageBox.Show(r_GuessTheYearGame.GetGameSummary());
             Close();
             m_MainForm?.Show();
         }

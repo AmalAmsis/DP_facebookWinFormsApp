@@ -77,33 +77,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSettings.cs" />
-    <Compile Include="FacebookManager.cs" />
-    <Compile Include="FacebookPostManager.cs" />
-    <Compile Include="Features\FacebookFeatureFactory.cs" />
-    <Compile Include="Features\GuessTheYearFeature.cs" />
-    <Compile Include="Features\ProfileAnalyzerFeature.cs" />
-    <Compile Include="FormGuessTheYear.cs">
+    <Compile Include="Logic\AppSettings.cs" />
+    <Compile Include="Singleton\FacebookManager.cs" />
+    <Compile Include="Logic\FacebookPostManager.cs" />
+    <Compile Include="Factory\FacebookFeatureFactory.cs" />
+    <Compile Include="Factory\GuessTheYearFeature.cs" />
+    <Compile Include="Factory\ProfileAnalyzerFeature.cs" />
+    <Compile Include="UI\FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormGuessTheYear.Designer.cs">
+    <Compile Include="UI\FormGuessTheYear.Designer.cs">
       <DependentUpon>FormGuessTheYear.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormMain.cs">
+    <Compile Include="UI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMain.Designer.cs">
+    <Compile Include="UI\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormProfileAnalyzer.cs">
+    <Compile Include="UI\FormProfileAnalyzer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormProfileAnalyzer.Designer.cs">
+    <Compile Include="UI\FormProfileAnalyzer.Designer.cs">
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
-    <Compile Include="GuessTheYearGame.cs" />
-    <Compile Include="IFacebookFeature.cs" />
-    <Compile Include="Services\ProfileAnalyzerFacade.cs" />
+    <Compile Include="Logic\GuessTheYearGame.cs" />
+    <Compile Include="Factory\IFacebookFeature.cs" />
+    <Compile Include="Facades\ProfileAnalyzerFacade.cs" />
     <Compile Include="SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -122,18 +122,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Services\FriendAnalyzer.cs" />
-    <Compile Include="Services\PhotoAnalyzer.cs" />
-    <Compile Include="Services\StatisticsAnalyzer.cs" />
+    <Compile Include="Logic\FriendAnalyzer.cs" />
+    <Compile Include="Logic\PhotoAnalyzer.cs" />
+    <Compile Include="Logic\StatisticsAnalyzer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormGuessTheYear.resx">
+    <EmbeddedResource Include="UI\FormGuessTheYear.resx">
       <DependentUpon>FormGuessTheYear.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
+    <EmbeddedResource Include="UI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormProfileAnalyzer.resx">
+    <EmbeddedResource Include="UI\FormProfileAnalyzer.resx">
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

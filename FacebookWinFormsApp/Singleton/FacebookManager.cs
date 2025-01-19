@@ -62,7 +62,9 @@ namespace BasicFacebookFeatures
         {
             m_LoginResult = FacebookService.Login(i_AppID, i_Permissions);
             m_LoggedInUser = m_LoginResult.LoggedInUser;
-            
+
+            m_PostManager = new FacebookPostManager(m_LoggedInUser);
+
             if (m_RememberUser && !string.IsNullOrEmpty(m_LoginResult?.AccessToken))
             {
                 m_AppSettings.LastAccessToken = m_LoginResult.AccessToken;
@@ -117,7 +119,7 @@ namespace BasicFacebookFeatures
                 throw new Exception("Status text is empty!");
             }
 
-            m_LoggedInUser?.PostStatus(i_Status);
+            m_PostManager?.PostStatus(i_Status);
         }
 
         public void PostPicture(string i_PictureText, string i_PicturePath)
@@ -127,7 +129,7 @@ namespace BasicFacebookFeatures
                 throw new Exception("No picture was selected!");
             }
 
-            m_LoggedInUser?.PostPhoto(i_PicturePath, i_PictureText);
+            m_PostManager?.PostPicture(i_PicturePath, i_PictureText);
         }
 
         public IEnumerable<User> GetFriends()
@@ -162,7 +164,7 @@ namespace BasicFacebookFeatures
 
         private void initializeUserData()
         {
-            m_PostManager = new FacebookPostManager(m_LoggedInUser);
+            
         }
     }
 } 
