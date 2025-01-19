@@ -10,7 +10,7 @@ namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
-        private readonly FacebookManager r_FacebookManager = new FacebookManager();
+        private readonly FacebookManager r_FacebookManager = FacebookManager.Instance;
         private FacebookFeatureFactory m_FeatureFactory;
 
         public FormMain()
