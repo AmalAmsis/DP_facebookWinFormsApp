@@ -13,6 +13,14 @@ namespace BasicFacebookFeatures.Services
             r_LoggedInUser = i_LoggedInUser;
         }
 
+        public string UserName
+        {
+            get
+            {
+                return r_LoggedInUser.UserName;
+            }
+        }
+
         public FacebookObjectCollection<User> GetFriendsWithCommonLanguages()
         {
             if (r_LoggedInUser?.Languages == null)

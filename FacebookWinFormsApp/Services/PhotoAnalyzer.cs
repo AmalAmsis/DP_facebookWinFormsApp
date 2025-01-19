@@ -13,6 +13,22 @@ namespace BasicFacebookFeatures.Services
             r_LoggedInUser = i_LoggedInUser;
         }
 
+        public string UserName
+        {
+            get
+            {
+                return r_LoggedInUser.UserName;
+            }
+        }
+
+        public string ProfilePictureUrl
+        {
+            get
+            {
+                return r_LoggedInUser?.PictureNormalURL;
+            }
+        }
+
         public int CountTotalPhotos()
         {
             return r_LoggedInUser?.Albums?.Sum(album => album.Photos.Count) ?? 0;

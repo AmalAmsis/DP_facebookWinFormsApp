@@ -1,62 +1,131 @@
 using FacebookWrapper.ObjectModel;
+using BasicFacebookFeatures.Services;
 
-namespace BasicFacebookFeatures.Services
+namespace BasicFacebookFeatures
 {
     public class ProfileAnalyzerFacade
     {
-        private readonly ProfileAnalyzerService r_ProfileAnalyzerService;
+        private readonly PhotoAnalyzer r_PhotoAnalyzer;
+        private readonly FriendAnalyzer r_FriendAnalyzer;
+        private readonly StatisticsAnalyzer r_StatisticsAnalyzer;
 
         public ProfileAnalyzerFacade(User i_LoggedInUser)
         {
-            r_ProfileAnalyzerService = new ProfileAnalyzerService(i_LoggedInUser);
+            r_PhotoAnalyzer = new PhotoAnalyzer(i_LoggedInUser);
+            r_FriendAnalyzer = new FriendAnalyzer(i_LoggedInUser);
+            r_StatisticsAnalyzer = new StatisticsAnalyzer(i_LoggedInUser);
         }
 
-        public string GetUserName() => r_ProfileAnalyzerService.UserName;
-        public string GetProfilePictureUrl() => r_ProfileAnalyzerService.ProfilePictureUrl;
-
-        public Statistics GetStatistics()
+        public string UserName
         {
-            return new Statistics
-            {
-                TotalLikes = r_ProfileAnalyzerService.TotalLikes,
-                TotalFriends = r_ProfileAnalyzerService.TotalFriends,
-                TotalEvents = r_ProfileAnalyzerService.TotalEvents,
-                TotalPosts = r_ProfileAnalyzerService.TotalPosts,
-                TotalVideos = r_ProfileAnalyzerService.TotalVideos,
-                TotalPhotos = r_ProfileAnalyzerService.CountTotalPhotos()
-            };
+            get 
+            { 
+                return r_FriendAnalyzer.UserName; 
+            }
         }
-
-        public FriendsLists GetFriendsLists()
+        
+        public string ProfilePictureUrl
         {
-            return new FriendsLists
+            get
             {
-                CommonLanguageFriends = r_ProfileAnalyzerService.GetFriendsWithCommonLanguages(),
-                HometownFriends = r_ProfileAnalyzerService.GetFriendsFromSameHometown(),
-                SameBirthdayFriends = r_ProfileAnalyzerService.GetFriendsWithSameBirthday(),
-                PhotoLikerFriends = r_ProfileAnalyzerService.GetFriendsWhoLikedPhotos()
-            };
+                return r_PhotoAnalyzer.ProfilePictureUrl;
+            }
+        }
+        
+        public int TotalLikes
+        {
+            get
+            {
+                return r_StatisticsAnalyzer.TotalLikes;
+            }
         }
 
-        public Photo GetBestPhoto() => r_ProfileAnalyzerService.GetBestPhoto();
-        public Photo GetWorstPhoto() => r_ProfileAnalyzerService.GetWorstPhoto();
-    }
+        public int TotalFriends
+        {
+            get 
+            { 
+                return r_StatisticsAnalyzer.TotalFriends;
+            }
+        }
 
-    public class Statistics
-    {
-        public int TotalLikes { get; set; }
-        public int TotalFriends { get; set; }
-        public int TotalEvents { get; set; }
-        public int TotalPosts { get; set; }
-        public int TotalVideos { get; set; }
-        public int TotalPhotos { get; set; }
-    }
+        public int TotalEvents
+        {
+            get 
+            { 
+                return r_StatisticsAnalyzer.TotalEvents;
+            }
+        }
 
-    public class FriendsLists
-    {
-        public FacebookObjectCollection<User> CommonLanguageFriends { get; set; }
-        public FacebookObjectCollection<User> HometownFriends { get; set; }
-        public FacebookObjectCollection<User> SameBirthdayFriends { get; set; }
-        public FacebookObjectCollection<User> PhotoLikerFriends { get; set; }
+        public int TotalPosts
+        {
+            get
+            {
+                return r_StatisticsAnalyzer.TotalPosts;
+            }
+        }
+
+        public int TotalVideos
+        {
+            get
+            {
+                return r_StatisticsAnalyzer.TotalVideos;
+            }
+        }
+
+        public int TotalPhotos
+        {
+            get
+            {
+                return r_PhotoAnalyzer.CountTotalPhotos();
+            }
+        }
+
+        public Photo BestPhoto
+        {
+            get
+            {
+                return r_PhotoAnalyzer.GetBestPhoto();
+            }
+        }
+
+        public Photo WorstPhoto
+        {
+            get
+            {
+                return r_PhotoAnalyzer.GetWorstPhoto();
+            }
+        }
+
+        public FacebookObjectCollection<User> FriendsWithCommonLanguages
+        {
+            get
+            {
+                return r_FriendAnalyzer.GetFriendsWithCommonLanguages();
+            }
+        }
+
+        public FacebookObjectCollection<User> FriendsFromSameHometown
+        {
+            get
+            {
+                return r_FriendAnalyzer.GetFriendsFromSameHometown();
+            }
+        }
+            
+        public FacebookObjectCollection<User> FriendsWithSameBirthday
+        {
+            get
+            {
+                return r_FriendAnalyzer.GetFriendsWithSameBirthday();
+            }
+        }
+           
+        public FacebookObjectCollection<User> FriendsWhoLikedPhotos
+        {
+            get
+            {
+                return r_FriendAnalyzer.GetFriendsWhoLikedPhotos();
+            }
+        }
     }
 } 

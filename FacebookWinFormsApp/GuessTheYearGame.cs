@@ -7,25 +7,32 @@ namespace BasicFacebookFeatures
 {
     public class GuessTheYearGame
     {
+        private readonly User m_LoggedInUser;
+
         private readonly FacebookObjectCollection<Photo> r_PhotoCollection = new FacebookObjectCollection<Photo>();
         private readonly Random r_RandomGenerator = new Random();
         private int m_CorrectAnswerIndex;
         private int m_CorrectAnswers = 0;
         private int m_WrongAnswers = 0;
 
+        public GuessTheYearGame(User i_LoggedInUser)
+        {
+            m_LoggedInUser = i_LoggedInUser;
+        }
+
         public int RemainingPhotos => r_PhotoCollection.Count;
         public int CorrectAnswers => m_CorrectAnswers;
         public int WrongAnswers => m_WrongAnswers;
         public int CorrectAnswerIndex => m_CorrectAnswerIndex;
 
-        public bool LoadUserPhotos(User i_LoggedInUser)
+        public bool LoadUserPhotos()
         {
-            if (i_LoggedInUser?.Albums == null || !i_LoggedInUser.Albums.Any())
+            if (m_LoggedInUser?.Albums == null || !m_LoggedInUser.Albums.Any())
             {
                 return false;
             }
 
-            foreach (Album album in i_LoggedInUser.Albums)
+            foreach (Album album in m_LoggedInUser.Albums)
             {
                 foreach (Photo photo in album.Photos)
                 {

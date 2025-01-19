@@ -10,40 +10,28 @@ namespace BasicFacebookFeatures
     public partial class FormProfileAnalyzer : Form
     {
         private Form m_MainForm;
-        private LoginResult m_LoginResult;
-        private User m_LoggedInUser;
-        private ProfileAnalyzerFacade m_ProfileAnalyzerFacade;
+        private readonly ProfileAnalyzerFacade r_ProfileAnalyzerFacade;
 
-        public FormProfileAnalyzer()
+        public FormProfileAnalyzer(ProfileAnalyzerFacade i_ProfileAnalyzerFacade)
         {
             InitializeComponent();
+            r_ProfileAnalyzerFacade = i_ProfileAnalyzerFacade;
         }
 
         public Form MainForm
         {
-            get { return m_MainForm; }
-            set { m_MainForm = value; }
-        }
-
-        public LoginResult LoginResult
-        {
-            get { return m_LoginResult; }
-            set
-            {
-                m_LoginResult = value;
-                m_LoggedInUser = value?.LoggedInUser;
+            get 
+            { 
+                return m_MainForm; 
+            }
+            set 
+            { 
+                m_MainForm = value; 
             }
         }
 
         private void formProfileAnalyzer_Load(object sender, EventArgs e)
         {
-            if (m_LoggedInUser == null)
-            {
-                showErrorMessageAndClose("User is not logged in or data is unavailable.");
-                return;
-            }
-
-            m_ProfileAnalyzerFacade = new ProfileAnalyzerFacade(m_LoggedInUser);
             displayProfileAnalysis();
         }
 
@@ -57,34 +45,32 @@ namespace BasicFacebookFeatures
 
         private void updateUserInfo()
         {
-            labelUserName.Text = m_ProfileAnalyzerFacade.GetUserName();
+            labelUserName.Text = r_ProfileAnalyzerFacade.UserName;
         }
 
         private void updateProfilePictures()
         {
-            setPictureBoxImage(pictureBoxProfilePicture, m_ProfileAnalyzerFacade.GetProfilePictureUrl());
-            setPictureBoxImage(pictureBoxBestPicture, m_ProfileAnalyzerFacade.GetBestPhoto()?.PictureNormalURL);
-            setPictureBoxImage(pictureBoxWorstPicture, m_ProfileAnalyzerFacade.GetWorstPhoto()?.PictureNormalURL);
+            setPictureBoxImage(pictureBoxProfilePicture, r_ProfileAnalyzerFacade.UserName);
+            setPictureBoxImage(pictureBoxBestPicture, r_ProfileAnalyzerFacade.BestPhoto?.PictureNormalURL);
+            setPictureBoxImage(pictureBoxWorstPicture, r_ProfileAnalyzerFacade.WorstPhoto?.PictureNormalURL);
         }
 
         private void updateStatistics()
         {
-            var statistics = m_ProfileAnalyzerFacade.GetStatistics();
-            labelTotalLikes.Text = statistics.TotalLikes.ToString();
-            labelTotalFriends.Text = statistics.TotalFriends.ToString();
-            labelTotalEvents.Text = statistics.TotalEvents.ToString();
-            labelTotalPosts.Text = statistics.TotalPosts.ToString();
-            labelTotalVideos.Text = statistics.TotalVideos.ToString();
-            labelTotalPictures.Text = statistics.TotalPhotos.ToString();
+            labelTotalLikes.Text = r_ProfileAnalyzerFacade.TotalLikes.ToString();
+            labelTotalFriends.Text = r_ProfileAnalyzerFacade.TotalFriends.ToString();
+            labelTotalEvents.Text = r_ProfileAnalyzerFacade.TotalEvents.ToString();
+            labelTotalPosts.Text = r_ProfileAnalyzerFacade.TotalPosts.ToString();
+            labelTotalVideos.Text = r_ProfileAnalyzerFacade.TotalVideos.ToString();
+            labelTotalPictures.Text = r_ProfileAnalyzerFacade.TotalPhotos.ToString();
         }
 
         private void updateFriendsLists()
         {
-            var friendsLists = m_ProfileAnalyzerFacade.GetFriendsLists();
-            populateList(listBoxFriendsThatSpeakTheSameLanguage, friendsLists.CommonLanguageFriends);
-            populateList(listBoxHomeTownFriends, friendsLists.HometownFriends);
-            populateList(listBoxFriendsWithTheSameBirthday, friendsLists.SameBirthdayFriends);
-            populateList(listBoxFriendsThatLikedUsersPictures, friendsLists.PhotoLikerFriends);
+            populateList(listBoxFriendsThatSpeakTheSameLanguage, r_ProfileAnalyzerFacade.FriendsWithCommonLanguages);
+            populateList(listBoxHomeTownFriends, r_ProfileAnalyzerFacade.FriendsFromSameHometown);
+            populateList(listBoxFriendsWithTheSameBirthday, r_ProfileAnalyzerFacade.FriendsWithSameBirthday);
+            populateList(listBoxFriendsThatLikedUsersPictures, r_ProfileAnalyzerFacade.FriendsWhoLikedPhotos);
         }
 
         private void populateList(ListBox i_ListBox, FacebookObjectCollection<User> i_Users)

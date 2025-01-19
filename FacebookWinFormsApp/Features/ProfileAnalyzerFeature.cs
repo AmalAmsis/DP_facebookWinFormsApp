@@ -1,32 +1,33 @@
 using System.Windows.Forms;
 using FacebookWrapper;
+using FacebookWrapper.ObjectModel;
 
 namespace BasicFacebookFeatures.Features
 {
     public class ProfileAnalyzerFeature : IFacebookFeature
     {
         private readonly Form r_MainForm;
-        private readonly LoginResult r_LoginResult;
         private FormProfileAnalyzer m_ProfileAnalyzerForm;
 
-        public ProfileAnalyzerFeature(Form i_MainForm, LoginResult i_LoginResult)
+        private readonly ProfileAnalyzerFacade r_profileAnalyzerFacade;
+
+        public ProfileAnalyzerFeature(Form i_MainForm, User i_LoggedInUser)
         {
             r_MainForm = i_MainForm;
-            r_LoginResult = i_LoginResult;
+            r_profileAnalyzerFacade = new ProfileAnalyzerFacade(i_LoggedInUser);
         }
 
         public void Show()
         {
-            r_MainForm.Hide();
+            r_MainForm.Hide();  
             initializeAndShowForm();
         }
 
         private void initializeAndShowForm()
         {
-            m_ProfileAnalyzerForm = new FormProfileAnalyzer
+            m_ProfileAnalyzerForm = new FormProfileAnalyzer(r_profileAnalyzerFacade)
             {
-                MainForm = r_MainForm,
-                LoginResult = r_LoginResult
+                MainForm = r_MainForm
             };
 
             m_ProfileAnalyzerForm.ShowDialog();

@@ -27,10 +27,10 @@ namespace BasicFacebookFeatures.Features
             switch (i_FeatureType)
             {
                 case eFeatureType.GuessTheYear:
-                    feature = new GuessTheYearFeature(r_MainForm, r_LoginResult);
+                    feature = new GuessTheYearFeature(r_MainForm, r_LoginResult.LoggedInUser);
                     break;
                 case eFeatureType.ProfileAnalyzer:
-                    feature = new ProfileAnalyzerFeature(r_MainForm, r_LoginResult);
+                    feature = new ProfileAnalyzerFeature(r_MainForm, r_LoginResult.LoggedInUser);
                     break;
             }
 

@@ -1,18 +1,20 @@
 using System.Windows.Forms;
 using FacebookWrapper;
+using FacebookWrapper.ObjectModel;
 
 namespace BasicFacebookFeatures.Features
 {
     public class GuessTheYearFeature : IFacebookFeature
     {
         private readonly Form r_MainForm;
-        private readonly LoginResult r_LoginResult;
         private FormGuessTheYear m_GuessTheYearForm;
 
-        public GuessTheYearFeature(Form i_MainForm, LoginResult i_LoginResult)
+        private readonly GuessTheYearGame r_GuessTheYearGame;
+
+        public GuessTheYearFeature(Form i_MainForm, User i_LoggedInUser)
         {
             r_MainForm = i_MainForm;
-            r_LoginResult = i_LoginResult;
+            r_GuessTheYearGame = new GuessTheYearGame(i_LoggedInUser);
         }
 
         public void Show()
@@ -23,10 +25,9 @@ namespace BasicFacebookFeatures.Features
 
         private void initializeAndShowForm()
         {
-            m_GuessTheYearForm = new FormGuessTheYear
+            m_GuessTheYearForm = new FormGuessTheYear(r_GuessTheYearGame)
             {
                 MainForm = r_MainForm,
-                LoginResult = r_LoginResult
             };
 
             m_GuessTheYearForm.ShowDialog();

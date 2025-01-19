@@ -11,6 +11,14 @@ namespace BasicFacebookFeatures.Services
             r_LoggedInUser = i_LoggedInUser;
         }
 
+        public string UserName
+        {
+            get
+            {
+                return r_LoggedInUser.UserName;
+            }
+        }
+
         public int TotalLikes => r_LoggedInUser?.LikedPages?.Count ?? 0;
         public int TotalFriends => r_LoggedInUser?.Friends?.Count ?? 0;
         public int TotalEvents => r_LoggedInUser?.Events?.Count ?? 0;
