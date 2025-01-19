@@ -3,6 +3,7 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using BasicFacebookFeatures.Services;
 
 namespace BasicFacebookFeatures
 {
@@ -11,7 +12,7 @@ namespace BasicFacebookFeatures
         private Form m_MainForm;
         private LoginResult m_LoginResult;
         private User m_LoggedInUser;
-        private ProfileAnalyzer m_ProfileAnalyzer;
+        private ProfileAnalyzerFacade m_ProfileAnalyzerFacade;
 
         public FormProfileAnalyzer()
         {
@@ -42,7 +43,7 @@ namespace BasicFacebookFeatures
                 return;
             }
 
-            m_ProfileAnalyzer = new ProfileAnalyzer(m_LoggedInUser);
+            m_ProfileAnalyzerFacade = new ProfileAnalyzerFacade(m_LoggedInUser);
             displayProfileAnalysis();
         }
 
@@ -51,37 +52,39 @@ namespace BasicFacebookFeatures
             updateUserInfo();
             updateProfilePictures();
             updateStatistics();
-            populateLists();
+            updateFriendsLists();
         }
 
         private void updateUserInfo()
         {
-            labelUserName.Text = m_ProfileAnalyzer.UserName;
+            labelUserName.Text = m_ProfileAnalyzerFacade.GetUserName();
         }
 
         private void updateProfilePictures()
         {
-            setPictureBoxImage(pictureBoxProfilePicture, m_ProfileAnalyzer.ProfilePictureUrl);
-            setPictureBoxImage(pictureBoxBestPicture, m_ProfileAnalyzer.GetBestPhoto()?.PictureNormalURL);
-            setPictureBoxImage(pictureBoxWorstPicture, m_ProfileAnalyzer.GetWorstPhoto()?.PictureNormalURL);
+            setPictureBoxImage(pictureBoxProfilePicture, m_ProfileAnalyzerFacade.GetProfilePictureUrl());
+            setPictureBoxImage(pictureBoxBestPicture, m_ProfileAnalyzerFacade.GetBestPhoto()?.PictureNormalURL);
+            setPictureBoxImage(pictureBoxWorstPicture, m_ProfileAnalyzerFacade.GetWorstPhoto()?.PictureNormalURL);
         }
 
         private void updateStatistics()
         {
-            labelTotalLikes.Text = m_ProfileAnalyzer.TotalLikes.ToString();
-            labelTotalFriends.Text = m_ProfileAnalyzer.TotalFriends.ToString();
-            labelTotalEvents.Text = m_ProfileAnalyzer.TotalEvents.ToString();
-            labelTotalPosts.Text = m_ProfileAnalyzer.TotalPosts.ToString();
-            labelTotalVideos.Text = m_ProfileAnalyzer.TotalVideos.ToString();
-            labelTotalPictures.Text = m_ProfileAnalyzer.CountTotalPhotos().ToString();
+            var statistics = m_ProfileAnalyzerFacade.GetStatistics();
+            labelTotalLikes.Text = statistics.TotalLikes.ToString();
+            labelTotalFriends.Text = statistics.TotalFriends.ToString();
+            labelTotalEvents.Text = statistics.TotalEvents.ToString();
+            labelTotalPosts.Text = statistics.TotalPosts.ToString();
+            labelTotalVideos.Text = statistics.TotalVideos.ToString();
+            labelTotalPictures.Text = statistics.TotalPhotos.ToString();
         }
 
-        private void populateLists()
+        private void updateFriendsLists()
         {
-            populateList(listBoxFriendsThatSpeakTheSameLanguage, m_ProfileAnalyzer.GetFriendsWithCommonLanguages());
-            populateList(listBoxHomeTownFriends, m_ProfileAnalyzer.GetFriendsFromSameHometown());
-            populateList(listBoxFriendsWithTheSameBirthday, m_ProfileAnalyzer.GetFriendsWithSameBirthday());
-            populateList(listBoxFriendsThatLikedUsersPictures, m_ProfileAnalyzer.GetFriendsWhoLikedPhotos());
+            var friendsLists = m_ProfileAnalyzerFacade.GetFriendsLists();
+            populateList(listBoxFriendsThatSpeakTheSameLanguage, friendsLists.CommonLanguageFriends);
+            populateList(listBoxHomeTownFriends, friendsLists.HometownFriends);
+            populateList(listBoxFriendsWithTheSameBirthday, friendsLists.SameBirthdayFriends);
+            populateList(listBoxFriendsThatLikedUsersPictures, friendsLists.PhotoLikerFriends);
         }
 
         private void populateList(ListBox i_ListBox, FacebookObjectCollection<User> i_Users)

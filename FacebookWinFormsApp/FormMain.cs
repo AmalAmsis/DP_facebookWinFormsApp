@@ -3,12 +3,15 @@ using System.Drawing;
 using System.Windows.Forms;
 using FacebookWrapper;
 using BasicFacebookFeatures.Properties;
+using BasicFacebookFeatures.Features;
+using BasicFacebookFeatures.Services;
 
 namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
         private readonly FacebookManager r_FacebookManager = new FacebookManager();
+        private FacebookFeatureFactory m_FeatureFactory;
 
         public FormMain()
         {
@@ -104,6 +107,7 @@ namespace BasicFacebookFeatures
             toggleLoginUI(v_IsLogin);
             toggleFeaturesButtons(v_IsLogin);
             fetchUserData();
+            m_FeatureFactory = new FacebookFeatureFactory(this, r_FacebookManager.LoginResult);
         }
 
         private void clearUserData()
@@ -370,26 +374,14 @@ namespace BasicFacebookFeatures
 
         private void buttonProfileAnalyzer_Click(object sender, EventArgs e)
         {
-            Hide();
-            FormProfileAnalyzer formProfileAnalyzer = new FormProfileAnalyzer
-            {
-                MainForm = this,
-                LoginResult = r_FacebookManager.LoginResult
-            };
-
-            formProfileAnalyzer.ShowDialog();
+            IFacebookFeature profileAnalayzer = m_FeatureFactory.CreateFeature(eFeatureType.ProfileAnalyzer);
+            profileAnalayzer.Show();
         }
 
         private void buttonGuessTheYear_Click(object sender, EventArgs e)
         {
-            Hide();
-            FormGuessTheYear formGuessTheYear = new FormGuessTheYear
-            {
-                MainForm = this,
-                LoginResult = r_FacebookManager.LoginResult
-            };
-
-            formGuessTheYear.ShowDialog();
+            IFacebookFeature guessTheYear = m_FeatureFactory.CreateFeature(eFeatureType.GuessTheYear);
+            guessTheYear.Show();
         }
     }
 }

@@ -2,28 +2,15 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
 
-namespace BasicFacebookFeatures
+namespace BasicFacebookFeatures.Services
 {
-    public class ProfileAnalyzer
+    internal class FriendAnalyzer
     {
         private readonly User r_LoggedInUser;
 
-        public ProfileAnalyzer(User i_LoggedInUser)
+        public FriendAnalyzer(User i_LoggedInUser)
         {
             r_LoggedInUser = i_LoggedInUser;
-        }
-
-        public string UserName => r_LoggedInUser?.Name;
-        public string ProfilePictureUrl => r_LoggedInUser?.PictureNormalURL;
-        public int TotalLikes => r_LoggedInUser?.LikedPages?.Count ?? 0;
-        public int TotalFriends => r_LoggedInUser?.Friends?.Count ?? 0;
-        public int TotalEvents => r_LoggedInUser?.Events?.Count ?? 0;
-        public int TotalPosts => r_LoggedInUser?.Posts?.Count ?? 0;
-        public int TotalVideos => r_LoggedInUser?.Videos?.Count ?? 0;
-
-        public int CountTotalPhotos()
-        {
-            return r_LoggedInUser?.Albums?.Sum(album => album.Photos.Count) ?? 0;
         }
 
         public FacebookObjectCollection<User> GetFriendsWithCommonLanguages()
@@ -75,16 +62,6 @@ namespace BasicFacebookFeatures
             return friends;
         }
 
-        public Photo GetBestPhoto()
-        {
-            return getPhotoWithExtremeLikes((current, best) => current > best);
-        }
-
-        public Photo GetWorstPhoto()
-        {
-            return getPhotoWithExtremeLikes((current, worst) => current < worst);
-        }
-
         private FacebookObjectCollection<User> filterFriendsByCondition(Func<User, bool> i_Condition)
         {
             FacebookObjectCollection<User> filteredFriends = new FacebookObjectCollection<User>();
@@ -98,30 +75,6 @@ namespace BasicFacebookFeatures
             }
 
             return filteredFriends;
-        }
-
-        private Photo getPhotoWithExtremeLikes(Func<int, int, bool> i_Comparison)
-        {
-            Photo extremePhoto = null;
-            bool isFirstPhoto = true;
-            int extremeLikes = -1;
-
-            foreach (Album album in r_LoggedInUser?.Albums)
-            {
-                foreach (Photo photo in album.Photos)
-                {
-                    int likesCount = photo.LikedBy?.Count ?? 0;
-
-                    if (i_Comparison(likesCount, extremeLikes) || isFirstPhoto)
-                    {
-                        extremePhoto = photo;
-                        extremeLikes = likesCount;
-                        isFirstPhoto = false;
-                    }
-                }
-            }
-
-            return extremePhoto;
         }
     }
 } 
