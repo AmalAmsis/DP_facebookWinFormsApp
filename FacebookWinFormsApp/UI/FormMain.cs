@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using FacebookWrapper;
 using BasicFacebookFeatures.Properties;
 using BasicFacebookFeatures.Features;
-using BasicFacebookFeatures.Services;
 
 namespace BasicFacebookFeatures
 {

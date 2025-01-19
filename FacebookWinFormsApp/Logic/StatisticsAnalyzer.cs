@@ -19,10 +19,44 @@ namespace BasicFacebookFeatures.Services
             }
         }
 
-        public int TotalLikes => r_LoggedInUser?.LikedPages?.Count ?? 0;
-        public int TotalFriends => r_LoggedInUser?.Friends?.Count ?? 0;
-        public int TotalEvents => r_LoggedInUser?.Events?.Count ?? 0;
-        public int TotalPosts => r_LoggedInUser?.Posts?.Count ?? 0;
-        public int TotalVideos => r_LoggedInUser?.Videos?.Count ?? 0;
+        public int TotalLikes
+        {
+            get
+            {
+                return r_LoggedInUser?.LikedPages?.Count ?? 0;
+            }
+        }
+
+        public int TotalFriends
+        {
+            get
+            {
+                return r_LoggedInUser?.Friends?.Count ?? 0;
+            }
+        }
+
+        public int TotalEvents
+        {
+            get
+            {
+                return r_LoggedInUser?.Events?.Count ?? 0;
+            }
+        }
+
+        public int TotalPosts
+        {
+            get
+            {
+                return r_LoggedInUser?.Posts?.Count ?? 0;
+            }
+        }
+
+        public int TotalVideos
+        {
+            get
+            {
+                return r_LoggedInUser?.Videos?.Count ?? 0;
+            }
+        }
     }
 } 

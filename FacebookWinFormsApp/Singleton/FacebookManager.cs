@@ -9,11 +9,14 @@ namespace BasicFacebookFeatures
     {
         private static readonly object sr_Lock = new object();
         private static FacebookManager s_Instance = null;
+        
+        private AppSettings m_AppSettings;
+        private FacebookPostManager m_PostManager;
+
         private User m_LoggedInUser;
         private LoginResult m_LoginResult;
-        private AppSettings m_AppSettings;
+
         private bool m_RememberUser = false;
-        private FacebookPostManager m_PostManager;
 
         private FacebookManager()
         {
@@ -40,17 +43,76 @@ namespace BasicFacebookFeatures
             }
         }
 
-        public bool IsLoggedIn => m_LoginResult != null && !string.IsNullOrEmpty(m_LoginResult.AccessToken);
-        public string AccessToken => m_LoginResult?.AccessToken;
-        public User LoggedInUser => m_LoggedInUser;
-        public string UserName => m_LoggedInUser?.Name;
-        public string ProfilePictureURL => m_LoggedInUser?.PictureNormalURL;
-        public string Birthday => m_LoggedInUser?.Birthday;
-        public User.eGender? Gender => m_LoggedInUser?.Gender;
-        public LoginResult LoginResult => m_LoginResult;
+        public bool IsLoggedIn
+        {
+            get
+            {
+                return m_LoginResult != null && !string.IsNullOrEmpty(m_LoginResult.AccessToken);
+            }
+        }
+
+        public string AccessToken
+        {
+            get
+            {
+                return m_LoginResult?.AccessToken;
+            }
+        }
+
+        public User LoggedInUser
+        {
+            get
+            {
+                return m_LoggedInUser;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return m_LoggedInUser?.Name;
+            }
+        }
+
+        public string ProfilePictureURL
+        {
+            get
+            {
+                return m_LoggedInUser?.PictureNormalURL;
+            }
+        }
+
+        public string Birthday
+        {
+            get
+            {
+                return m_LoggedInUser?.Birthday;
+            }
+        }
+
+        public User.eGender? Gender
+        {
+            get
+            {
+                return m_LoggedInUser?.Gender;
+            }
+        }
+
+        public LoginResult LoginResult
+        {
+            get
+            {
+                return m_LoginResult;
+            }
+        }
+
         public bool RememberUser
         {
-            get => m_RememberUser;
+            get
+            {
+               return m_RememberUser;
+            }
             set
             {
                 m_RememberUser = value;
@@ -160,11 +222,6 @@ namespace BasicFacebookFeatures
         public IEnumerable<Event> GetEvents()
         {
             return m_LoggedInUser?.Events ?? new FacebookObjectCollection<Event>();
-        }
-
-        private void initializeUserData()
-        {
-            
         }
     }
 } 

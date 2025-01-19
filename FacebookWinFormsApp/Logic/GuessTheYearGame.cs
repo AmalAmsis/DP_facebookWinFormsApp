@@ -1,4 +1,3 @@
-using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
@@ -23,11 +22,45 @@ namespace BasicFacebookFeatures
             LoadUserPhotos();
         }
 
-        public int RemainingPhotos => r_PhotoCollection.Count;
-        public int CorrectAnswers => m_CorrectAnswers;
-        public int WrongAnswers => m_WrongAnswers;
-        public int CorrectAnswerIndex => m_CorrectAnswerIndex;
-        public Photo CurrentPhoto => m_CurrentPhoto;
+        public int RemainingPhotos
+        {
+            get
+            {
+                return r_PhotoCollection.Count;
+            }
+        }
+
+        public int CorrectAnswers
+        {
+            get 
+            { 
+                return m_CorrectAnswers; 
+            }
+        }
+
+        public int WrongAnswers
+        {
+            get 
+            {
+                return m_WrongAnswers; 
+            }
+        }
+
+        public int CorrectAnswerIndex
+        {
+            get
+            {
+                return m_CorrectAnswerIndex;
+            }
+        }
+
+        public Photo CurrentPhoto
+        {
+            get
+            {
+                return m_CurrentPhoto;
+            }
+        }
 
         public bool LoadUserPhotos()
         {
