@@ -1,3 +1,4 @@
+using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace BasicFacebookFeatures
         public GuessTheYearGame(User i_LoggedInUser)
         {
             m_LoggedInUser = i_LoggedInUser;
+            LoadUserPhotos();
         }
 
         public int RemainingPhotos => r_PhotoCollection.Count;
