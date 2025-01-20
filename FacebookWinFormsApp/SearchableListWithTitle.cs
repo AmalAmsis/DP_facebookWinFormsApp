@@ -41,6 +41,18 @@ namespace BasicFacebookFeatures
             get { return listBox.SelectedItem; }
         }
 
+        public object DataSource
+        {
+            get
+            {
+                return listBox.DataSource;
+            }
+            set
+            {
+                listBox.DataSource = value;
+            }
+        }
+
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(listBox.SelectedIndex > -1)

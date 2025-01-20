@@ -186,18 +186,33 @@ namespace BasicFacebookFeatures
         {
             new Thread(() =>
             {
-                var friends = r_FacebookManager.GetFriends();
-                
-                searchableListWithTitleFriends.Invoke(new Action(() => 
+                try
                 {
-                    searchableListWithTitleFriends.Items.Clear();
-                    searchableListWithTitleFriends.DisplayMember = "Name";
-                    
-                    foreach (var friend in friends)
+                    FacebookObjectCollection<User> friends = r_FacebookManager.GetFriends() as FacebookObjectCollection<User>;
+
+                    if (friends != null && friends.Count > 0)
                     {
-                        searchableListWithTitleFriends.Items.Add(friend);
+                        searchableListWithTitleAlbums.Invoke(new Action(() => {
+                            searchableListWithTitleFriends.DataSource = null;
+                            friendListBindingSource.DataSource = friends;
+                            searchableListWithTitleFriends.DataSource = friendListBindingSource;
+                            searchableListWithTitleFriends.DisplayMember = "Name";
+                        }));
                     }
-                }));
+                    else
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            searchableListWithTitleFriends.DataSource = null;
+                            searchableListWithTitleFriends.Items.Clear();
+                        }));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() => MessageBox.Show($"Error retrieving friends: {ex.Message}")));
+                }
+
             }).Start();
         }
 
@@ -205,16 +220,33 @@ namespace BasicFacebookFeatures
         {
             new Thread(() =>
             {
-                searchableListWithTitleAlbums.Invoke(new Action(() => {
-                    searchableListWithTitleAlbums.Items.Clear();
-                    searchableListWithTitleAlbums.DisplayMember = "Name";
-                }));
-
-                foreach (var album in r_FacebookManager.GetAlbums())
+                try
                 {
-                    searchableListWithTitleAlbums.Invoke(new Action(() => 
-                        searchableListWithTitleAlbums.Items.Add(album)));
+                    FacebookObjectCollection<Album> albums = r_FacebookManager.GetAlbums() as FacebookObjectCollection<Album>;
+
+                    if (albums != null && albums.Count > 0)
+                    {
+                        searchableListWithTitleAlbums.Invoke(new Action(() => {
+                            searchableListWithTitleAlbums.DataSource = null;
+                            albumBindingSource.DataSource = albums;
+                            searchableListWithTitleAlbums.DataSource = albumBindingSource;
+                            searchableListWithTitleAlbums.DisplayMember = "Name";
+                        }));
+                    }
+                    else
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            searchableListWithTitleAlbums.DataSource = null;
+                            searchableListWithTitleAlbums.Items.Clear();
+                        }));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    this.Invoke(new Action(() => MessageBox.Show($"Error retrieving albums: {ex.Message}")));
+                }
+
             }).Start();
         }
 
