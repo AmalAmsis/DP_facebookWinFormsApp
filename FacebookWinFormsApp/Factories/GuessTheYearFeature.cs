@@ -11,16 +11,16 @@ namespace BasicFacebookFeatures.Features
         public GuessTheYearFeature(Form i_MainForm, User i_FacebookUser)
             : base(i_MainForm, i_FacebookUser)
         {
-            r_AnalyzerFacade = new AnalyzerFacade(i_UserForAnalysis);
+            
         }
 
         public override void Show()
         {
             HideMainForm();
 
-            m_GuessTheYearForm = new FormGuessTheYear(new GuessTheYearGame(User))
+            m_GuessTheYearForm = new FormGuessTheYear(new GuessTheYearGame(this.FacebookUser))
             {
-                MainForm = Form
+                MainForm = this.MainForm
             };
 
             m_GuessTheYearForm.ShowDialog();
