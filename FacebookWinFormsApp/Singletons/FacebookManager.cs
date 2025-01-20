@@ -2,6 +2,7 @@ using System;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace BasicFacebookFeatures
 {
@@ -181,7 +182,17 @@ namespace BasicFacebookFeatures
                 throw new Exception("Status text is empty!");
             }
 
-            m_PostManager?.PostStatus(i_Status);
+            new Thread(() =>
+            {
+                try
+                {
+                    m_PostManager?.PostStatus(i_Status);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Failed to post status: {ex.Message}");
+                }
+            }).Start();
         }
 
         public void PostPicture(string i_PictureText, string i_PicturePath)
@@ -191,7 +202,17 @@ namespace BasicFacebookFeatures
                 throw new Exception("No picture was selected!");
             }
 
-            m_PostManager?.PostPicture(i_PicturePath, i_PictureText);
+            new Thread(() =>
+            {
+                try
+                {
+                    m_PostManager?.PostPicture(i_PicturePath, i_PictureText);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Failed to post picture: {ex.Message}");
+                }
+            }).Start();
         }
 
         public IEnumerable<User> GetFriends()

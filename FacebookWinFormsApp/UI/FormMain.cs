@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using FacebookWrapper;
 using BasicFacebookFeatures.Properties;
 using BasicFacebookFeatures.Features;
+using System.Threading;
+using FacebookWrapper.ObjectModel;
 
 namespace BasicFacebookFeatures
 {
@@ -46,33 +48,43 @@ namespace BasicFacebookFeatures
                 "user_videos"
             };
 
-            LoginResult loginResult = r_FacebookManager.Login(textBoxAppID.Text, permissions);
+            new Thread(() =>
+            {
+                LoginResult loginResult = r_FacebookManager.Login(textBoxAppID.Text, permissions);
 
-            if (!string.IsNullOrEmpty(loginResult.AccessToken))
-            {
-                loadUserData();
-            }
-            else
-            {
-                MessageBox.Show(loginResult.ErrorMessage, "Login Failed");
-            }
+                if (!string.IsNullOrEmpty(loginResult.AccessToken))
+                {
+                    this.Invoke(new Action(() => loadUserData()));
+                }
+                else
+                {
+                    this.Invoke(new Action(() => 
+                        MessageBox.Show(loginResult.ErrorMessage, "Login Failed")));
+                }
+            }).Start();
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-            const bool v_IsLogin = true;
-
-            r_FacebookManager.Logout();
-            buttonLogin.Text = "Login";
-            buttonLogin.BackColor = buttonLogout.BackColor;
-            buttonLogin.Enabled = true;
-            buttonLogout.Enabled = false;
-            clearUserData();
-            tabPage1.Text = "Main App";
-            checkBoxRememberUser.Checked = false;
-            toggleLoginUI(!v_IsLogin);
-            togglePostButtons(!v_IsLogin);
-            toggleFeaturesButtons(!v_IsLogin);
+            new Thread(() =>
+            {
+                r_FacebookManager.Logout();
+                
+                this.Invoke(new Action(() =>
+                {
+                    const bool v_IsLogin = true;
+                    buttonLogin.Text = "Login";
+                    buttonLogin.BackColor = buttonLogout.BackColor;
+                    buttonLogin.Enabled = true;
+                    buttonLogout.Enabled = false;
+                    clearUserData();
+                    tabPage1.Text = "Main App";
+                    checkBoxRememberUser.Checked = false;
+                    toggleLoginUI(!v_IsLogin);
+                    togglePostButtons(!v_IsLogin);
+                    toggleFeaturesButtons(!v_IsLogin);
+                }));
+            }).Start();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -85,11 +97,19 @@ namespace BasicFacebookFeatures
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            checkBoxRememberUser.Checked = r_FacebookManager.RememberUser;
-            if (r_FacebookManager.TryConnectFromSavedToken())
+            
+            new Thread(() =>
             {
-                loadUserData();
-            }
+                this.Invoke(new Action(() => 
+                {
+                    checkBoxRememberUser.Checked = r_FacebookManager.RememberUser;
+                }));
+
+                if (r_FacebookManager.TryConnectFromSavedToken())
+                {
+                    this.Invoke(new Action(() => loadUserData()));
+                }
+            }).Start();
         }
 
         private void loadUserData()
@@ -105,24 +125,42 @@ namespace BasicFacebookFeatures
             tabPage1.Text = r_FacebookManager.UserName;
             toggleLoginUI(v_IsLogin);
             toggleFeaturesButtons(v_IsLogin);
-            fetchUserData();
-            m_FeatureFactory = new FacebookFeatureFactory(this, r_FacebookManager.LoginResult);
+
+            new Thread(() =>
+            {
+                fetchUserData();
+                m_FeatureFactory = new FacebookFeatureFactory(this, r_FacebookManager.LoginResult);
+            }).Start();
         }
 
         private void clearUserData()
         {
-            pictureBoxProfile.Image = Resources.user_icon;
-            pictureBoxSelectedAlbum.Image = Resources.albums_icon;
-            pictureBoxSelectedFriend.Image = Resources.friends_icon;
-            pictureBoxSelectedGroup.Image = Resources.group_icon;
-            pictureBoxSelectedPage.Image = Resources.like_icon;
-            searchableListWithTitleFriends.Items.Clear();
-            searchableListWithTitleAlbums.Items.Clear();
-            searchableListWithTitleEvents.Items.Clear();
-            searchableListWithTitleFeed.Items.Clear();
-            searchableListWithTitleGroups.Items.Clear();
-            searchableListWithTitleLikedPages.Items.Clear();
-            labelUserData.Text = "";
+            pictureBoxProfile.Invoke(new Action(() => 
+                pictureBoxProfile.Image = Resources.user_icon));
+            pictureBoxSelectedAlbum.Invoke(new Action(() => 
+                pictureBoxSelectedAlbum.Image = Resources.albums_icon));
+            pictureBoxSelectedFriend.Invoke(new Action(() => 
+                pictureBoxSelectedFriend.Image = Resources.friends_icon));
+            pictureBoxSelectedGroup.Invoke(new Action(() => 
+                pictureBoxSelectedGroup.Image = Resources.group_icon));
+            pictureBoxSelectedPage.Invoke(new Action(() => 
+                pictureBoxSelectedPage.Image = Resources.like_icon));
+            
+            searchableListWithTitleFriends.Invoke(new Action(() => 
+                searchableListWithTitleFriends.Items.Clear()));
+            searchableListWithTitleAlbums.Invoke(new Action(() => 
+                searchableListWithTitleAlbums.Items.Clear()));
+            searchableListWithTitleEvents.Invoke(new Action(() => 
+                searchableListWithTitleEvents.Items.Clear()));
+            searchableListWithTitleFeed.Invoke(new Action(() => 
+                searchableListWithTitleFeed.Items.Clear()));
+            searchableListWithTitleGroups.Invoke(new Action(() => 
+                searchableListWithTitleGroups.Items.Clear()));
+            searchableListWithTitleLikedPages.Invoke(new Action(() => 
+                searchableListWithTitleLikedPages.Items.Clear()));
+            
+            labelUserData.Invoke(new Action(() => 
+                labelUserData.Text = ""));
         }
 
         private void toggleLoginUI(bool i_IsLogin)
@@ -135,179 +173,204 @@ namespace BasicFacebookFeatures
 
         private void fetchUserData()
         {
-            fetchUserFriends();
-            fetchUserAlbums();
-            fetchUserGroups();
-            fetchLikedPages();
-            fetchUserFeed();
-            fetchUserEvents();
+            new Thread(() =>
+            {
+                fetchUserFriends();
+                fetchUserAlbums();
+                fetchUserGroups();
+                fetchLikedPages();
+                fetchUserFeed();
+                fetchUserEvents();
+            }).Start();
         }
 
         private void fetchUserFriends()
         {
-            searchableListWithTitleFriends.Items.Clear();
-            searchableListWithTitleFriends.DisplayMember = "Name";
-            foreach (var friend in r_FacebookManager.GetFriends())
+            new Thread(() =>
             {
-                searchableListWithTitleFriends.Items.Add(friend);
-            }
-
-            if (searchableListWithTitleFriends.Items.Count == 0)
-            {
-                MessageBox.Show("No friends to retrieve :(");
-            }
+                var friends = r_FacebookManager.GetFriends();
+                
+                searchableListWithTitleFriends.Invoke(new Action(() => 
+                {
+                    searchableListWithTitleFriends.Items.Clear();
+                    searchableListWithTitleFriends.DisplayMember = "Name";
+                    
+                    foreach (var friend in friends)
+                    {
+                        searchableListWithTitleFriends.Items.Add(friend);
+                    }
+                }));
+            }).Start();
         }
 
         private void fetchUserAlbums()
         {
-            searchableListWithTitleAlbums.Items.Clear();
-            searchableListWithTitleAlbums.DisplayMember = "Name";
-            foreach (var album in r_FacebookManager.GetAlbums())
+            new Thread(() =>
             {
-                searchableListWithTitleAlbums.Items.Add(album);
-            }
+                searchableListWithTitleAlbums.Invoke(new Action(() => {
+                    searchableListWithTitleAlbums.Items.Clear();
+                    searchableListWithTitleAlbums.DisplayMember = "Name";
+                }));
 
-            if (searchableListWithTitleAlbums.Items.Count == 0)
-            {
-                MessageBox.Show("No Albums to retrieve :(");
-            }
+                foreach (var album in r_FacebookManager.GetAlbums())
+                {
+                    searchableListWithTitleAlbums.Invoke(new Action(() => 
+                        searchableListWithTitleAlbums.Items.Add(album)));
+                }
+            }).Start();
         }
 
         private void fetchUserGroups()
         {
-            searchableListWithTitleGroups.Items.Clear();
-            searchableListWithTitleGroups.DisplayMember = "Name";
-            foreach (var group in r_FacebookManager.GetGroups())
+            new Thread(() =>
             {
-                searchableListWithTitleGroups.Items.Add(group);
-            }
+                searchableListWithTitleGroups.Invoke(new Action(() => {
+                    searchableListWithTitleGroups.Items.Clear();
+                    searchableListWithTitleGroups.DisplayMember = "Name";
+                }));
 
-            if (searchableListWithTitleGroups.Items.Count == 0)
-            {
-                MessageBox.Show("No groups to retrieve :(");
-            }
+                foreach (var group in r_FacebookManager.GetGroups())
+                {
+                    searchableListWithTitleGroups.Invoke(new Action(() => 
+                        searchableListWithTitleGroups.Items.Add(group)));
+                }
+            }).Start();
         }
 
         private void fetchLikedPages()
         {
-            searchableListWithTitleLikedPages.Items.Clear();
-            searchableListWithTitleLikedPages.DisplayMember = "Name";
-            try
+            new Thread(() =>
             {
+                searchableListWithTitleLikedPages.Invoke(new Action(() => {
+                    searchableListWithTitleLikedPages.Items.Clear();
+                    searchableListWithTitleLikedPages.DisplayMember = "Name";
+                }));
+
                 foreach (var page in r_FacebookManager.GetLikedPages())
                 {
-                    searchableListWithTitleLikedPages.Items.Add(page);
+                    searchableListWithTitleLikedPages.Invoke(new Action(() => 
+                        searchableListWithTitleLikedPages.Items.Add(page)));
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            if (searchableListWithTitleLikedPages.Items.Count == 0)
-            {
-                MessageBox.Show("No liked pages to retrieve :(");
-            }
+            }).Start();
         }
 
         private void fetchUserFeed()
         {
-            searchableListWithTitleFeed.Items.Clear();
-            foreach (var post in r_FacebookManager.GetNewsFeed())
+            new Thread(() =>
             {
-                if (post.Message != null)
-                {
-                    searchableListWithTitleFeed.Items.Add(post.Message);
-                }
-                else if (post.Caption != null)
-                {
-                    searchableListWithTitleFeed.Items.Add(post.Caption);
-                }
-                else
-                {
-                    searchableListWithTitleFeed.Items.Add($"[{post.CreatedTime}]");
-                }
-            }
+                searchableListWithTitleFeed.Invoke(new Action(() => {
+                    searchableListWithTitleFeed.Items.Clear();
+                    searchableListWithTitleFeed.DisplayMember = "Name";
+                }));
 
-            if (searchableListWithTitleFeed.Items.Count == 0)
-            {
-                searchableListWithTitleFeed.Items.Add("Feed is empty :(");
-            }
+                foreach (var post in r_FacebookManager.GetNewsFeed())
+                {
+                    searchableListWithTitleFeed.Invoke(new Action(() => 
+                        searchableListWithTitleFeed.Items.Add(post)));
+                }
+            }).Start();
         }
 
         private void fetchUserEvents()
         {
-            searchableListWithTitleEvents.Items.Clear();
-            foreach (var userEvent in r_FacebookManager.GetEvents())
+            new Thread(() =>
             {
-                if (userEvent.Name != null)
-                {
-                    searchableListWithTitleEvents.Items.Add($"{userEvent.Name} [{userEvent.TimeString}]");
-                }
-            }
+                searchableListWithTitleEvents.Invoke(new Action(() => {
+                    searchableListWithTitleEvents.Items.Clear();
+                    searchableListWithTitleEvents.DisplayMember = "Name";
+                }));
 
-            if (searchableListWithTitleEvents.Items.Count == 0)
-            {
-                searchableListWithTitleEvents.Items.Add("No Events to show :(");
-            }
+                foreach (var fbEvent in r_FacebookManager.GetEvents())
+                {
+                    searchableListWithTitleEvents.Invoke(new Action(() => 
+                        searchableListWithTitleEvents.Items.Add(fbEvent)));
+                }
+            }).Start();
         }
 
         private void searchableListWithTitleFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (searchableListWithTitleFriends.SelectedItem is FacebookWrapper.ObjectModel.User selectedFriend)
             {
-                pictureBoxSelectedFriend.LoadAsync(selectedFriend.PictureSmallURL);
+                new Thread(() =>
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        pictureBoxSelectedFriend.LoadAsync(selectedFriend.PictureSmallURL);
+                    }));
+                }).Start();
             }
         }
 
         private void searchableListWithTitleAlbums_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (searchableListWithTitleAlbums.SelectedItem is FacebookWrapper.ObjectModel.Album selectedAlbum)
+            if (searchableListWithTitleAlbums.SelectedItem is Album selectedAlbum)
             {
-                pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL);
+                new Thread(() =>
+                {
+                    pictureBoxSelectedAlbum.Invoke(new Action(() =>
+                        pictureBoxSelectedAlbum.LoadAsync(selectedAlbum.PictureAlbumURL)));
+                }).Start();
             }
         }
 
         private void searchableListWithTitleGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (searchableListWithTitleGroups.SelectedItem is FacebookWrapper.ObjectModel.Group selectedGroup)
+            if (searchableListWithTitleGroups.SelectedItem is Group selectedGroup)
             {
-                pictureBoxSelectedGroup.LoadAsync(selectedGroup.PictureSmallURL);
+                new Thread(() =>
+                {
+                    pictureBoxSelectedGroup.Invoke(new Action(() =>
+                        pictureBoxSelectedGroup.LoadAsync(selectedGroup.PictureSmallURL)));
+                }).Start();
             }
         }
 
         private void searchableListWithTitleLikedPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (searchableListWithTitleLikedPages.SelectedItem is FacebookWrapper.ObjectModel.Page selectedPage)
+            if (searchableListWithTitleLikedPages.SelectedItem is Page selectedPage)
             {
-                pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL);
+                new Thread(() =>
+                {
+                    pictureBoxSelectedPage.Invoke(new Action(() =>
+                        pictureBoxSelectedPage.LoadAsync(selectedPage.PictureSmallURL)));
+                }).Start();
             }
         }
 
         private void buttonPost_Click(object sender, EventArgs e)
         {
             const bool v_PostButtonsEnabled = true;
+            string postText = richTextBoxPost.Text;
 
-            try
+            togglePostButtons(!v_PostButtonsEnabled);
+
+            new Thread(() =>
             {
-                r_FacebookManager.PostStatus(richTextBoxPost.Text);
-                togglePostButtons(!v_PostButtonsEnabled);
-                MessageBox.Show("Post published successfully!");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show($"An error occurred: {exception.Message}");
-            }
-            finally
-            {
-                richTextBoxPost.Text = string.Empty;
-            }
+                try
+                {
+                    r_FacebookManager.PostStatus(postText);
+                    
+                    this.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show("Post published successfully!");
+                        richTextBoxPost.Text = string.Empty;
+                    }));
+                }
+                catch (Exception exception)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show($"An error occurred: {exception.Message}");
+                        richTextBoxPost.Text = string.Empty;
+                    }));
+                }
+            }).Start();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             const bool v_PostButtonsEnabled = true;
-
             richTextBoxPost.Text = string.Empty;
             togglePostButtons(!v_PostButtonsEnabled);
         }
@@ -327,47 +390,33 @@ namespace BasicFacebookFeatures
 
         private void buttonAddPictureAndPost_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (getPictureAndPost() == DialogResult.OK)
-                {
-                    MessageBox.Show("Picture Posted <3");
-                }
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
-            finally
-            {
-                richTextBoxPost.Text = string.Empty;
-            }
-        }
+            string picturePath = string.Empty;
+            string postText = richTextBoxPost.Text;
 
-        private DialogResult getPictureAndPost()
-        {
-            DialogResult userSelection = openFileDialog.ShowDialog();
-            if (userSelection == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string picturePath = openFileDialog.FileName;
-
-                if (string.IsNullOrWhiteSpace(picturePath))
+                picturePath = openFileDialog.FileName;
+                
+                new Thread(() =>
                 {
-                    throw new Exception("Please choose a picture first!");
-                }
-                else
-                {
-                    r_FacebookManager.PostPicture(richTextBoxPost.Text, picturePath);
-                }
+                    try
+                    {
+                        r_FacebookManager.PostPicture(postText, picturePath);
+                        
+                        richTextBoxPost.Invoke(new Action(() => richTextBoxPost.Text = string.Empty));
+                        MessageBox.Show("Picture Posted <3");
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show(exception.Message);
+                    }
+                }).Start();
             }
-
-            return userSelection;
         }
 
         private void richTextBoxPost_TextChanged(object sender, EventArgs e)
         {
             const bool v_PostButtonsEnabled = true;
-
             togglePostButtons(v_PostButtonsEnabled);
         }
 

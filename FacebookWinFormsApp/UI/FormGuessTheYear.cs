@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BasicFacebookFeatures
@@ -33,12 +33,15 @@ namespace BasicFacebookFeatures
         private void formGuessTheYear_Load(object sender, EventArgs e)
         {
             updateRemainingPhotosCount();
-            displayNextQuestion();
+            new Thread(() => displayNextQuestion()).Start();
         }
 
         private void displayNextQuestion()
         {
-            if (!r_GuessTheYearGame.DisplayNextQuestion(message => MessageBox.Show(message)))
+            if (!r_GuessTheYearGame.DisplayNextQuestion(message => 
+            {
+                this.Invoke(new Action(() => MessageBox.Show(message)));
+            }))
             {
                 finishGame();
                 return;
@@ -50,15 +53,23 @@ namespace BasicFacebookFeatures
 
         private void displayPhotoInQuestion(Photo i_Photo)
         {
-            pictureToGuess.ImageLocation = i_Photo.PictureNormalURL;
-            pictureToGuess.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureToGuess.Invoke(new Action(() =>
+            {
+                pictureToGuess.ImageLocation = i_Photo.PictureNormalURL;
+                pictureToGuess.SizeMode = PictureBoxSizeMode.StretchImage;
+            }));
         }
 
         private void displayAnswerOptions(List<int> i_AnswerOptions)
         {
             for (int i = 0; i < i_AnswerOptions.Count; i++)
             {
-                Controls[$"buttonAnswer{i + 1}"].Text = i_AnswerOptions[i].ToString();
+                Button currentButton = Controls[$"buttonAnswer{i + 1}"] as Button;
+                currentButton?.Invoke(new Action(() =>
+                {
+                    currentButton.Text = i_AnswerOptions[i].ToString();
+                    currentButton.BackColor = DefaultBackColor;
+                }));
             }
         }
 
@@ -67,45 +78,51 @@ namespace BasicFacebookFeatures
             if (sender is Button clickedButton)
             {
                 int selectedAnswerIndex = int.Parse(clickedButton.Name.Replace("buttonAnswer", "")) - 1;
-                r_GuessTheYearGame.HandleAnswer(selectedAnswerIndex, () =>
+                new Thread(() =>
                 {
-                    updateAnswerCounters();
-                    highlightCorrectAnswer();
-                });
+                    r_GuessTheYearGame.HandleAnswer(selectedAnswerIndex, () =>
+                    {
+                        updateAnswerCounters();
+                        highlightCorrectAnswer();
+                    });
+                }).Start();
             }
         }
 
         private void updateAnswerCounters()
         {
-            labelNumberOfCorrectAnswers.Text = r_GuessTheYearGame.CorrectAnswers.ToString();
-            labelNumberOfWrongAnswers.Text = r_GuessTheYearGame.WrongAnswers.ToString();
+            labelNumberOfCorrectAnswers.Invoke(new Action(() =>
+                labelNumberOfCorrectAnswers.Text = r_GuessTheYearGame.CorrectAnswers.ToString()));
+            labelNumberOfWrongAnswers.Invoke(new Action(() =>
+                labelNumberOfWrongAnswers.Text = r_GuessTheYearGame.WrongAnswers.ToString()));
             updateRemainingPhotosCount();
         }
 
         private void updateRemainingPhotosCount()
         {
-            labelNumberOfPhotosThatLeft.Text = r_GuessTheYearGame.RemainingPhotos.ToString();
+            labelNumberOfPhotosThatLeft.Invoke(new Action(() =>
+                labelNumberOfPhotosThatLeft.Text = r_GuessTheYearGame.RemainingPhotos.ToString()));
         }
 
         private void highlightCorrectAnswer()
         {
-            Controls[$"buttonAnswer{r_GuessTheYearGame.CorrectAnswerIndex + 1}"].BackColor = Color.LightGreen;
+            Button correctButton = Controls[$"buttonAnswer{r_GuessTheYearGame.CorrectAnswerIndex + 1}"] as Button;
+            correctButton?.Invoke(new Action(() => correctButton.BackColor = Color.LightGreen));
 
-            Task.Delay(500).ContinueWith(_ =>
-            {
-                Invoke(new Action(() =>
-                {
-                    Controls[$"buttonAnswer{r_GuessTheYearGame.CorrectAnswerIndex + 1}"].BackColor = DefaultBackColor;
-                    displayNextQuestion();
-                }));
-            });
+            Thread.Sleep(1500); // Give user time to see the correct answer
+
+            correctButton?.Invoke(new Action(() => correctButton.BackColor = DefaultBackColor));
+            new Thread(() => displayNextQuestion()).Start();
         }
 
         private void finishGame()
         {
-            MessageBox.Show(r_GuessTheYearGame.GetGameSummary());
-            Close();
-            m_MainForm?.Show();
+            this.Invoke(new Action(() =>
+            {
+                MessageBox.Show(r_GuessTheYearGame.GetGameSummary());
+                Close();
+                m_MainForm?.Show();
+            }));
         }
 
         private void formGuessTheYear_FormClosed(object sender, FormClosedEventArgs e)
