@@ -3,30 +3,17 @@ using FacebookWrapper.ObjectModel;
 
 namespace BasicFacebookFeatures.Features
 {
-    public class ProfileAnalyzerFeature : IFacebookFeature
+    public class ProfileAnalyzerFeature : FacebookFeature
     {
-        private readonly Form r_MainForm;
         private FormProfileAnalyzer m_ProfileAnalyzerForm;
 
-        private readonly ProfileAnalyzerFacade r_profileAnalyzerFacade;
-
-        public ProfileAnalyzerFeature(Form i_MainForm, User i_LoggedInUser)
+        public override void Show()
         {
-            r_MainForm = i_MainForm;
-            r_profileAnalyzerFacade = new ProfileAnalyzerFacade(i_LoggedInUser);
-        }
+            HideMainForm();
 
-        public void Show()
-        {
-            r_MainForm.Hide();  
-            initializeAndShowForm();
-        }
-
-        private void initializeAndShowForm()
-        {
-            m_ProfileAnalyzerForm = new FormProfileAnalyzer(r_profileAnalyzerFacade)
+            m_ProfileAnalyzerForm = new FormProfileAnalyzer(new ProfileAnalyzerFacade(User))
             {
-                MainForm = r_MainForm
+                MainForm = Form
             };
 
             m_ProfileAnalyzerForm.ShowDialog();

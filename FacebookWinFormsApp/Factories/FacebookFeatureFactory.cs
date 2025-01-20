@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using FacebookWrapper;
+using FacebookWrapper.ObjectModel;
 
 namespace BasicFacebookFeatures.Features
 {
@@ -9,28 +10,19 @@ namespace BasicFacebookFeatures.Features
         ProfileAnalyzer
     }
 
-    public class FacebookFeatureFactory
+    public abstract class FacebookFeatureFactory
     {
-        private readonly Form r_MainForm;
-        private readonly LoginResult r_LoginResult;
-
-        public FacebookFeatureFactory(Form i_MainForm, LoginResult i_LoginResult)
+        public static FacebookFeature CreateFeature(eFeatureType i_FeatureType, Form i_MainForm, User i_LoggedInUser)
         {
-            r_MainForm = i_MainForm;
-            r_LoginResult = i_LoginResult;
-        }
-
-        public IFacebookFeature CreateFeature(eFeatureType i_FeatureType)
-        {
-            IFacebookFeature feature = null;
+            FacebookFeature feature = null;
 
             switch (i_FeatureType)
             {
                 case eFeatureType.GuessTheYear:
-                    feature = new GuessTheYearFeature(r_MainForm, r_LoginResult.LoggedInUser);
+                    feature = new GuessTheYearFeature(i_MainForm, i_LoggedInUser);
                     break;
                 case eFeatureType.ProfileAnalyzer:
-                    feature = new ProfileAnalyzerFeature(r_MainForm, r_LoginResult.LoggedInUser);
+                    feature = new ProfileAnalyzerFeature(i_MainForm, i_LoggedInUser);
                     break;
             }
 

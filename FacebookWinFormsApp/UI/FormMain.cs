@@ -6,13 +6,13 @@ using BasicFacebookFeatures.Properties;
 using BasicFacebookFeatures.Features;
 using System.Threading;
 using FacebookWrapper.ObjectModel;
+using BasicFacebookFeatures.Factories;
 
 namespace BasicFacebookFeatures
 {
     public partial class FormMain : Form
     {
         private readonly FacebookManager r_FacebookManager = FacebookManager.Instance;
-        private FacebookFeatureFactory m_FeatureFactory;
 
         public FormMain()
         {
@@ -126,10 +126,11 @@ namespace BasicFacebookFeatures
             toggleLoginUI(v_IsLogin);
             toggleFeaturesButtons(v_IsLogin);
 
+            FacebookFeatureFactory.Initialize(this, r_FacebookManager.LoginResult.LoggedInUser);
+
             new Thread(() =>
             {
                 fetchUserData();
-                m_FeatureFactory = new FacebookFeatureFactory(this, r_FacebookManager.LoginResult);
             }).Start();
         }
 
@@ -422,13 +423,13 @@ namespace BasicFacebookFeatures
 
         private void buttonProfileAnalyzer_Click(object sender, EventArgs e)
         {
-            IFacebookFeature profileAnalayzer = m_FeatureFactory.CreateFeature(eFeatureType.ProfileAnalyzer);
-            profileAnalayzer.Show();
+            FacebookFeature profileAnalyzer = FacebookFeatureFactory.CreateFeature(eFeatureType.ProfileAnalyzer);
+            profileAnalyzer.Show();
         }
 
         private void buttonGuessTheYear_Click(object sender, EventArgs e)
         {
-            IFacebookFeature guessTheYear = m_FeatureFactory.CreateFeature(eFeatureType.GuessTheYear);
+            FacebookFeature guessTheYear = FacebookFeatureFactory.CreateFeature(eFeatureType.GuessTheYear);
             guessTheYear.Show();
         }
     }
