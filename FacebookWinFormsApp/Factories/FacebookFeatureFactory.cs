@@ -10,7 +10,7 @@ namespace BasicFacebookFeatures.Features
         ProfileAnalyzer
     }
 
-    public static class FacebookFeatureFactory
+    public abstract class FacebookFeatureFactory
     {
         public static FacebookFeature CreateFeature(eFeatureType i_FeatureType, Form i_MainForm, User i_LoggedInUser)
         {
