@@ -1,62 +1,76 @@
-﻿using System;
-using System.Windows.Forms;
-using FacebookWrapper.ObjectModel;
-using BasicFacebookFeatures.Adapters;
-using System.Drawing;
+﻿using FacebookWrapper.ObjectModel;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace BasicFacebookFeatures
 {
     public partial class FormGuessTheYear : Form
     {
         private Form m_MainForm;
-        private IGuessTheYearGame m_CurrentGame;
+        private readonly GuessTheYearGame r_GuessTheYearGame;
 
-        public FormGuessTheYear()
+        public FormGuessTheYear(GuessTheYearGame i_GuessTheYearGame)
         {
             InitializeComponent();
+            r_GuessTheYearGame = i_GuessTheYearGame;
         }
 
         public Form MainForm
         {
-            get { return m_MainForm; }
-            set { m_MainForm = value; }
+            get 
+            { 
+                return m_MainForm; 
+            }
+            set 
+            {
+                m_MainForm = value; 
+            }
         }
 
         private void formGuessTheYear_Load(object sender, EventArgs e)
         {
-            // Form load initialization if needed
-        }
-
-        public void LoadGame(IGuessTheYearGame i_Game)
-        {
-            m_CurrentGame = i_Game;
-            m_CurrentGame.Start();
-            displayNextQuestion();
+            updateRemainingPhotosCount();
+            new Thread(() => displayNextQuestion()).Start();
         }
 
         private void displayNextQuestion()
         {
-            PhotoInfo currentPhoto = m_CurrentGame.GetCurrentPhoto();
-            if (currentPhoto == null)
+            if (!r_GuessTheYearGame.DisplayNextQuestion(message => 
             {
-                m_CurrentGame.End();
-                MessageBox.Show(m_CurrentGame.GetGameSummary());
-                Close();
+                this.Invoke(new Action(() => MessageBox.Show(message)));
+            }))
+            {
+                finishGame();
                 return;
             }
 
-            pictureToGuess.ImageLocation = currentPhoto.ImageUrl;
-            displayAnswerOptions(m_CurrentGame.GetAnswerOptions());
-            labelNumberOfCorrectAnswers.Text = m_CurrentGame.Score.ToString();
+            displayPhotoInQuestion(r_GuessTheYearGame.CurrentPhoto);
+            displayAnswerOptions(r_GuessTheYearGame.GetCurrentAnswerOptions());
+        }
+
+        private void displayPhotoInQuestion(Photo i_Photo)
+        {
+            pictureToGuess.Invoke(new Action(() =>
+            {
+                pictureToGuess.ImageLocation = i_Photo.PictureNormalURL;
+                pictureToGuess.SizeMode = PictureBoxSizeMode.StretchImage;
+            }));
         }
 
         private void displayAnswerOptions(List<int> i_AnswerOptions)
         {
-            buttonAnswer1.Text = i_AnswerOptions[0].ToString();
-            buttonAnswer2.Text = i_AnswerOptions[1].ToString();
-            buttonAnswer3.Text = i_AnswerOptions[2].ToString();
-            buttonAnswer4.Text = i_AnswerOptions[3].ToString();
+            for (int i = 0; i < i_AnswerOptions.Count; i++)
+            {
+                Button currentButton = Controls[$"buttonAnswer{i + 1}"] as Button;
+                currentButton?.Invoke(new Action(() =>
+                {
+                    currentButton.Text = i_AnswerOptions[i].ToString();
+                    currentButton.BackColor = DefaultBackColor;
+                }));
+            }
         }
 
         private void buttonAnswer_Click(object sender, EventArgs e)
@@ -64,32 +78,56 @@ namespace BasicFacebookFeatures
             if (sender is Button clickedButton)
             {
                 int selectedAnswerIndex = int.Parse(clickedButton.Name.Replace("buttonAnswer", "")) - 1;
-                bool isCorrect = m_CurrentGame.CheckAnswer(selectedAnswerIndex);
-                highlightCorrectAnswer();
-
-                Timer timer = new Timer { Interval = 1500 };
-                timer.Tick += (s, args) =>
+                new Thread(() =>
                 {
-                    timer.Stop();
-                    displayNextQuestion();
-                };
-                timer.Start();
+                    r_GuessTheYearGame.HandleAnswer(selectedAnswerIndex, () =>
+                    {
+                        updateAnswerCounters();
+                        highlightCorrectAnswer();
+                    });
+                }).Start();
             }
+        }
+
+        private void updateAnswerCounters()
+        {
+            labelNumberOfCorrectAnswers.Invoke(new Action(() =>
+                labelNumberOfCorrectAnswers.Text = r_GuessTheYearGame.CorrectAnswers.ToString()));
+            labelNumberOfWrongAnswers.Invoke(new Action(() =>
+                labelNumberOfWrongAnswers.Text = r_GuessTheYearGame.WrongAnswers.ToString()));
+            updateRemainingPhotosCount();
+        }
+
+        private void updateRemainingPhotosCount()
+        {
+            labelNumberOfPhotosThatLeft.Invoke(new Action(() =>
+                labelNumberOfPhotosThatLeft.Text = r_GuessTheYearGame.RemainingPhotos.ToString()));
         }
 
         private void highlightCorrectAnswer()
         {
-            int correctIndex = m_CurrentGame.GetCorrectAnswerIndex();
-            Button correctButton = Controls[$"buttonAnswer{correctIndex + 1}"] as Button;
-            if (correctButton != null)
+            Button correctButton = Controls[$"buttonAnswer{r_GuessTheYearGame.CorrectAnswerIndex + 1}"] as Button;
+            correctButton?.Invoke(new Action(() => correctButton.BackColor = Color.LightGreen));
+
+            Thread.Sleep(1500); // Give user time to see the correct answer
+
+            correctButton?.Invoke(new Action(() => correctButton.BackColor = DefaultBackColor));
+            new Thread(() => displayNextQuestion()).Start();
+        }
+
+        private void finishGame()
+        {
+            this.Invoke(new Action(() =>
             {
-                correctButton.BackColor = Color.LightGreen;
-            }
+                MessageBox.Show(r_GuessTheYearGame.GetGameSummary());
+                Close();
+                m_MainForm?.Show();
+            }));
         }
 
         private void formGuessTheYear_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainForm?.Show();
+            m_MainForm?.Show();
         }
     }
 }

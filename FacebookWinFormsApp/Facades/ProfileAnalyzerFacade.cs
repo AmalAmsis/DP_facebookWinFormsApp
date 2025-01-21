@@ -122,7 +122,7 @@ namespace BasicFacebookFeatures
            
         public FacebookObjectCollection<User> FriendsWhoLikedPhotos
         {
-            get 
+            get
             {
                 return r_FriendAnalyzer.GetFriendsWhoLikedPhotos();
             }

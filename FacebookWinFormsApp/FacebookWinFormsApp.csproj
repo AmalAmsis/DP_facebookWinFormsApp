@@ -77,9 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\GuessTheYearGameAdapter.cs" />
-    <Compile Include="Adapters\IFacebookGame.cs" />
-    <Compile Include="Adapters\IGuessTheYearGame.cs" />
     <Compile Include="Logic\AppSettings.cs" />
     <Compile Include="Singletons\FacebookManager.cs" />
     <Compile Include="Logic\FacebookPostManager.cs" />
