@@ -1,6 +1,7 @@
 using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
+using BasicFacebookFeatures.Adapters;
 
 namespace BasicFacebookFeatures.Features
 {
@@ -18,11 +19,13 @@ namespace BasicFacebookFeatures.Features
         {
             HideMainForm();
 
-            m_GuessTheYearForm = new FormGuessTheYear(new GuessTheYearGame(this.FacebookUser))
+            IGuessTheYearGame game = new GuessTheYearGameAdapter(this.FacebookUser);
+            m_GuessTheYearForm = new FormGuessTheYear()
             {
                 MainForm = this.MainForm
             };
 
+            m_GuessTheYearForm.LoadGame(game);
             m_GuessTheYearForm.ShowDialog();
         }
     }

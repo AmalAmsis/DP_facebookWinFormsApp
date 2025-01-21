@@ -7,95 +7,44 @@ namespace BasicFacebookFeatures
 {
     public class GuessTheYearGame
     {
-        private readonly User m_LoggedInUser;
-
-        private readonly FacebookObjectCollection<Photo> r_PhotoCollection = new FacebookObjectCollection<Photo>();
+        private readonly List<PhotoInfo> r_PhotoCollection = new List<PhotoInfo>();
         private readonly Random r_RandomGenerator = new Random();
         private int m_CorrectAnswerIndex;
         private int m_CorrectAnswers = 0;
         private int m_WrongAnswers = 0;
-        private Photo m_CurrentPhoto;
+        private PhotoInfo m_CurrentPhoto;
 
-        public GuessTheYearGame(User i_LoggedInUser)
+        public int RemainingPhotos => r_PhotoCollection.Count;
+        public int CorrectAnswers => m_CorrectAnswers;
+        public int WrongAnswers => m_WrongAnswers;
+        public int CorrectAnswerIndex => m_CorrectAnswerIndex;
+        public PhotoInfo CurrentPhoto => m_CurrentPhoto;
+
+        public void AddPhoto(string i_PhotoUrl, DateTime i_PhotoDate)
         {
-            m_LoggedInUser = i_LoggedInUser;
-            LoadUserPhotos();
+            r_PhotoCollection.Add(new PhotoInfo(i_PhotoUrl, i_PhotoDate));
         }
 
-        public int RemainingPhotos
-        {
-            get
-            {
-                return r_PhotoCollection.Count;
-            }
-        }
-
-        public int CorrectAnswers
-        {
-            get 
-            { 
-                return m_CorrectAnswers; 
-            }
-        }
-
-        public int WrongAnswers
-        {
-            get 
-            {
-                return m_WrongAnswers; 
-            }
-        }
-
-        public int CorrectAnswerIndex
-        {
-            get
-            {
-                return m_CorrectAnswerIndex;
-            }
-        }
-
-        public Photo CurrentPhoto
-        {
-            get
-            {
-                return m_CurrentPhoto;
-            }
-        }
-
-        public bool LoadUserPhotos()
-        {
-            if (m_LoggedInUser?.Albums == null || !m_LoggedInUser.Albums.Any())
-            {
-                return false;
-            }
-
-            foreach (Album album in m_LoggedInUser.Albums)
-            {
-                foreach (Photo photo in album.Photos)
-                {
-                    r_PhotoCollection.Add(photo);
-                }
-            }
-
-            return true;
-        }
-
-        public Photo GetNextPhoto()
+        public PhotoInfo GetNextPhoto()
         {
             if (r_PhotoCollection.Count > 0)
             {
-                Photo nextPhoto = r_PhotoCollection[0];
+                PhotoInfo nextPhoto = r_PhotoCollection[0];
                 r_PhotoCollection.RemoveAt(0);
+                m_CurrentPhoto = nextPhoto;
                 return nextPhoto;
             }
 
             return null;
         }
 
-        public List<int> GenerateAnswerOptions(int i_CorrectYear)
+        public List<int> GenerateAnswerOptions()
         {
-            int lowerBound = Math.Max(i_CorrectYear - 5, DateTime.MinValue.Year);
-            int upperBound = Math.Min(i_CorrectYear + 5, DateTime.Now.Year);
+            if (m_CurrentPhoto == null) return null;
+
+            int correctYear = m_CurrentPhoto.DateTaken.Year;
+            int lowerBound = Math.Max(correctYear - 5, DateTime.MinValue.Year);
+            int upperBound = Math.Min(correctYear + 5, DateTime.Now.Year);
             List<int> answerOptions = new List<int>();
             List<int> usedYears = new List<int>();
 
@@ -105,7 +54,7 @@ namespace BasicFacebookFeatures
             {
                 if (i == m_CorrectAnswerIndex)
                 {
-                    answerOptions.Add(i_CorrectYear);
+                    answerOptions.Add(correctYear);
                 }
                 else
                 {
@@ -114,7 +63,7 @@ namespace BasicFacebookFeatures
                     {
                         randomYear = r_RandomGenerator.Next(lowerBound, upperBound + 1);
                     }
-                    while (usedYears.Contains(randomYear) || randomYear == i_CorrectYear);
+                    while (usedYears.Contains(randomYear) || randomYear == correctYear);
 
                     usedYears.Add(randomYear);
                     answerOptions.Add(randomYear);
@@ -140,44 +89,21 @@ namespace BasicFacebookFeatures
             return isCorrect;
         }
 
-        public bool DisplayNextQuestion(Action<string> onPhotoWithoutDate)
-        {
-            m_CurrentPhoto = GetNextPhoto();
-            if (m_CurrentPhoto == null)
-            {
-                return false;
-            }
-
-            if (!m_CurrentPhoto.CreatedTime.HasValue)
-            {
-                onPhotoWithoutDate?.Invoke("Photo has no creation date. Skipping...");
-                return DisplayNextQuestion(onPhotoWithoutDate);
-            }
-
-            return true;
-        }
-
-        public List<int> GetCurrentAnswerOptions()
-        {
-            if (m_CurrentPhoto?.CreatedTime == null)
-            {
-                return null;
-            }
-
-            return GenerateAnswerOptions(m_CurrentPhoto.CreatedTime.Value.Year);
-        }
-
-        public void HandleAnswer(int i_SelectedAnswerIndex, Action onAnswerProcessed)
-        {
-            bool isCorrect = CheckAnswer(i_SelectedAnswerIndex);
-            onAnswerProcessed?.Invoke();
-        }
-
         public string GetGameSummary()
         {
-            return $"Congratulations! You've completed the challenge.\n" +
-                   $"Correct Answers: {CorrectAnswers}\n" +
-                   $"Wrong Answers: {WrongAnswers}";
+            return $"Game Over!\nCorrect Answers: {CorrectAnswers}\nWrong Answers: {WrongAnswers}";
+        }
+    }
+
+    public class PhotoInfo
+    {
+        public string ImageUrl { get; }
+        public DateTime DateTaken { get; }
+
+        public PhotoInfo(string i_ImageUrl, DateTime i_DateTaken)
+        {
+            ImageUrl = i_ImageUrl;
+            DateTaken = i_DateTaken;
         }
     }
 } 
