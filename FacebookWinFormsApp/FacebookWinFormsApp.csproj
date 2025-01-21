@@ -102,7 +102,7 @@
       <DependentUpon>FormProfileAnalyzer.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\GuessTheYearGame.cs" />
-    <Compile Include="Factories\FacebookFormFeature.cs" />
+    <Compile Include="Factories\FacebookFeature.cs" />
     <Compile Include="Facades\ProfileAnalyzerFacade.cs" />
     <Compile Include="SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>

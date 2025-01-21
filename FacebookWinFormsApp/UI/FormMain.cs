@@ -452,13 +452,13 @@ namespace BasicFacebookFeatures
 
         private void buttonProfileAnalyzer_Click(object sender, EventArgs e)
         {
-            FacebookFeature profileAnalyzer = FacebookFeatureFactory.CreateFeature(eFeatureType.ProfileAnalyzer, this, r_FacebookManager.LoggedInUser);
+            FacebookFeature profileAnalyzer = FacebookFeatureFactory.CreateFeature(eFeatureType.ProfileAnalyzer, this);
             profileAnalyzer.Show();
         }
 
         private void buttonGuessTheYear_Click(object sender, EventArgs e)
         {
-            FacebookFeature guessTheYear = FacebookFeatureFactory.CreateFeature(eFeatureType.GuessTheYear, this, r_FacebookManager.LoggedInUser);
+            FacebookFeature guessTheYear = FacebookFeatureFactory.CreateFeature(eFeatureType.GuessTheYear, this);
             guessTheYear.Show();
         }
     }

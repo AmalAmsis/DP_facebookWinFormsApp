@@ -8,17 +8,13 @@ namespace BasicFacebookFeatures.Features
     {
         private FormGuessTheYear m_GuessTheYearForm;
 
-        public GuessTheYearFeature(Form i_MainForm, User i_FacebookUser)
-            : base(i_MainForm, i_FacebookUser)
-        {
-            
-        }
-
         public override void Show()
         {
             HideMainForm();
 
-            m_GuessTheYearForm = new FormGuessTheYear(new GuessTheYearGame(this.FacebookUser))
+            m_GuessTheYearForm = new FormGuessTheYear(
+                                 new GuessTheYearGame(
+                                     FacebookManager.Instance.LoggedInUser))
             {
                 MainForm = this.MainForm
             };
