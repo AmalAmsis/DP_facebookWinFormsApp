@@ -19,31 +19,16 @@ namespace BasicFacebookFeatures.Services
 
         public FacebookObjectCollection<User> GetFriendsWithCommonLanguages()
         {
-            if (r_LoggedInUser?.Languages == null)
-            {
-                return new FacebookObjectCollection<User>();
-            }
-
             return new FriendFilterContext(new CommonLanguagesStrategy()).FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsFromSameHometown()
         {
-            if (r_LoggedInUser?.Hometown == null)
-            {
-                return new FacebookObjectCollection<User>();
-            }
-
             return new FriendFilterContext(new SameHometownStrategy()).FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsWithSameBirthday()
         {
-            if (string.IsNullOrEmpty(r_LoggedInUser?.Birthday))
-            {
-                return new FacebookObjectCollection<User>();
-            }
-
             return new FriendFilterContext(new SameBirthdayStrategy()).FilterFriends();
         }
 

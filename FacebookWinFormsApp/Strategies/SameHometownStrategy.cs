@@ -6,7 +6,7 @@ namespace BasicFacebookFeatures.Services.Strategies
     {
         public bool ShouldIncludeFriend(User i_Friend)
         {
-            return i_Friend.Hometown == FacebookManager.Instance.LoggedInUser?.Hometown;
+            return i_Friend?.Hometown != null && i_Friend.Hometown == FacebookManager.Instance.LoggedInUser?.Hometown;
         }
     }
 } 

@@ -6,7 +6,7 @@ namespace BasicFacebookFeatures.Services.Strategies
     {
         public bool ShouldIncludeFriend(User i_Friend)
         {
-            return i_Friend.Birthday == FacebookManager.Instance.LoggedInUser?.Birthday;
+            return i_Friend?.Birthday != null && i_Friend.Birthday == FacebookManager.Instance.LoggedInUser?.Birthday;
         }
     }
 } 
