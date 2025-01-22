@@ -6,12 +6,7 @@ namespace BasicFacebookFeatures.Services
 {
     internal class PhotoAnalyzer
     {
-        private readonly User r_LoggedInUser;
-
-        public PhotoAnalyzer(User i_LoggedInUser)
-        {
-            r_LoggedInUser = i_LoggedInUser;
-        }
+        private readonly User r_LoggedInUser = FacebookManager.Instance.LoggedInUser;
 
         public string UserName
         {

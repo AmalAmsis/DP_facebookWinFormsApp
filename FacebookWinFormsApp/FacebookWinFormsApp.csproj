@@ -83,6 +83,12 @@
     <Compile Include="Factories\FacebookFeatureFactory.cs" />
     <Compile Include="Factories\GuessTheYearFeature.cs" />
     <Compile Include="Factories\ProfileAnalyzerFeature.cs" />
+    <Compile Include="Strategies\CommonLanguagesStrategy.cs" />
+    <Compile Include="Strategies\FriendFilterContext.cs" />
+    <Compile Include="Strategies\IFriendFilterStrategy.cs" />
+    <Compile Include="Strategies\PhotoLikesStrategy.cs" />
+    <Compile Include="Strategies\SameBirthdayStrategy.cs" />
+    <Compile Include="Strategies\SameHometownStrategy.cs" />
     <Compile Include="UI\FormGuessTheYear.cs">
       <SubType>Form</SubType>
     </Compile>

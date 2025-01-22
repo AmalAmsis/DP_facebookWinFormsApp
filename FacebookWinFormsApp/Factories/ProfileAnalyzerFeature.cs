@@ -11,9 +11,7 @@ namespace BasicFacebookFeatures.Features
         {
             HideMainForm();
 
-            m_ProfileAnalyzerForm = new FormProfileAnalyzer(
-                                    new ProfileAnalyzerFacade(
-                                        FacebookManager.Instance.LoggedInUser))
+            m_ProfileAnalyzerForm = new FormProfileAnalyzer(new ProfileAnalyzerFacade())
             {
                 MainForm = this.MainForm
             };

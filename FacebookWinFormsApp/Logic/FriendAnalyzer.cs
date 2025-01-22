@@ -1,17 +1,13 @@
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
+using BasicFacebookFeatures.Services.Strategies;
 
 namespace BasicFacebookFeatures.Services
 {
     internal class FriendAnalyzer
     {
-        private readonly User r_LoggedInUser;
-
-        public FriendAnalyzer(User i_LoggedInUser)
-        {
-            r_LoggedInUser = i_LoggedInUser;
-        }
+        private readonly User r_LoggedInUser = FacebookManager.Instance.LoggedInUser;
 
         public string UserName
         {
@@ -28,8 +24,7 @@ namespace BasicFacebookFeatures.Services
                 return new FacebookObjectCollection<User>();
             }
 
-            return filterFriendsByCondition(friend =>
-                friend.Languages?.Any(lang => r_LoggedInUser.Languages.Contains(lang)) == true);
+            return new FriendFilterContext(new CommonLanguagesStrategy()).FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsFromSameHometown()
@@ -39,7 +34,7 @@ namespace BasicFacebookFeatures.Services
                 return new FacebookObjectCollection<User>();
             }
 
-            return filterFriendsByCondition(friend => friend.Hometown == r_LoggedInUser.Hometown);
+            return new FriendFilterContext(new SameHometownStrategy()).FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsWithSameBirthday()
@@ -49,40 +44,12 @@ namespace BasicFacebookFeatures.Services
                 return new FacebookObjectCollection<User>();
             }
 
-            return filterFriendsByCondition(friend => friend.Birthday == r_LoggedInUser.Birthday);
+            return new FriendFilterContext(new SameBirthdayStrategy()).FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsWhoLikedPhotos()
         {
-            FacebookObjectCollection<User> friends = new FacebookObjectCollection<User>();
-
-            foreach (Album album in r_LoggedInUser?.Albums ?? Enumerable.Empty<Album>())
-            {
-                foreach (Photo photo in album.Photos ?? Enumerable.Empty<Photo>())
-                {
-                    foreach (User user in photo.LikedBy ?? Enumerable.Empty<User>())
-                    {
-                        friends.Add(user);
-                    }
-                }
-            }
-
-            return friends;
-        }
-
-        private FacebookObjectCollection<User> filterFriendsByCondition(Func<User, bool> i_Condition)
-        {
-            FacebookObjectCollection<User> filteredFriends = new FacebookObjectCollection<User>();
-
-            foreach (User friend in r_LoggedInUser?.Friends ?? Enumerable.Empty<User>())
-            {
-                if (i_Condition(friend))
-                {
-                    filteredFriends.Add(friend);
-                }
-            }
-
-            return filteredFriends;
+            return new FriendFilterContext(new PhotoLikesStrategy()).FilterFriends();
         }
     }
 } 

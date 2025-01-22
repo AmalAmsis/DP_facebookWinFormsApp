@@ -4,12 +4,7 @@ namespace BasicFacebookFeatures.Services
 {
     internal class StatisticsAnalyzer
     {
-        private readonly User r_LoggedInUser;
-
-        public StatisticsAnalyzer(User i_LoggedInUser)
-        {
-            r_LoggedInUser = i_LoggedInUser;
-        }
+        private readonly User r_LoggedInUser = FacebookManager.Instance.LoggedInUser;
 
         public string UserName
         {

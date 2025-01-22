@@ -9,11 +9,11 @@ namespace BasicFacebookFeatures
         private readonly FriendAnalyzer r_FriendAnalyzer;
         private readonly StatisticsAnalyzer r_StatisticsAnalyzer;
 
-        public ProfileAnalyzerFacade(User i_LoggedInUser)
+        public ProfileAnalyzerFacade()
         {
-            r_PhotoAnalyzer = new PhotoAnalyzer(i_LoggedInUser);
-            r_FriendAnalyzer = new FriendAnalyzer(i_LoggedInUser);
-            r_StatisticsAnalyzer = new StatisticsAnalyzer(i_LoggedInUser);
+            r_PhotoAnalyzer = new PhotoAnalyzer();
+            r_FriendAnalyzer = new FriendAnalyzer();
+            r_StatisticsAnalyzer = new StatisticsAnalyzer();
         }
 
         public string UserName
