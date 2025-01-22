@@ -104,10 +104,10 @@
     <Compile Include="Logic\GuessTheYearGame.cs" />
     <Compile Include="Factories\FacebookFeature.cs" />
     <Compile Include="Facades\ProfileAnalyzerFacade.cs" />
-    <Compile Include="SearchableListWithTitle.cs">
+    <Compile Include="UI\SearchableListWithTitle.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SearchableListWithTitle.Designer.cs">
+    <Compile Include="UI\SearchableListWithTitle.Designer.cs">
       <DependentUpon>SearchableListWithTitle.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SearchableListWithTitle.resx">
+    <EmbeddedResource Include="UI\SearchableListWithTitle.resx">
       <DependentUpon>SearchableListWithTitle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
