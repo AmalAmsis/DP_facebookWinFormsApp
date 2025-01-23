@@ -2,6 +2,7 @@ using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
 using BasicFacebookFeatures.Services.Strategies;
+using BasicFacebookFeatures.Iterators;
 
 namespace BasicFacebookFeatures.Services
 {

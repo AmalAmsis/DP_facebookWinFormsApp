@@ -1,6 +1,7 @@
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Linq;
+using BasicFacebookFeatures.Iterators;
 
 namespace BasicFacebookFeatures.Services
 {
@@ -26,7 +27,17 @@ namespace BasicFacebookFeatures.Services
 
         public int CountTotalPhotos()
         {
-            return r_LoggedInUser?.Albums?.Sum(album => album.Photos.Count) ?? 0;
+            int count = 0;
+
+            IFacebookAggregate<Album> facebookPhotosAggregator = new FacebookPhotosAggregate(r_LoggedInUser.Albums);
+            IFacebookIterator<Album> iterator = facebookPhotosAggregator.CreateIterator();
+            
+            while (iterator.MoveNext())
+            {
+                count++;
+            }
+
+            return count;
         }
 
         public Photo GetBestPhoto()
@@ -42,21 +53,26 @@ namespace BasicFacebookFeatures.Services
         private Photo getPhotoWithExtremeLikes(Func<int, int, bool> i_Comparison)
         {
             Photo extremePhoto = null;
-            bool isFirstPhoto = true;
             int extremeLikes = -1;
+            bool isFirstPhoto = true;
 
-            foreach (Album album in r_LoggedInUser?.Albums)
+            IFacebookAggregate<Album> facebookPhotosAggregator = new FacebookPhotosAggregate(r_LoggedInUser.Albums);
+            IFacebookIterator<Album> iterator = facebookPhotosAggregator.CreateIterator();
+
+            while (iterator.MoveNext())
             {
-                foreach (Photo photo in album.Photos)
+                if (!(iterator.Current is Photo currentPhoto))
                 {
-                    int likesCount = photo.LikedBy?.Count ?? 0;
+                    continue;
+                }
 
-                    if (i_Comparison(likesCount, extremeLikes) || isFirstPhoto)
-                    {
-                        extremePhoto = photo;
-                        extremeLikes = likesCount;
-                        isFirstPhoto = false;
-                    }
+                int likesCount = currentPhoto.LikedBy?.Count ?? 0;
+
+                if (i_Comparison(likesCount, extremeLikes) || isFirstPhoto)
+                {
+                    extremePhoto = currentPhoto;
+                    extremeLikes = likesCount;
+                    isFirstPhoto = false;
                 }
             }
 
