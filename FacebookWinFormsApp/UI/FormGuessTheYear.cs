@@ -1,4 +1,5 @@
-﻿using FacebookWrapper.ObjectModel;
+﻿using BasicFacebookFeatures.Observers;
+using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,6 +17,14 @@ namespace BasicFacebookFeatures
         {
             InitializeComponent();
             r_GuessTheYearGame = i_GuessTheYearGame;
+
+            r_GuessTheYearGame.AddObserver(new GameStatsDisplay(
+        labelNumberOfCorrectAnswers,
+        labelNumberOfWrongAnswers,
+        labelNumberOfPhotosThatLeft
+    ));
+
+            r_GuessTheYearGame.AddObserver(new GameLogger());
         }
 
         public Form MainForm

@@ -1,3 +1,4 @@
+using BasicFacebookFeatures.Observers;
 using FacebookWrapper.ObjectModel;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace BasicFacebookFeatures
         private int m_CorrectAnswers = 0;
         private int m_WrongAnswers = 0;
         private Photo m_CurrentPhoto;
+        private List<IGameObserver> observers = new List<IGameObserver>();
 
         public GuessTheYearGame(User i_LoggedInUser)
         {
@@ -22,12 +24,16 @@ namespace BasicFacebookFeatures
             LoadUserPhotos();
         }
 
+        //public int CorrectAnswers { get; private set; }
+        //public int WrongAnswers { get; private set; }
+        //public int RemainingPhotos { get; private set; }
         public int RemainingPhotos
         {
             get
             {
                 return r_PhotoCollection.Count;
             }
+            
         }
 
         public int CorrectAnswers
@@ -59,6 +65,19 @@ namespace BasicFacebookFeatures
             get
             {
                 return m_CurrentPhoto;
+            }
+        }
+
+        public void AddObserver(IGameObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        private void notifyObservers()
+        {
+            foreach (var observer in observers)
+            {
+                observer.Update(CorrectAnswers, WrongAnswers, RemainingPhotos);
             }
         }
 
@@ -127,18 +146,17 @@ namespace BasicFacebookFeatures
         public bool CheckAnswer(int i_SelectedAnswerIndex)
         {
             bool isCorrect = i_SelectedAnswerIndex == m_CorrectAnswerIndex;
-            
+
             if (isCorrect)
-            {
                 m_CorrectAnswers++;
-            }
             else
-            {
                 m_WrongAnswers++;
-            }
+
+            notifyObservers(); 
 
             return isCorrect;
         }
+
 
         public bool DisplayNextQuestion(Action<string> onPhotoWithoutDate)
         {
@@ -154,8 +172,11 @@ namespace BasicFacebookFeatures
                 return DisplayNextQuestion(onPhotoWithoutDate);
             }
 
+            notifyObservers(); 
+
             return true;
         }
+
 
         public List<int> GetCurrentAnswerOptions()
         {
@@ -167,11 +188,26 @@ namespace BasicFacebookFeatures
             return GenerateAnswerOptions(m_CurrentPhoto.CreatedTime.Value.Year);
         }
 
+        //public void HandleAnswer(int i_SelectedAnswerIndex, Action onAnswerProcessed)
+        //{
+        //    bool isCorrect = CheckAnswer(i_SelectedAnswerIndex);
+        //    onAnswerProcessed?.Invoke();
+        //}
         public void HandleAnswer(int i_SelectedAnswerIndex, Action onAnswerProcessed)
         {
-            bool isCorrect = CheckAnswer(i_SelectedAnswerIndex);
-            onAnswerProcessed?.Invoke();
+            bool isCorrect = i_SelectedAnswerIndex == m_CorrectAnswerIndex;
+
+            if (isCorrect)
+                m_CorrectAnswers++;
+            else
+                m_WrongAnswers++;
+
+            notifyObservers(); 
+
+            onAnswerProcessed?.Invoke(); 
         }
+
+
 
         public string GetGameSummary()
         {

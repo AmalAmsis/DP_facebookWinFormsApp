@@ -82,6 +82,9 @@
     <Compile Include="Iterators\IFacebookIterator.cs" />
     <Compile Include="Iterators\FacebookPhotosAggregate.cs" />
     <Compile Include="Logic\AppSettings.cs" />
+    <Compile Include="Observers\GameLogger.cs" />
+    <Compile Include="Observers\GameStatsDisplay.cs" />
+    <Compile Include="Observers\IGameObserve.cs" />
     <Compile Include="Singletons\FacebookManager.cs" />
     <Compile Include="Logic\FacebookPostManager.cs" />
     <Compile Include="Factories\FacebookFeatureFactory.cs" />
