@@ -8,6 +8,6 @@ namespace BasicFacebookFeatures.Observers
 {
     public interface IGameObserver
     {
-        void Update(int correctAnswers, int wrongAnswers, int remainingPhotos);
+        void Update(int i_correctAnswers, int i_wrongAnswers, int i_remainingPhotos);
     }
 }

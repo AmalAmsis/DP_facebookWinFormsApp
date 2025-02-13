@@ -16,7 +16,7 @@ namespace BasicFacebookFeatures
         private int m_CorrectAnswers = 0;
         private int m_WrongAnswers = 0;
         private Photo m_CurrentPhoto;
-        private List<IGameObserver> observers = new List<IGameObserver>();
+        private List<IGameObserver> m_observers = new List<IGameObserver>();
 
         public GuessTheYearGame(User i_LoggedInUser)
         {
@@ -68,17 +68,22 @@ namespace BasicFacebookFeatures
             }
         }
 
-        public void AddObserver(IGameObserver observer)
+        public void AddObserver(IGameObserver i_observer)
         {
-            observers.Add(observer);
+            m_observers.Add(i_observer);
         }
 
         private void notifyObservers()
         {
-            foreach (var observer in observers)
+            foreach (var observer in m_observers)
             {
                 observer.Update(CorrectAnswers, WrongAnswers, RemainingPhotos);
             }
+        }
+
+        public void RemoveObserver(IGameObserver i_observer)
+        {
+            m_observers.Remove(i_observer);
         }
 
         public bool LoadUserPhotos()

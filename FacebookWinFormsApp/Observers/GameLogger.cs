@@ -5,15 +5,15 @@ namespace BasicFacebookFeatures.Observers
 {
     public class GameLogger : IGameObserver
     {
-        private readonly string logFilePath = "GameLog.txt";
+        private readonly string r_logFilePath = "GameLog.txt";
 
-        public void Update(int correctAnswers, int wrongAnswers, int remainingPhotos)
+        public void Update(int i_correctAnswers, int i_wrongAnswers, int i_remainingPhotos)
         {
-            string logMessage = $"{DateTime.Now}: Correct={correctAnswers}, Wrong={wrongAnswers}, Remaining={remainingPhotos}";
+            string logMessage = $"{DateTime.Now}: Correct={i_correctAnswers}, Wrong={i_wrongAnswers}, Remaining={i_remainingPhotos}";
 
             try
             {
-                File.AppendAllText(logFilePath, logMessage + Environment.NewLine);
+                File.AppendAllText(r_logFilePath, logMessage + Environment.NewLine);
             }
             catch (Exception ex)
             {

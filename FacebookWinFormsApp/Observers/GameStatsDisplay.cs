@@ -9,25 +9,27 @@ namespace BasicFacebookFeatures.Observers
 {
     public class GameStatsDisplay : IGameObserver
     {
-        private Label correctLabel, wrongLabel, remainingLabel;
+        private Label m_correctLabel;
+        private Label m_wrongLabel;
+        private Label m_remainingLabel;
 
         public GameStatsDisplay(Label i_Correct, Label i_Wrong, Label i_Remaining)
         {
-            correctLabel = i_Correct;
-            wrongLabel = i_Wrong;
-            remainingLabel = i_Remaining;
+            m_correctLabel = i_Correct;
+            m_wrongLabel = i_Wrong;
+            m_remainingLabel = i_Remaining;
         }
 
-        public void Update(int correctAnswers, int wrongAnswers, int remainingPhotos)
+        public void Update(int i_correctAnswers, int i_wrongAnswers, int i_remainingPhotos)
         {
-            correctLabel.Invoke(new Action(() =>
-                correctLabel.Text = $"{correctAnswers}"
+            m_correctLabel.Invoke(new Action(() =>
+               m_correctLabel.Text = $"{i_correctAnswers}"
             ));
-            wrongLabel.Invoke(new Action(() =>
-                wrongLabel.Text = $"{wrongAnswers}"
+            m_wrongLabel.Invoke(new Action(() =>
+                m_wrongLabel.Text = $"{i_wrongAnswers}"
             ));
-            remainingLabel.Invoke(new Action(() =>
-                remainingLabel.Text = $"{remainingPhotos}"
+            m_remainingLabel.Invoke(new Action(() =>
+                m_remainingLabel.Text = $"{i_remainingPhotos}"
             ));
         }
     }

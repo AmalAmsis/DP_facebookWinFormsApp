@@ -53,10 +53,10 @@
             this.listBox.ForeColor = System.Drawing.Color.Brown;
             this.listBox.FormattingEnabled = true;
             this.listBox.ItemHeight = 16;
-            this.listBox.Location = new System.Drawing.Point(0, 55);
-            this.listBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBox.Location = new System.Drawing.Point(0, 57);
+            this.listBox.Margin = new System.Windows.Forms.Padding(4);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(561, 379);
+            this.listBox.Size = new System.Drawing.Size(561, 377);
             this.listBox.TabIndex = 2;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             // 
@@ -65,9 +65,9 @@
             this.textBoxSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBoxSearch.ForeColor = System.Drawing.Color.SaddleBrown;
             this.textBoxSearch.Location = new System.Drawing.Point(0, 35);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(561, 20);
+            this.textBoxSearch.Size = new System.Drawing.Size(561, 22);
             this.textBoxSearch.TabIndex = 1;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
             // 
@@ -78,7 +78,7 @@
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.textBoxSearch);
             this.Controls.Add(this.labelTitle);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SearchableListWithTitle";
             this.Size = new System.Drawing.Size(561, 434);
             this.ResumeLayout(false);
