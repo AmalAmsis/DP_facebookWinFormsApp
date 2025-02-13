@@ -9,6 +9,12 @@ namespace BasicFacebookFeatures.Services
     internal class FriendAnalyzer
     {
         private readonly User r_LoggedInUser = FacebookManager.Instance.LoggedInUser;
+        private readonly FriendFilterContext r_FriendFilterContext;
+
+        public FriendAnalyzer()
+        {
+            r_FriendFilterContext = new FriendFilterContext(new CommonLanguagesStrategy());
+        }
 
         public string UserName
         {
@@ -20,22 +26,26 @@ namespace BasicFacebookFeatures.Services
 
         public FacebookObjectCollection<User> GetFriendsWithCommonLanguages()
         {
-            return new FriendFilterContext(new CommonLanguagesStrategy()).FilterFriends();
+            r_FriendFilterContext.SetStrategy(new CommonLanguagesStrategy()); 
+            return r_FriendFilterContext.FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsFromSameHometown()
         {
-            return new FriendFilterContext(new SameHometownStrategy()).FilterFriends();
+            r_FriendFilterContext.SetStrategy(new SameHometownStrategy());
+            return r_FriendFilterContext.FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsWithSameBirthday()
         {
-            return new FriendFilterContext(new SameBirthdayStrategy()).FilterFriends();
+            r_FriendFilterContext.SetStrategy(new SameBirthdayStrategy());
+            return r_FriendFilterContext.FilterFriends();
         }
 
         public FacebookObjectCollection<User> GetFriendsWhoLikedPhotos()
         {
-            return new FriendFilterContext(new PhotoLikesStrategy()).FilterFriends();
+            r_FriendFilterContext.SetStrategy(new PhotoLikesStrategy());
+            return r_FriendFilterContext.FilterFriends();
         }
     }
-} 
+}
