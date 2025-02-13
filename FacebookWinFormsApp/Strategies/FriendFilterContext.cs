@@ -13,6 +13,11 @@ namespace BasicFacebookFeatures.Services.Strategies
             Filter = i_Filter;
         }
 
+        public void SetStrategy(IFriendFilterStrategy i_NewStrategy)
+        {
+            Filter = i_NewStrategy;
+        }
+
         public FacebookObjectCollection<User> FilterFriends()
         {
             FacebookObjectCollection<User> filteredFriends = new FacebookObjectCollection<User>();
@@ -27,7 +32,7 @@ namespace BasicFacebookFeatures.Services.Strategies
                     continue;
                 }
 
-                if (Filter.ShouldIncludeFriend(friend))
+                if (Filter != null && Filter.ShouldIncludeFriend(friend))
                 {
                     filteredFriends.Add(friend);
                 }
@@ -36,4 +41,4 @@ namespace BasicFacebookFeatures.Services.Strategies
             return filteredFriends;
         }
     }
-} 
+}
