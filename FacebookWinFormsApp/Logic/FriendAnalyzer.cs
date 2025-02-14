@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using BasicFacebookFeatures.Services.Strategies;
 using BasicFacebookFeatures.Iterators;
+using System.Collections.Generic;
 
 namespace BasicFacebookFeatures.Services
 {
@@ -24,25 +25,25 @@ namespace BasicFacebookFeatures.Services
             }
         }
 
-        public FacebookObjectCollection<User> GetFriendsWithCommonLanguages()
+        public IEnumerable<User> GetFriendsWithCommonLanguages()
         {
             r_FriendFilterContext.SetStrategy(new CommonLanguagesStrategy()); 
             return r_FriendFilterContext.FilterFriends();
         }
 
-        public FacebookObjectCollection<User> GetFriendsFromSameHometown()
+        public IEnumerable<User> GetFriendsFromSameHometown()
         {
             r_FriendFilterContext.SetStrategy(new SameHometownStrategy());
             return r_FriendFilterContext.FilterFriends();
         }
 
-        public FacebookObjectCollection<User> GetFriendsWithSameBirthday()
+        public IEnumerable<User> GetFriendsWithSameBirthday()
         {
             r_FriendFilterContext.SetStrategy(new SameBirthdayStrategy());
             return r_FriendFilterContext.FilterFriends();
         }
 
-        public FacebookObjectCollection<User> GetFriendsWhoLikedPhotos()
+        public IEnumerable<User> GetFriendsWhoLikedPhotos()
         {
             r_FriendFilterContext.SetStrategy(new PhotoLikesStrategy());
             return r_FriendFilterContext.FilterFriends();

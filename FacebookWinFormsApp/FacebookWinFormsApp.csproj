@@ -78,8 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Iterators\FacebookFriendsAggregate.cs" />
-    <Compile Include="Iterators\IFacebookAggregate.cs" />
-    <Compile Include="Iterators\IFacebookIterator.cs" />
     <Compile Include="Iterators\FacebookPhotosAggregate.cs" />
     <Compile Include="Logic\AppSettings.cs" />
     <Compile Include="Observers\GameLogger.cs" />
