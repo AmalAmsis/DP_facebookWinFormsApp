@@ -100,7 +100,7 @@ namespace BasicFacebookFeatures
         {
             get
             {
-                return r_FriendAnalyzer.GetFriendsWithCommonLanguages();
+                return r_FriendAnalyzer.GetFriendsWithCommonLanguages() as FacebookObjectCollection<User>;
             }
         }
 
@@ -108,7 +108,7 @@ namespace BasicFacebookFeatures
         {
             get
             {
-                return r_FriendAnalyzer.GetFriendsFromSameHometown();
+                return r_FriendAnalyzer.GetFriendsFromSameHometown() as FacebookObjectCollection<User>;
             }
         }
             
@@ -116,7 +116,7 @@ namespace BasicFacebookFeatures
         {
             get
             {
-                return r_FriendAnalyzer.GetFriendsWithSameBirthday();
+                return r_FriendAnalyzer.GetFriendsWithSameBirthday() as FacebookObjectCollection<User>;
             }
         }
            
@@ -124,7 +124,7 @@ namespace BasicFacebookFeatures
         {
             get
             {
-                return r_FriendAnalyzer.GetFriendsWhoLikedPhotos();
+                return r_FriendAnalyzer.GetFriendsWhoLikedPhotos() as FacebookObjectCollection<User>;
             }
         }
     }

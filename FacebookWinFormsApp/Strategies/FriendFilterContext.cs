@@ -1,6 +1,6 @@
 using FacebookWrapper.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
-using BasicFacebookFeatures.Iterators;
 
 namespace BasicFacebookFeatures.Services.Strategies
 {
@@ -18,27 +18,11 @@ namespace BasicFacebookFeatures.Services.Strategies
             Filter = i_NewStrategy;
         }
 
-        public FacebookObjectCollection<User> FilterFriends()
+        public IEnumerable<User> FilterFriends()
         {
-            FacebookObjectCollection<User> filteredFriends = new FacebookObjectCollection<User>();
-
-            IFacebookAggregate<User> facebookFriendsAggregate = new FacebookFriendsAggregate(FacebookManager.Instance.LoggedInUser?.Friends);
-            IFacebookIterator<User> iterator = facebookFriendsAggregate.CreateIterator();
-
-            while (iterator.MoveNext())
-            {
-                if (!(iterator.Current is User friend))
-                {
-                    continue;
-                }
-
-                if (Filter != null && Filter.ShouldIncludeFriend(friend))
-                {
-                    filteredFriends.Add(friend);
-                }
-            }
-
-            return filteredFriends;
+            return FacebookManager.Instance.LoggedInUser?.Friends
+                .Where(friend => Filter.ShouldIncludeFriend(friend)) ?? Enumerable.Empty<User>();
         }
+
     }
 }
